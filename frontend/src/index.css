@@ -1,0 +1,86 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-brand: hsl(var(--brand));
+  --color-brand-foreground: hsl(var(--brand-foreground));
+  --color-accent-warm: hsl(var(--accent-warm));
+  --color-accent-warm-foreground: hsl(var(--accent-warm-foreground));
+  --color-risk-critical: hsl(var(--risk-critical));
+  --color-risk-high: hsl(var(--risk-high));
+  --color-risk-medium: hsl(var(--risk-medium));
+  --color-risk-low: hsl(var(--risk-low));
+  --shadow-elegant: var(--shadow-elegant);
+}
+
+:root {
+  --background: 42 38% 98%;
+  --foreground: 225 24% 16%;
+  --card: 0 0% 100%;
+  --card-foreground: 225 24% 16%;
+  --muted: 42 34% 94%;
+  --muted-foreground: 220 12% 42%;
+  --border: 220 20% 88%;
+  --input: 220 20% 88%;
+  --ring: 32 95% 55%;
+  --brand: 230 55% 24%;
+  --brand-foreground: 42 38% 98%;
+  --accent-warm: 32 95% 55%;
+  --accent-warm-foreground: 230 55% 18%;
+  --risk-critical: 358 72% 52%;
+  --risk-high: 28 92% 54%;
+  --risk-medium: 45 96% 54%;
+  --risk-low: 152 60% 38%;
+  --gradient-hero: linear-gradient(135deg, hsl(230 55% 24%) 0%, hsl(230 48% 32%) 52%, hsl(32 95% 55%) 100%);
+  --shadow-elegant: 0 18px 48px hsl(230 55% 24% / 0.14);
+}
+
+.dark {
+  --background: 230 32% 10%;
+  --foreground: 42 38% 96%;
+  --card: 230 28% 14%;
+  --card-foreground: 42 38% 96%;
+  --muted: 230 24% 18%;
+  --muted-foreground: 220 16% 72%;
+  --border: 230 18% 26%;
+  --input: 230 18% 26%;
+  --ring: 32 95% 55%;
+  --brand: 230 55% 30%;
+  --brand-foreground: 42 38% 98%;
+  --accent-warm: 32 95% 55%;
+  --accent-warm-foreground: 230 55% 18%;
+  --risk-critical: 358 72% 60%;
+  --risk-high: 28 92% 60%;
+  --risk-medium: 45 96% 58%;
+  --risk-low: 152 60% 46%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+.hero-gradient {
+  background: var(--gradient-hero);
+}

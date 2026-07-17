@@ -1,0 +1,579 @@
+sku_id,product_name,brand,category,subcategory,unit_price,unit_cost,unit_weight_g,shelf_life_days,is_perishable,supplier_id,barcode,pack_size,reorder_point,safety_stock
+SKU_0001,Value Pack Energy Drinks 250g,BRAND_016,Beverages,Energy Drinks,49.33,29.66,2856.0,,False,SUPPLIER_075,,12,120,60
+SKU_0002,Pure Juices 6-Pack,BRAND_012,Beverages,Juices,44.89,16.17,760.4,,False,SUPPLIER_069,,1,128,64
+SKU_0003,Smooth Coffee & Tea 500ml,BRAND_005,Beverages,Coffee & Tea,42.54,15.74,2412.8,,False,SUPPLIER_072,,6,689,345
+SKU_0004,Organic Water 1kg,BRAND_011,Beverages,Water,9.57,6.63,1402.8,,False,SUPPLIER_075,,1,489,245
+SKU_0005,Ultra Sodas 6-Pack,BRAND_007,Beverages,Sodas,18.55,12.72,2986.6,,False,SUPPLIER_066,,1,254,127
+SKU_0006,Ultra Juices 2L,BRAND_020,Beverages,Juices,14.25,8.49,1919.6,,False,SUPPLIER_075,,1,593,297
+SKU_0007,Premium Juices 2L,BRAND_006,Beverages,Juices,22.27,12.11,1979.6,,False,SUPPLIER_014,,36,904,452
+SKU_0008,Value Pack Coffee & Tea 24ct,BRAND_016,Beverages,Coffee & Tea,23.51,16.28,1264.1,,False,SUPPLIER_019,,48,98,49
+SKU_0009,Premium Sodas 500ml,BRAND_013,Beverages,Sodas,35.8,22.22,2603.1,,False,SUPPLIER_033,,36,573,287
+SKU_0010,Premium Energy Drinks 6-Pack,BRAND_007,Beverages,Energy Drinks,36.01,22.78,2996.3,,False,SUPPLIER_046,,12,132,66
+SKU_0011,Lite Sodas 1kg,BRAND_004,Beverages,Sodas,16.59,11.08,1612.1,,False,SUPPLIER_053,,6,434,217
+SKU_0012,Light Energy Drinks 12-Pack,BRAND_014,Beverages,Energy Drinks,35.05,14.81,941.1,,False,SUPPLIER_013,,1,174,87
+SKU_0013,Organic Juices 6-Pack,BRAND_011,Beverages,Juices,7.33,4.92,77.3,,False,SUPPLIER_014,,1,16,8
+SKU_0014,Bold Sodas 2L,BRAND_013,Beverages,Sodas,8.55,5.31,2573.7,,False,SUPPLIER_048,,24,244,122
+SKU_0015,Ultra Juices 500g,BRAND_006,Beverages,Juices,7.6,4.5,560.2,,False,SUPPLIER_023,,1,492,246
+SKU_0016,Deluxe Water 250g,BRAND_006,Beverages,Water,14.01,5.15,1804.0,,False,SUPPLIER_084,,24,205,103
+SKU_0017,Deluxe Juices 2L,BRAND_005,Beverages,Juices,34.03,20.55,1722.5,,False,SUPPLIER_013,,12,713,357
+SKU_0018,Organic Energy Drinks 1kg,BRAND_001,Beverages,Energy Drinks,34.38,16.12,2867.0,,False,SUPPLIER_041,,1,37,19
+SKU_0019,Natural Energy Drinks 150g,BRAND_007,Beverages,Energy Drinks,12.63,7.56,2561.4,,False,SUPPLIER_046,,12,308,154
+SKU_0020,Classic Coffee & Tea 1kg,BRAND_004,Beverages,Coffee & Tea,45.87,21.22,1844.0,,False,SUPPLIER_045,,1,196,98
+SKU_0021,Farm Energy Drinks 2L,BRAND_015,Beverages,Energy Drinks,9.26,5.44,2545.7,,False,SUPPLIER_025,,12,33,17
+SKU_0022,Light Energy Drinks 12-Pack,BRAND_010,Beverages,Energy Drinks,20.45,11.18,2173.4,,False,SUPPLIER_029,,36,453,227
+SKU_0023,Pure Sodas 500ml,BRAND_004,Beverages,Sodas,10.51,5.67,2119.1,,False,SUPPLIER_064,,48,568,284
+SKU_0024,Bold Sodas 500ml,BRAND_010,Beverages,Sodas,37.37,23.08,2299.6,,False,SUPPLIER_060,,48,227,114
+SKU_0025,Smooth Energy Drinks 500g,BRAND_018,Beverages,Energy Drinks,8.79,3.1,1041.6,,False,SUPPLIER_020,,48,644,322
+SKU_0026,Deluxe Water 500g,BRAND_009,Beverages,Water,34.46,19.93,2976.5,,False,SUPPLIER_010,,24,510,255
+SKU_0027,Pure Sodas 12-Pack,BRAND_003,Beverages,Sodas,39.47,25.31,2472.6,,False,SUPPLIER_020,,12,146,73
+SKU_0028,Organic Sodas 1kg,BRAND_003,Beverages,Sodas,3.83,1.41,51.5,,False,SUPPLIER_009,,24,338,169
+SKU_0029,Natural Sodas 500g,BRAND_004,Beverages,Sodas,41.41,22.63,1186.8,,False,SUPPLIER_014,,36,152,76
+SKU_0030,Natural Juices 2L,BRAND_018,Beverages,Juices,7.16,4.66,995.2,,False,SUPPLIER_045,,6,37,19
+SKU_0031,Pure Juices 500ml,BRAND_008,Beverages,Juices,47.29,23.05,2775.5,,False,SUPPLIER_053,,1,30,15
+SKU_0032,Bold Energy Drinks 24ct,BRAND_002,Beverages,Energy Drinks,29.91,19.66,1154.7,,False,SUPPLIER_043,,6,102,51
+SKU_0033,Organic Juices 24ct,BRAND_009,Beverages,Juices,41.96,18.86,946.2,,False,SUPPLIER_080,,36,59,30
+SKU_0034,Classic Juices 2L,BRAND_005,Beverages,Juices,26.34,11.19,461.9,,False,SUPPLIER_016,,12,77,39
+SKU_0035,Bold Coffee & Tea 24ct,BRAND_012,Beverages,Coffee & Tea,21.73,10.88,155.9,,False,SUPPLIER_041,,24,517,259
+SKU_0036,Deluxe Sodas 6-Pack,BRAND_010,Beverages,Sodas,10.48,6.6,1872.5,,False,SUPPLIER_011,,24,781,391
+SKU_0037,Deluxe Juices 1L,BRAND_016,Beverages,Juices,16.37,9.47,2034.9,,False,SUPPLIER_066,,6,114,57
+SKU_0038,Value Pack Juices 500ml,BRAND_019,Beverages,Juices,49.73,25.87,1459.9,,False,SUPPLIER_063,,12,47,24
+SKU_0039,Farm Juices 24ct,BRAND_014,Beverages,Juices,10.27,4.64,1611.7,,False,SUPPLIER_015,,1,647,324
+SKU_0040,Organic Sodas 12-Pack,BRAND_020,Beverages,Sodas,35.39,13.25,1469.3,,False,SUPPLIER_010,,24,567,284
+SKU_0041,Light Sodas 12-Pack,BRAND_015,Beverages,Sodas,37.7,17.34,854.8,,False,SUPPLIER_060,,6,71,36
+SKU_0042,Bold Energy Drinks 500ml,BRAND_008,Beverages,Energy Drinks,11.64,7.3,2551.1,,False,SUPPLIER_011,,1,827,414
+SKU_0043,Organic Energy Drinks 500g,BRAND_010,Beverages,Energy Drinks,40.81,17.64,864.8,,False,SUPPLIER_001,,36,274,137
+SKU_0044,Bold Water 6-Pack,BRAND_018,Beverages,Water,2.23,0.91,1935.8,,False,SUPPLIER_034,,12,186,93
+SKU_0045,Ultra Juices 2L,BRAND_020,Beverages,Juices,6.84,4.26,2818.6,,False,SUPPLIER_005,,36,327,164
+SKU_0046,Original Coffee & Tea 1kg,BRAND_014,Beverages,Coffee & Tea,25.5,14.13,1215.6,,False,SUPPLIER_068,,24,689,345
+SKU_0047,Lite Water 12-Pack,BRAND_002,Beverages,Water,38.61,18.07,1838.8,,False,SUPPLIER_081,,6,531,266
+SKU_0048,Natural Sodas 24ct,BRAND_018,Beverages,Sodas,12.22,7.83,1660.1,,False,SUPPLIER_046,,36,362,181
+SKU_0049,Premium Juices 1L,BRAND_011,Beverages,Juices,24.33,16.36,1505.8,,False,SUPPLIER_044,,24,443,222
+SKU_0050,Crispy Juices 1L,BRAND_019,Beverages,Juices,49.93,21.39,896.3,,False,SUPPLIER_055,,48,78,39
+SKU_0051,Family Size Sodas 1kg,BRAND_010,Beverages,Sodas,41.72,19.03,1347.4,,False,SUPPLIER_079,,24,919,460
+SKU_0052,Family Size Juices 500g,BRAND_020,Beverages,Juices,14.1,5.26,212.1,,False,SUPPLIER_002,,24,39,20
+SKU_0053,Lite Energy Drinks 250g,BRAND_017,Beverages,Energy Drinks,9.33,6.22,1671.0,,False,SUPPLIER_069,,1,41,21
+SKU_0054,Classic Water 24ct,BRAND_002,Beverages,Water,48.51,32.36,2913.6,,False,SUPPLIER_006,,36,66,33
+SKU_0055,Premium Sodas 1L,BRAND_020,Beverages,Sodas,37.8,17.0,1038.4,,False,SUPPLIER_027,,12,437,219
+SKU_0056,Organic Sodas 500g,BRAND_015,Beverages,Sodas,34.52,12.65,895.5,,False,SUPPLIER_059,,1,75,38
+SKU_0057,Family Size Sodas 12-Pack,BRAND_002,Beverages,Sodas,2.03,0.99,640.5,,False,SUPPLIER_044,,6,144,72
+SKU_0058,Crispy Juices 1L,BRAND_005,Beverages,Juices,49.63,23.3,530.4,,False,SUPPLIER_067,,36,281,141
+SKU_0059,Original Energy Drinks 1kg,BRAND_014,Beverages,Energy Drinks,2.11,0.94,619.2,,False,SUPPLIER_084,,6,157,79
+SKU_0060,Lite Sodas 150g,BRAND_002,Beverages,Sodas,26.82,12.34,2333.1,,False,SUPPLIER_041,,24,622,311
+SKU_0061,Lite Juices 500ml,BRAND_004,Beverages,Juices,28.4,17.11,223.6,,False,SUPPLIER_002,,1,477,239
+SKU_0062,Pure Water 1L,BRAND_020,Beverages,Water,47.51,29.08,2635.0,,False,SUPPLIER_080,,1,56,28
+SKU_0063,Natural Energy Drinks 500ml,BRAND_003,Beverages,Energy Drinks,49.33,25.18,323.7,,False,SUPPLIER_060,,36,92,46
+SKU_0064,Crispy Energy Drinks 150g,BRAND_006,Beverages,Energy Drinks,14.96,10.33,2139.1,,False,SUPPLIER_052,,6,201,101
+SKU_0065,Extra Fresh Water 6-Pack,BRAND_015,Beverages,Water,12.91,6.17,492.3,,False,SUPPLIER_049,,6,515,258
+SKU_0066,Deluxe Sodas 6-Pack,BRAND_014,Beverages,Sodas,39.71,24.37,2683.0,,False,SUPPLIER_045,,24,218,109
+SKU_0067,Extra Fresh Sodas 12-Pack,BRAND_008,Beverages,Sodas,43.26,26.09,1583.3,,False,SUPPLIER_067,,12,36,18
+SKU_0068,Family Size Butter 12-Pack,BRAND_008,Dairy & Eggs,Butter,25.17,9.11,2064.9,598,True,SUPPLIER_081,,36,246,123
+SKU_0069,Classic Yogurt 1L,BRAND_020,Dairy & Eggs,Yogurt,17.31,7.57,1606.3,648,True,SUPPLIER_053,,12,195,98
+SKU_0070,Light Eggs 150g,BRAND_003,Dairy & Eggs,Eggs,28.09,17.22,2489.0,272,True,SUPPLIER_069,,24,426,213
+SKU_0071,Deluxe Eggs 500ml,BRAND_010,Dairy & Eggs,Eggs,20.84,12.16,1397.4,515,True,SUPPLIER_040,,36,12,6
+SKU_0072,Smooth Cheese 150g,BRAND_015,Dairy & Eggs,Cheese,24.96,10.46,2589.6,200,True,SUPPLIER_070,,24,756,378
+SKU_0073,Deluxe Eggs 500g,BRAND_016,Dairy & Eggs,Eggs,14.9,9.81,2201.8,630,True,SUPPLIER_068,,48,546,273
+SKU_0074,Light Cheese 2L,BRAND_018,Dairy & Eggs,Cheese,5.73,2.46,2530.1,504,True,SUPPLIER_016,,12,111,56
+SKU_0075,Natural Yogurt 500g,BRAND_005,Dairy & Eggs,Yogurt,23.85,13.21,1527.9,292,True,SUPPLIER_041,,1,590,295
+SKU_0076,Pure Eggs 6-Pack,BRAND_006,Dairy & Eggs,Eggs,19.69,12.49,2143.2,390,True,SUPPLIER_040,,1,226,113
+SKU_0077,Ultra Yogurt 150g,BRAND_013,Dairy & Eggs,Yogurt,29.98,11.74,772.1,468,True,SUPPLIER_077,,6,156,78
+SKU_0078,Original Yogurt 12-Pack,BRAND_008,Dairy & Eggs,Yogurt,22.0,14.81,899.0,436,True,SUPPLIER_058,,36,78,39
+SKU_0079,Bold Cheese 1L,BRAND_014,Dairy & Eggs,Cheese,23.4,14.96,2067.3,259,True,SUPPLIER_045,,24,191,96
+SKU_0080,Deluxe Cheese 24ct,BRAND_018,Dairy & Eggs,Cheese,3.67,2.27,1160.6,172,True,SUPPLIER_033,,24,351,176
+SKU_0081,Deluxe Cheese 12-Pack,BRAND_014,Dairy & Eggs,Cheese,47.9,31.44,503.1,71,True,SUPPLIER_068,,36,153,77
+SKU_0082,Light Milk 12-Pack,BRAND_003,Dairy & Eggs,Milk,29.69,11.54,284.5,554,True,SUPPLIER_042,,36,268,134
+SKU_0083,Organic Cheese 500ml,BRAND_001,Dairy & Eggs,Cheese,35.44,20.07,64.7,222,True,SUPPLIER_021,,6,251,126
+SKU_0084,Ultra Milk 150g,BRAND_020,Dairy & Eggs,Milk,13.72,5.87,386.0,445,True,SUPPLIER_057,,6,576,288
+SKU_0085,Extra Fresh Yogurt 12-Pack,BRAND_012,Dairy & Eggs,Yogurt,9.73,6.6,940.3,472,True,SUPPLIER_022,,36,459,230
+SKU_0086,Crispy Yogurt 2L,BRAND_011,Dairy & Eggs,Yogurt,3.3,2.05,1160.8,615,True,SUPPLIER_026,,1,189,95
+SKU_0087,Extra Fresh Milk 150g,BRAND_004,Dairy & Eggs,Milk,30.12,14.27,415.2,290,True,SUPPLIER_073,,6,39,20
+SKU_0088,Classic Milk 2L,BRAND_012,Dairy & Eggs,Milk,46.87,20.63,1500.0,603,True,SUPPLIER_080,,6,11,6
+SKU_0089,Original Eggs 500g,BRAND_009,Dairy & Eggs,Eggs,18.07,8.36,2699.8,690,True,SUPPLIER_012,,24,291,146
+SKU_0090,Deluxe Yogurt 1L,BRAND_002,Dairy & Eggs,Yogurt,24.69,8.96,2421.8,199,True,SUPPLIER_009,,1,184,92
+SKU_0091,Pure Butter 1L,BRAND_014,Dairy & Eggs,Butter,14.13,5.41,612.6,27,True,SUPPLIER_055,,48,272,136
+SKU_0092,Classic Yogurt 500ml,BRAND_018,Dairy & Eggs,Yogurt,37.93,19.87,1463.7,99,True,SUPPLIER_038,,1,314,157
+SKU_0093,Pure Cheese 1kg,BRAND_012,Dairy & Eggs,Cheese,22.32,14.79,157.1,101,True,SUPPLIER_073,,48,96,48
+SKU_0094,Extra Fresh Yogurt 500g,BRAND_008,Dairy & Eggs,Yogurt,9.79,3.57,1124.9,77,True,SUPPLIER_060,,48,236,118
+SKU_0095,Smooth Cheese 500ml,BRAND_015,Dairy & Eggs,Cheese,22.23,11.26,1679.4,343,True,SUPPLIER_069,,12,247,124
+SKU_0096,Deluxe Eggs 2L,BRAND_017,Dairy & Eggs,Eggs,37.6,22.06,2251.1,511,True,SUPPLIER_018,,36,296,148
+SKU_0097,Extra Fresh Butter 1kg,BRAND_011,Dairy & Eggs,Butter,42.77,21.17,1733.0,282,True,SUPPLIER_003,,1,455,228
+SKU_0098,Lite Milk 250g,BRAND_012,Dairy & Eggs,Milk,41.95,21.79,193.7,714,True,SUPPLIER_054,,1,95,48
+SKU_0099,Lite Butter 1L,BRAND_013,Dairy & Eggs,Butter,46.32,26.31,1567.2,382,True,SUPPLIER_076,,36,448,224
+SKU_0100,Lite Eggs 24ct,BRAND_001,Dairy & Eggs,Eggs,19.82,10.3,2349.1,285,True,SUPPLIER_020,,6,276,138
+SKU_0101,Ultra Eggs 250g,BRAND_012,Dairy & Eggs,Eggs,5.76,3.96,1816.6,140,True,SUPPLIER_036,,36,61,31
+SKU_0102,Natural Eggs 6-Pack,BRAND_007,Dairy & Eggs,Eggs,3.33,1.41,2729.6,642,True,SUPPLIER_076,,12,181,91
+SKU_0103,Crispy Butter 500g,BRAND_017,Dairy & Eggs,Butter,17.61,11.04,2641.0,274,True,SUPPLIER_075,,6,174,87
+SKU_0104,Extra Fresh Yogurt 1kg,BRAND_003,Dairy & Eggs,Yogurt,30.94,14.96,164.8,695,True,SUPPLIER_052,,6,66,33
+SKU_0105,Premium Eggs 500g,BRAND_011,Dairy & Eggs,Eggs,28.91,17.04,229.4,61,True,SUPPLIER_070,,1,230,115
+SKU_0106,Premium Milk 250g,BRAND_019,Dairy & Eggs,Milk,12.87,8.45,963.2,524,True,SUPPLIER_018,,24,59,30
+SKU_0107,Original Eggs 250g,BRAND_013,Dairy & Eggs,Eggs,49.4,22.94,310.8,231,True,SUPPLIER_071,,6,68,34
+SKU_0108,Smooth Butter 1L,BRAND_012,Dairy & Eggs,Butter,24.81,14.8,280.9,579,True,SUPPLIER_065,,36,117,59
+SKU_0109,Lite Milk 1kg,BRAND_019,Dairy & Eggs,Milk,35.05,14.99,1008.1,9,True,SUPPLIER_011,,1,101,51
+SKU_0110,Premium Yogurt 500g,BRAND_002,Dairy & Eggs,Yogurt,34.44,22.19,2317.1,306,True,SUPPLIER_047,,24,41,21
+SKU_0111,Light Yogurt 12-Pack,BRAND_006,Dairy & Eggs,Yogurt,35.41,15.32,885.8,387,True,SUPPLIER_072,,12,114,57
+SKU_0112,Ultra Eggs 1L,BRAND_008,Dairy & Eggs,Eggs,0.59,0.4,108.9,596,True,SUPPLIER_040,,12,632,316
+SKU_0113,Original Yogurt 2L,BRAND_010,Dairy & Eggs,Yogurt,33.32,17.68,1593.3,106,True,SUPPLIER_079,,48,206,103
+SKU_0114,Premium Yogurt 1kg,BRAND_018,Dairy & Eggs,Yogurt,33.58,21.31,2649.6,386,True,SUPPLIER_003,,24,418,209
+SKU_0115,Pure Cheese 12-Pack,BRAND_019,Dairy & Eggs,Cheese,11.27,7.36,1070.7,315,True,SUPPLIER_079,,6,129,65
+SKU_0116,Organic Milk 6-Pack,BRAND_019,Dairy & Eggs,Milk,14.05,6.61,316.6,310,True,SUPPLIER_006,,12,81,41
+SKU_0117,Classic Eggs 6-Pack,BRAND_018,Dairy & Eggs,Eggs,24.92,14.41,307.7,104,True,SUPPLIER_038,,24,153,77
+SKU_0118,Deluxe Eggs 1L,BRAND_006,Dairy & Eggs,Eggs,4.48,2.08,751.3,179,True,SUPPLIER_062,,1,57,29
+SKU_0119,Organic Eggs 150g,BRAND_019,Dairy & Eggs,Eggs,16.0,10.34,1167.6,288,True,SUPPLIER_070,,1,334,167
+SKU_0120,Premium Cheese 12-Pack,BRAND_020,Dairy & Eggs,Cheese,47.5,27.75,1664.1,359,True,SUPPLIER_016,,12,676,338
+SKU_0121,Deluxe Yogurt 500g,BRAND_007,Dairy & Eggs,Yogurt,39.55,17.74,2100.9,89,True,SUPPLIER_078,,36,84,42
+SKU_0122,Classic Yogurt 250g,BRAND_009,Dairy & Eggs,Yogurt,22.8,10.93,858.9,216,True,SUPPLIER_075,,36,177,89
+SKU_0123,Bold Yogurt 1L,BRAND_016,Dairy & Eggs,Yogurt,11.34,5.25,1793.7,138,True,SUPPLIER_053,,1,600,300
+SKU_0124,Lite Butter 250g,BRAND_012,Dairy & Eggs,Butter,6.8,4.04,1478.7,530,True,SUPPLIER_079,,12,113,57
+SKU_0125,Lite Eggs 500g,BRAND_005,Dairy & Eggs,Eggs,26.19,10.24,2659.6,491,True,SUPPLIER_007,,6,31,16
+SKU_0126,Bold Eggs 1L,BRAND_001,Dairy & Eggs,Eggs,32.93,20.55,2493.0,393,True,SUPPLIER_041,,1,363,182
+SKU_0127,Farm Milk 1kg,BRAND_002,Dairy & Eggs,Milk,30.96,12.24,2695.0,681,True,SUPPLIER_050,,1,219,110
+SKU_0128,Classic Butter 2L,BRAND_013,Dairy & Eggs,Butter,39.99,17.62,2468.2,207,True,SUPPLIER_070,,1,561,281
+SKU_0129,Family Size Granola Bars 24ct,BRAND_003,Snacks,Granola Bars,3.4,2.07,2528.2,,False,SUPPLIER_055,,24,127,64
+SKU_0130,Pure Popcorn 2L,BRAND_003,Snacks,Popcorn,44.67,26.45,2859.0,,False,SUPPLIER_054,,1,163,82
+SKU_0131,Value Pack Crackers 12-Pack,BRAND_014,Snacks,Crackers,7.75,3.88,887.8,,False,SUPPLIER_008,,24,75,38
+SKU_0132,Light Chips 2L,BRAND_012,Snacks,Chips,9.42,5.79,513.2,,False,SUPPLIER_067,,12,600,300
+SKU_0133,Ultra Nuts 500g,BRAND_007,Snacks,Nuts,29.8,14.39,600.9,,False,SUPPLIER_025,,6,44,22
+SKU_0134,Bold Granola Bars 1kg,BRAND_008,Snacks,Granola Bars,15.16,6.91,170.6,,False,SUPPLIER_058,,6,282,141
+SKU_0135,Bold Chips 2L,BRAND_013,Snacks,Chips,32.83,19.08,1607.5,,False,SUPPLIER_058,,48,64,32
+SKU_0136,Light Popcorn 24ct,BRAND_001,Snacks,Popcorn,37.93,17.54,1787.5,,False,SUPPLIER_083,,6,444,222
+SKU_0137,Premium Popcorn 2L,BRAND_018,Snacks,Popcorn,38.77,25.11,2213.4,,False,SUPPLIER_083,,12,399,200
+SKU_0138,Pure Crackers 12-Pack,BRAND_012,Snacks,Crackers,42.92,18.29,363.8,,False,SUPPLIER_037,,6,802,401
+SKU_0139,Extra Fresh Granola Bars 1L,BRAND_007,Snacks,Granola Bars,25.57,10.28,1368.0,,False,SUPPLIER_083,,24,160,80
+SKU_0140,Original Popcorn 6-Pack,BRAND_009,Snacks,Popcorn,20.03,9.12,456.8,,False,SUPPLIER_064,,12,113,57
+SKU_0141,Natural Nuts 6-Pack,BRAND_010,Snacks,Nuts,1.64,0.73,1540.9,,False,SUPPLIER_080,,24,258,129
+SKU_0142,Bold Popcorn 250g,BRAND_020,Snacks,Popcorn,5.89,3.49,1211.8,,False,SUPPLIER_085,,48,248,124
+SKU_0143,Light Chips 500ml,BRAND_015,Snacks,Chips,16.53,10.5,2259.0,,False,SUPPLIER_009,,48,594,297
+SKU_0144,Family Size Granola Bars 6-Pack,BRAND_020,Snacks,Granola Bars,35.96,16.19,2285.3,,False,SUPPLIER_023,,12,485,243
+SKU_0145,Bold Crackers 1kg,BRAND_007,Snacks,Crackers,29.95,20.8,1617.9,,False,SUPPLIER_041,,1,469,235
+SKU_0146,Ultra Crackers 1kg,BRAND_005,Snacks,Crackers,22.02,10.19,1796.4,,False,SUPPLIER_073,,24,3,2
+SKU_0147,Lite Nuts 500ml,BRAND_007,Snacks,Nuts,12.41,5.0,982.9,,False,SUPPLIER_013,,36,112,56
+SKU_0148,Deluxe Nuts 12-Pack,BRAND_009,Snacks,Nuts,40.92,18.26,1670.3,,False,SUPPLIER_044,,1,332,166
+SKU_0149,Ultra Granola Bars 150g,BRAND_019,Snacks,Granola Bars,14.16,7.45,918.3,,False,SUPPLIER_081,,12,166,83
+SKU_0150,Value Pack Nuts 6-Pack,BRAND_004,Snacks,Nuts,8.99,5.07,2272.4,,False,SUPPLIER_003,,48,141,71
+SKU_0151,Natural Chips 500g,BRAND_020,Snacks,Chips,27.84,10.15,1346.5,,False,SUPPLIER_044,,24,209,105
+SKU_0152,Classic Nuts 500g,BRAND_019,Snacks,Nuts,11.75,7.58,1883.4,,False,SUPPLIER_064,,1,192,96
+SKU_0153,Pure Chips 250g,BRAND_004,Snacks,Chips,23.95,10.2,235.2,,False,SUPPLIER_045,,1,13,7
+SKU_0154,Pure Popcorn 1kg,BRAND_009,Snacks,Popcorn,18.63,11.39,416.2,,False,SUPPLIER_072,,36,245,123
+SKU_0155,Value Pack Chips 500ml,BRAND_013,Snacks,Chips,33.06,16.02,59.5,,False,SUPPLIER_011,,24,65,33
+SKU_0156,Organic Popcorn 250g,BRAND_012,Snacks,Popcorn,44.07,30.45,1357.0,,False,SUPPLIER_018,,36,265,133
+SKU_0157,Classic Granola Bars 1kg,BRAND_013,Snacks,Granola Bars,4.1,1.54,1381.0,,False,SUPPLIER_065,,48,247,124
+SKU_0158,Premium Nuts 6-Pack,BRAND_018,Snacks,Nuts,24.22,9.0,811.5,,False,SUPPLIER_050,,36,585,293
+SKU_0159,Deluxe Granola Bars 500ml,BRAND_016,Snacks,Granola Bars,9.29,5.63,2874.9,,False,SUPPLIER_016,,36,304,152
+SKU_0160,Classic Chips 1kg,BRAND_020,Snacks,Chips,49.93,22.62,592.6,,False,SUPPLIER_085,,24,131,66
+SKU_0161,Light Chips 12-Pack,BRAND_010,Snacks,Chips,4.77,2.73,2598.3,,False,SUPPLIER_046,,6,13,7
+SKU_0162,Original Crackers 1L,BRAND_011,Snacks,Crackers,18.2,11.31,2100.4,,False,SUPPLIER_021,,1,536,268
+SKU_0163,Pure Chips 2L,BRAND_008,Snacks,Chips,13.14,7.92,688.4,,False,SUPPLIER_069,,36,203,102
+SKU_0164,Family Size Nuts 250g,BRAND_005,Snacks,Nuts,34.41,13.38,363.3,,False,SUPPLIER_028,,1,71,36
+SKU_0165,Bold Popcorn 24ct,BRAND_010,Snacks,Popcorn,20.89,12.77,972.2,,False,SUPPLIER_072,,1,175,88
+SKU_0166,Farm Chips 24ct,BRAND_007,Snacks,Chips,17.48,11.27,1580.5,,False,SUPPLIER_032,,36,296,148
+SKU_0167,Extra Fresh Granola Bars 2L,BRAND_006,Snacks,Granola Bars,33.67,13.54,2791.8,,False,SUPPLIER_023,,6,53,27
+SKU_0168,Organic Chips 24ct,BRAND_006,Snacks,Chips,25.3,16.49,1011.7,,False,SUPPLIER_051,,1,147,74
+SKU_0169,Original Popcorn 500ml,BRAND_011,Snacks,Popcorn,31.53,13.54,1349.3,,False,SUPPLIER_084,,24,497,249
+SKU_0170,Light Chips 250g,BRAND_008,Snacks,Chips,39.3,18.92,1887.0,,False,SUPPLIER_071,,36,144,72
+SKU_0171,Original Crackers 500ml,BRAND_001,Snacks,Crackers,45.63,28.74,443.1,,False,SUPPLIER_045,,6,319,160
+SKU_0172,Pure Crackers 6-Pack,BRAND_006,Snacks,Crackers,30.94,20.24,1117.0,,False,SUPPLIER_054,,36,288,144
+SKU_0173,Organic Granola Bars 12-Pack,BRAND_001,Snacks,Granola Bars,21.31,7.57,256.0,,False,SUPPLIER_009,,24,164,82
+SKU_0174,Organic Chips 2L,BRAND_004,Snacks,Chips,42.77,15.77,2479.8,,False,SUPPLIER_082,,48,13,7
+SKU_0175,Lite Chips 250g,BRAND_012,Snacks,Chips,36.11,20.73,2373.9,,False,SUPPLIER_044,,12,592,296
+SKU_0176,Crispy Crackers 1kg,BRAND_001,Snacks,Crackers,4.74,2.67,471.5,,False,SUPPLIER_002,,36,133,67
+SKU_0177,Light Granola Bars 24ct,BRAND_009,Snacks,Granola Bars,17.89,10.93,2413.9,,False,SUPPLIER_084,,24,232,116
+SKU_0178,Premium Crackers 1kg,BRAND_017,Snacks,Crackers,25.92,9.75,2053.1,,False,SUPPLIER_052,,36,375,188
+SKU_0179,Crispy Nuts 250g,BRAND_017,Snacks,Nuts,18.62,7.55,2075.8,,False,SUPPLIER_045,,6,142,71
+SKU_0180,Farm Popcorn 24ct,BRAND_016,Snacks,Popcorn,1.66,0.73,177.9,,False,SUPPLIER_057,,48,470,235
+SKU_0181,Ultra Nuts 250g,BRAND_006,Snacks,Nuts,14.96,5.94,2885.5,,False,SUPPLIER_047,,24,71,36
+SKU_0182,Natural Nuts 12-Pack,BRAND_004,Snacks,Nuts,37.46,17.08,1706.4,,False,SUPPLIER_063,,1,155,78
+SKU_0183,Original Chips 500g,BRAND_018,Snacks,Chips,12.36,6.03,1984.0,,False,SUPPLIER_054,,24,563,282
+SKU_0184,Crispy Popcorn 1kg,BRAND_018,Snacks,Popcorn,8.42,4.91,1527.6,,False,SUPPLIER_053,,12,438,219
+SKU_0185,Premium Popcorn 1L,BRAND_015,Snacks,Popcorn,48.18,32.17,1737.3,,False,SUPPLIER_080,,36,226,113
+SKU_0186,Premium Nuts 250g,BRAND_007,Snacks,Nuts,32.93,21.37,2359.4,,False,SUPPLIER_083,,12,629,315
+SKU_0187,Organic Crackers 500g,BRAND_015,Snacks,Crackers,49.7,32.64,2741.4,,False,SUPPLIER_071,,1,75,38
+SKU_0188,Ultra Popcorn 24ct,BRAND_006,Snacks,Popcorn,8.14,3.99,1030.6,,False,SUPPLIER_068,,12,423,212
+SKU_0189,Smooth Chips 250g,BRAND_007,Snacks,Chips,31.47,14.95,252.6,,False,SUPPLIER_015,,24,188,94
+SKU_0190,Extra Fresh Granola Bars 150g,BRAND_018,Snacks,Granola Bars,3.77,1.47,1868.0,,False,SUPPLIER_062,,36,571,286
+SKU_0191,Light Nuts 6-Pack,BRAND_016,Snacks,Nuts,43.22,15.13,215.0,,False,SUPPLIER_016,,1,256,128
+SKU_0192,Ultra Crackers 6-Pack,BRAND_005,Snacks,Crackers,38.77,18.0,2759.4,,False,SUPPLIER_025,,24,571,286
+SKU_0193,Classic Crackers 1kg,BRAND_013,Snacks,Crackers,34.61,18.92,1056.3,,False,SUPPLIER_073,,48,496,248
+SKU_0194,Value Pack Chips 1L,BRAND_002,Snacks,Chips,28.15,11.69,484.1,,False,SUPPLIER_007,,12,277,139
+SKU_0195,Original Granola Bars 500g,BRAND_008,Snacks,Granola Bars,26.89,15.96,626.7,,False,SUPPLIER_078,,1,203,102
+SKU_0196,Natural Crackers 1L,BRAND_020,Snacks,Crackers,45.43,23.69,2464.6,,False,SUPPLIER_009,,12,91,46
+SKU_0197,Natural Rolls 150g,BRAND_013,Bakery,Rolls,29.88,10.73,154.4,163,True,SUPPLIER_062,,12,151,76
+SKU_0198,Farm Cakes 24ct,BRAND_004,Bakery,Cakes,25.22,13.43,527.4,151,True,SUPPLIER_062,,12,80,40
+SKU_0199,Light Muffins 150g,BRAND_008,Bakery,Muffins,22.11,15.15,1552.2,184,True,SUPPLIER_040,,12,292,146
+SKU_0200,Extra Fresh Rolls 1L,BRAND_003,Bakery,Rolls,14.55,8.34,2866.4,308,True,SUPPLIER_078,,36,341,171
+SKU_0201,Farm Cakes 250g,BRAND_020,Bakery,Cakes,23.86,11.26,1936.3,372,True,SUPPLIER_045,,48,131,66
+SKU_0202,Extra Fresh Bread 500g,BRAND_006,Bakery,Bread,0.61,0.33,624.3,88,True,SUPPLIER_039,,36,225,113
+SKU_0203,Lite Bread 1L,BRAND_010,Bakery,Bread,22.35,8.68,2754.1,381,True,SUPPLIER_074,,24,205,103
+SKU_0204,Family Size Rolls 150g,BRAND_017,Bakery,Rolls,34.65,17.81,2067.0,114,True,SUPPLIER_065,,12,97,49
+SKU_0205,Deluxe Cookies 2L,BRAND_002,Bakery,Cookies,2.74,1.72,1299.7,86,True,SUPPLIER_021,,12,269,135
+SKU_0206,Natural Cookies 150g,BRAND_013,Bakery,Cookies,49.55,21.87,2011.1,244,True,SUPPLIER_008,,48,153,77
+SKU_0207,Lite Cookies 6-Pack,BRAND_005,Bakery,Cookies,10.91,4.98,2908.5,178,True,SUPPLIER_009,,12,19,10
+SKU_0208,Farm Cakes 1kg,BRAND_004,Bakery,Cakes,3.0,1.52,556.3,515,True,SUPPLIER_011,,12,301,151
+SKU_0209,Farm Rolls 150g,BRAND_003,Bakery,Rolls,28.19,16.99,875.9,216,True,SUPPLIER_079,,48,213,107
+SKU_0210,Natural Bread 1L,BRAND_018,Bakery,Bread,6.34,4.31,1342.6,259,True,SUPPLIER_059,,48,293,147
+SKU_0211,Family Size Cakes 6-Pack,BRAND_001,Bakery,Cakes,22.45,13.81,2908.3,13,True,SUPPLIER_052,,48,485,243
+SKU_0212,Original Rolls 150g,BRAND_006,Bakery,Rolls,40.51,18.05,58.5,197,True,SUPPLIER_037,,1,40,20
+SKU_0213,Bold Cakes 1kg,BRAND_001,Bakery,Cakes,19.25,9.56,431.5,238,True,SUPPLIER_022,,12,32,16
+SKU_0214,Premium Cakes 6-Pack,BRAND_016,Bakery,Cakes,1.32,0.59,2343.3,439,True,SUPPLIER_031,,48,55,28
+SKU_0215,Pure Rolls 6-Pack,BRAND_010,Bakery,Rolls,32.31,20.72,1453.7,233,True,SUPPLIER_070,,12,148,74
+SKU_0216,Family Size Cakes 1kg,BRAND_003,Bakery,Cakes,36.27,17.53,1183.2,424,True,SUPPLIER_008,,24,59,30
+SKU_0217,Crispy Bread 6-Pack,BRAND_020,Bakery,Bread,31.76,17.29,2329.4,425,True,SUPPLIER_017,,48,107,54
+SKU_0218,Lite Rolls 1kg,BRAND_012,Bakery,Rolls,2.14,1.18,1697.1,359,True,SUPPLIER_002,,36,523,262
+SKU_0219,Original Bread 150g,BRAND_010,Bakery,Bread,31.98,22.2,2692.6,531,True,SUPPLIER_012,,36,690,345
+SKU_0220,Extra Fresh Cakes 1kg,BRAND_015,Bakery,Cakes,26.11,9.54,1963.3,491,True,SUPPLIER_028,,24,385,193
+SKU_0221,Family Size Muffins 250g,BRAND_016,Bakery,Muffins,6.62,4.46,90.9,631,True,SUPPLIER_067,,24,351,176
+SKU_0222,Farm Rolls 6-Pack,BRAND_017,Bakery,Rolls,37.47,21.02,2016.5,272,True,SUPPLIER_063,,12,639,320
+SKU_0223,Light Rolls 250g,BRAND_011,Bakery,Rolls,31.77,19.09,1457.8,195,True,SUPPLIER_021,,6,211,106
+SKU_0224,Deluxe Muffins 24ct,BRAND_008,Bakery,Muffins,30.07,16.5,2332.2,128,True,SUPPLIER_031,,48,247,124
+SKU_0225,Classic Rolls 500ml,BRAND_005,Bakery,Rolls,14.07,8.7,984.7,718,True,SUPPLIER_007,,24,58,29
+SKU_0226,Bold Bread 24ct,BRAND_016,Bakery,Bread,19.86,12.96,2239.0,537,True,SUPPLIER_064,,12,529,265
+SKU_0227,Deluxe Cakes 150g,BRAND_008,Bakery,Cakes,48.83,17.18,2168.5,547,True,SUPPLIER_045,,6,377,189
+SKU_0228,Premium Cakes 500g,BRAND_015,Bakery,Cakes,30.18,13.21,1855.7,382,True,SUPPLIER_077,,48,9,5
+SKU_0229,Natural Rolls 150g,BRAND_001,Bakery,Rolls,19.44,12.63,464.1,93,True,SUPPLIER_050,,48,85,43
+SKU_0230,Smooth Muffins 24ct,BRAND_017,Bakery,Muffins,31.8,19.55,2249.8,154,True,SUPPLIER_024,,6,71,36
+SKU_0231,Original Cakes 1kg,BRAND_005,Bakery,Cakes,12.12,4.29,1051.4,590,True,SUPPLIER_068,,6,60,30
+SKU_0232,Deluxe Cakes 12-Pack,BRAND_002,Bakery,Cakes,26.79,16.94,2694.3,496,True,SUPPLIER_033,,24,177,89
+SKU_0233,Organic Rolls 12-Pack,BRAND_010,Bakery,Rolls,42.85,29.31,619.6,93,True,SUPPLIER_015,,1,270,135
+SKU_0234,Family Size Muffins 150g,BRAND_001,Bakery,Muffins,20.43,9.01,1008.5,223,True,SUPPLIER_041,,1,348,174
+SKU_0235,Pure Muffins 12-Pack,BRAND_006,Bakery,Muffins,19.02,8.95,66.6,506,True,SUPPLIER_084,,24,253,127
+SKU_0236,Farm Cookies 6-Pack,BRAND_010,Bakery,Cookies,40.85,15.27,2088.1,655,True,SUPPLIER_022,,36,67,34
+SKU_0237,Natural Muffins 12-Pack,BRAND_014,Bakery,Muffins,41.08,21.07,2962.2,106,True,SUPPLIER_083,,48,169,85
+SKU_0238,Family Size Cookies 1L,BRAND_001,Bakery,Cookies,33.14,21.8,1457.5,250,True,SUPPLIER_069,,24,52,26
+SKU_0239,Original Muffins 250g,BRAND_019,Bakery,Muffins,26.0,14.03,90.4,236,True,SUPPLIER_082,,1,340,170
+SKU_0240,Natural Rolls 500g,BRAND_001,Bakery,Rolls,43.93,22.47,334.7,114,True,SUPPLIER_060,,1,68,34
+SKU_0241,Bold Rolls 2L,BRAND_010,Bakery,Rolls,35.91,14.26,78.5,474,True,SUPPLIER_037,,12,44,22
+SKU_0242,Crispy Bread 6-Pack,BRAND_011,Bakery,Bread,32.28,15.47,1444.4,250,True,SUPPLIER_023,,12,87,44
+SKU_0243,Light Cakes 1kg,BRAND_017,Bakery,Cakes,26.3,13.62,860.0,261,True,SUPPLIER_023,,12,454,227
+SKU_0244,Family Size Bread 1kg,BRAND_016,Bakery,Bread,2.74,1.28,2886.5,449,True,SUPPLIER_018,,24,134,67
+SKU_0245,Deluxe Cakes 500g,BRAND_020,Bakery,Cakes,6.05,2.13,2658.4,42,True,SUPPLIER_058,,24,79,40
+SKU_0246,Deluxe Muffins 500ml,BRAND_004,Bakery,Muffins,45.61,31.49,2990.9,482,True,SUPPLIER_068,,36,381,191
+SKU_0247,Natural Bread 2L,BRAND_013,Bakery,Bread,11.62,5.07,1773.2,299,True,SUPPLIER_028,,6,122,61
+SKU_0248,Family Size Cakes 250g,BRAND_016,Bakery,Cakes,23.41,11.25,2015.1,8,True,SUPPLIER_023,,12,338,169
+SKU_0249,Deluxe Waffles 1kg,BRAND_003,Frozen Foods,Waffles,37.04,18.67,321.0,29,True,SUPPLIER_051,,12,240,120
+SKU_0250,Smooth Frozen Vegs 1L,BRAND_004,Frozen Foods,Frozen Vegs,13.72,9.14,2553.8,625,True,SUPPLIER_037,,48,140,70
+SKU_0251,Family Size Pizza 2L,BRAND_006,Frozen Foods,Pizza,38.27,17.34,1539.5,516,True,SUPPLIER_019,,48,366,183
+SKU_0252,Smooth Frozen Meals 1L,BRAND_006,Frozen Foods,Frozen Meals,31.91,19.38,767.5,648,True,SUPPLIER_083,,48,116,58
+SKU_0253,Extra Fresh Pizza 500g,BRAND_016,Frozen Foods,Pizza,2.01,0.8,1786.9,690,True,SUPPLIER_060,,36,150,75
+SKU_0254,Lite Frozen Vegs 1kg,BRAND_005,Frozen Foods,Frozen Vegs,13.02,9.06,660.2,672,True,SUPPLIER_050,,36,135,68
+SKU_0255,Pure Frozen Vegs 24ct,BRAND_004,Frozen Foods,Frozen Vegs,29.26,15.19,820.7,580,True,SUPPLIER_063,,36,59,30
+SKU_0256,Natural Pizza 1kg,BRAND_011,Frozen Foods,Pizza,9.61,5.34,2097.9,15,True,SUPPLIER_003,,48,22,11
+SKU_0257,Organic Waffles 500g,BRAND_019,Frozen Foods,Waffles,1.95,0.91,2140.0,66,True,SUPPLIER_031,,1,120,60
+SKU_0258,Organic Frozen Vegs 1kg,BRAND_013,Frozen Foods,Frozen Vegs,49.24,19.66,1262.2,317,True,SUPPLIER_062,,48,839,420
+SKU_0259,Farm Ice Cream 2L,BRAND_008,Frozen Foods,Ice Cream,34.0,16.2,56.7,526,True,SUPPLIER_021,,24,528,264
+SKU_0260,Bold Ice Cream 2L,BRAND_003,Frozen Foods,Ice Cream,20.82,13.41,1400.5,126,True,SUPPLIER_080,,12,163,82
+SKU_0261,Organic Waffles 500g,BRAND_009,Frozen Foods,Waffles,21.49,11.54,719.9,715,True,SUPPLIER_039,,12,478,239
+SKU_0262,Pure Frozen Meals 2L,BRAND_020,Frozen Foods,Frozen Meals,6.72,4.28,2821.7,157,True,SUPPLIER_013,,6,66,33
+SKU_0263,Value Pack Waffles 1kg,BRAND_003,Frozen Foods,Waffles,46.6,19.56,580.1,331,True,SUPPLIER_064,,12,496,248
+SKU_0264,Farm Ice Cream 500g,BRAND_005,Frozen Foods,Ice Cream,11.12,4.83,1067.1,636,True,SUPPLIER_034,,36,145,73
+SKU_0265,Bold Ice Cream 500ml,BRAND_007,Frozen Foods,Ice Cream,34.65,19.31,1642.0,143,True,SUPPLIER_021,,1,546,273
+SKU_0266,Light Frozen Vegs 250g,BRAND_013,Frozen Foods,Frozen Vegs,19.0,9.4,1890.7,678,True,SUPPLIER_069,,12,551,276
+SKU_0267,Lite Frozen Vegs 500g,BRAND_015,Frozen Foods,Frozen Vegs,1.58,1.1,814.5,513,True,SUPPLIER_061,,24,123,62
+SKU_0268,Farm Frozen Meals 500g,BRAND_002,Frozen Foods,Frozen Meals,47.21,19.29,506.3,268,True,SUPPLIER_007,,36,38,19
+SKU_0269,Organic Frozen Meals 1L,BRAND_005,Frozen Foods,Frozen Meals,45.78,21.62,786.9,716,True,SUPPLIER_064,,36,436,218
+SKU_0270,Value Pack Ice Cream 2L,BRAND_002,Frozen Foods,Ice Cream,45.97,30.09,952.2,561,True,SUPPLIER_080,,12,37,19
+SKU_0271,Deluxe Ice Cream 24ct,BRAND_010,Frozen Foods,Ice Cream,25.77,14.67,465.6,139,True,SUPPLIER_035,,1,71,36
+SKU_0272,Lite Ice Cream 1L,BRAND_004,Frozen Foods,Ice Cream,31.96,17.63,2183.3,142,True,SUPPLIER_057,,48,183,92
+SKU_0273,Farm Pizza 500ml,BRAND_017,Frozen Foods,Pizza,17.02,6.51,876.4,625,True,SUPPLIER_072,,1,611,306
+SKU_0274,Classic Pizza 250g,BRAND_006,Frozen Foods,Pizza,34.15,13.27,2387.1,318,True,SUPPLIER_081,,48,23,12
+SKU_0275,Premium Pizza 12-Pack,BRAND_004,Frozen Foods,Pizza,10.74,7.26,1242.4,5,True,SUPPLIER_002,,48,321,161
+SKU_0276,Family Size Waffles 500ml,BRAND_013,Frozen Foods,Waffles,37.08,15.97,378.6,680,True,SUPPLIER_081,,6,40,20
+SKU_0277,Lite Pizza 2L,BRAND_006,Frozen Foods,Pizza,37.3,21.69,1845.3,262,True,SUPPLIER_019,,24,552,276
+SKU_0278,Original Frozen Vegs 500ml,BRAND_020,Frozen Foods,Frozen Vegs,12.72,6.3,1135.4,633,True,SUPPLIER_077,,36,318,159
+SKU_0279,Crispy Waffles 150g,BRAND_007,Frozen Foods,Waffles,30.24,12.66,2054.7,683,True,SUPPLIER_030,,36,26,13
+SKU_0280,Pure Ice Cream 24ct,BRAND_016,Frozen Foods,Ice Cream,34.83,13.85,1844.3,567,True,SUPPLIER_067,,24,232,116
+SKU_0281,Original Frozen Meals 12-Pack,BRAND_016,Frozen Foods,Frozen Meals,17.08,10.67,1936.6,393,True,SUPPLIER_001,,12,134,67
+SKU_0282,Value Pack Frozen Vegs 12-Pack,BRAND_016,Frozen Foods,Frozen Vegs,20.98,13.14,2495.7,240,True,SUPPLIER_042,,1,76,38
+SKU_0283,Classic Waffles 500g,BRAND_020,Frozen Foods,Waffles,29.99,12.15,2876.9,100,True,SUPPLIER_020,,6,187,94
+SKU_0284,Crispy Frozen Vegs 2L,BRAND_020,Frozen Foods,Frozen Vegs,29.83,15.43,1820.8,409,True,SUPPLIER_012,,6,88,44
+SKU_0285,Light Frozen Vegs 150g,BRAND_019,Frozen Foods,Frozen Vegs,20.6,10.12,1962.6,558,True,SUPPLIER_004,,24,53,27
+SKU_0286,Value Pack Ice Cream 250g,BRAND_007,Frozen Foods,Ice Cream,12.32,5.62,992.3,636,True,SUPPLIER_015,,6,185,93
+SKU_0287,Pure Ice Cream 1L,BRAND_003,Frozen Foods,Ice Cream,23.75,14.54,2890.3,603,True,SUPPLIER_071,,12,222,111
+SKU_0288,Natural Frozen Vegs 1kg,BRAND_013,Frozen Foods,Frozen Vegs,7.34,2.87,253.4,681,True,SUPPLIER_066,,6,533,267
+SKU_0289,Organic Ice Cream 500ml,BRAND_015,Frozen Foods,Ice Cream,23.99,11.52,2035.8,563,True,SUPPLIER_036,,24,22,11
+SKU_0290,Extra Fresh Frozen Vegs 12-Pack,BRAND_019,Frozen Foods,Frozen Vegs,26.94,17.59,1201.0,666,True,SUPPLIER_071,,48,28,14
+SKU_0291,Extra Fresh Frozen Vegs 6-Pack,BRAND_006,Frozen Foods,Frozen Vegs,41.41,23.14,2258.3,368,True,SUPPLIER_010,,6,73,37
+SKU_0292,Bold Frozen Meals 500g,BRAND_010,Frozen Foods,Frozen Meals,48.65,27.96,2627.3,340,True,SUPPLIER_021,,1,37,19
+SKU_0293,Value Pack Ice Cream 500g,BRAND_011,Frozen Foods,Ice Cream,41.43,14.84,283.4,556,True,SUPPLIER_029,,12,372,186
+SKU_0294,Family Size Waffles 24ct,BRAND_014,Frozen Foods,Waffles,5.1,2.26,2468.9,20,True,SUPPLIER_045,,1,285,143
+SKU_0295,Value Pack Pizza 12-Pack,BRAND_001,Frozen Foods,Pizza,21.96,14.19,508.1,347,True,SUPPLIER_049,,1,513,257
+SKU_0296,Organic Ice Cream 1kg,BRAND_020,Frozen Foods,Ice Cream,1.72,0.7,2712.7,495,True,SUPPLIER_085,,48,248,124
+SKU_0297,Organic Pizza 500ml,BRAND_018,Frozen Foods,Pizza,37.42,21.06,2275.0,349,True,SUPPLIER_080,,24,149,75
+SKU_0298,Premium Frozen Meals 150g,BRAND_009,Frozen Foods,Frozen Meals,37.32,25.88,2978.8,14,True,SUPPLIER_076,,36,176,88
+SKU_0299,Bold Pizza 1kg,BRAND_004,Frozen Foods,Pizza,12.61,6.93,89.4,572,True,SUPPLIER_048,,12,748,374
+SKU_0300,Farm Ice Cream 1L,BRAND_007,Frozen Foods,Ice Cream,17.17,10.68,331.7,647,True,SUPPLIER_063,,1,52,26
+SKU_0301,Smooth Pizza 150g,BRAND_008,Frozen Foods,Pizza,14.32,7.25,1910.3,413,True,SUPPLIER_034,,24,217,109
+SKU_0302,Original Skincare 500g,BRAND_020,Personal Care,Skincare,1.13,0.64,2542.3,,False,SUPPLIER_047,,6,170,85
+SKU_0303,Value Pack Soap 12-Pack,BRAND_001,Personal Care,Soap,14.48,7.82,1603.5,,False,SUPPLIER_022,,6,331,166
+SKU_0304,Smooth Shampoo 2L,BRAND_013,Personal Care,Shampoo,48.67,31.98,124.5,,False,SUPPLIER_024,,1,172,86
+SKU_0305,Natural Soap 6-Pack,BRAND_009,Personal Care,Soap,32.0,18.27,659.8,,False,SUPPLIER_050,,48,357,179
+SKU_0306,Natural Skincare 250g,BRAND_013,Personal Care,Skincare,46.67,30.78,1113.7,,False,SUPPLIER_026,,6,145,73
+SKU_0307,Deluxe Shampoo 24ct,BRAND_013,Personal Care,Shampoo,13.47,7.27,1935.2,,False,SUPPLIER_082,,12,445,223
+SKU_0308,Pure Shampoo 1kg,BRAND_003,Personal Care,Shampoo,32.15,17.12,2039.9,,False,SUPPLIER_058,,24,17,9
+SKU_0309,Bold Soap 12-Pack,BRAND_016,Personal Care,Soap,7.72,5.12,347.7,,False,SUPPLIER_074,,48,222,111
+SKU_0310,Classic Toothpaste 24ct,BRAND_019,Personal Care,Toothpaste,41.07,20.49,191.9,,False,SUPPLIER_080,,36,154,77
+SKU_0311,Extra Fresh Soap 6-Pack,BRAND_013,Personal Care,Soap,40.32,17.5,789.6,,False,SUPPLIER_052,,12,296,148
+SKU_0312,Farm Deodorant 500g,BRAND_003,Personal Care,Deodorant,32.76,19.42,300.9,,False,SUPPLIER_032,,48,523,262
+SKU_0313,Classic Shampoo 1L,BRAND_018,Personal Care,Shampoo,38.49,17.66,1175.6,,False,SUPPLIER_054,,36,80,40
+SKU_0314,Pure Skincare 2L,BRAND_010,Personal Care,Skincare,22.7,11.01,186.9,,False,SUPPLIER_078,,48,234,117
+SKU_0315,Crispy Shampoo 500g,BRAND_013,Personal Care,Shampoo,35.05,16.69,517.0,,False,SUPPLIER_009,,12,80,40
+SKU_0316,Crispy Skincare 150g,BRAND_009,Personal Care,Skincare,21.45,7.51,2369.1,,False,SUPPLIER_015,,6,79,40
+SKU_0317,Value Pack Skincare 250g,BRAND_012,Personal Care,Skincare,17.99,7.79,411.8,,False,SUPPLIER_055,,48,92,46
+SKU_0318,Classic Deodorant 150g,BRAND_016,Personal Care,Deodorant,44.92,24.27,2484.2,,False,SUPPLIER_056,,24,538,269
+SKU_0319,Classic Soap 6-Pack,BRAND_012,Personal Care,Soap,27.66,9.72,2983.3,,False,SUPPLIER_070,,12,332,166
+SKU_0320,Value Pack Toothpaste 500g,BRAND_008,Personal Care,Toothpaste,36.38,14.9,890.0,,False,SUPPLIER_027,,36,238,119
+SKU_0321,Bold Toothpaste 12-Pack,BRAND_020,Personal Care,Toothpaste,5.96,4.17,2828.6,,False,SUPPLIER_077,,12,328,164
+SKU_0322,Crispy Deodorant 6-Pack,BRAND_012,Personal Care,Deodorant,21.69,14.9,2131.1,,False,SUPPLIER_001,,12,38,19
+SKU_0323,Smooth Skincare 24ct,BRAND_015,Personal Care,Skincare,24.45,15.51,257.5,,False,SUPPLIER_049,,6,373,187
+SKU_0324,Value Pack Skincare 250g,BRAND_001,Personal Care,Skincare,37.4,20.38,566.3,,False,SUPPLIER_062,,1,369,185
+SKU_0325,Natural Toothpaste 500ml,BRAND_016,Personal Care,Toothpaste,40.42,23.37,889.4,,False,SUPPLIER_028,,36,778,389
+SKU_0326,Pure Shampoo 2L,BRAND_006,Personal Care,Shampoo,46.07,16.26,215.6,,False,SUPPLIER_036,,12,326,163
+SKU_0327,Bold Soap 24ct,BRAND_002,Personal Care,Soap,9.87,4.21,2075.8,,False,SUPPLIER_008,,12,213,107
+SKU_0328,Pure Shampoo 2L,BRAND_011,Personal Care,Shampoo,17.73,7.71,697.0,,False,SUPPLIER_081,,1,48,24
+SKU_0329,Natural Shampoo 150g,BRAND_005,Personal Care,Shampoo,18.37,9.82,2299.7,,False,SUPPLIER_029,,12,224,112
+SKU_0330,Ultra Skincare 250g,BRAND_011,Personal Care,Skincare,9.65,6.38,2680.6,,False,SUPPLIER_043,,6,50,25
+SKU_0331,Crispy Soap 2L,BRAND_015,Personal Care,Soap,1.63,0.64,1578.8,,False,SUPPLIER_027,,6,454,227
+SKU_0332,Farm Soap 6-Pack,BRAND_008,Personal Care,Soap,24.53,9.54,2365.0,,False,SUPPLIER_037,,12,31,16
+SKU_0333,Premium Skincare 1kg,BRAND_019,Personal Care,Skincare,10.37,5.33,802.8,,False,SUPPLIER_021,,36,433,217
+SKU_0334,Light Shampoo 150g,BRAND_010,Personal Care,Shampoo,39.21,21.26,2359.0,,False,SUPPLIER_014,,6,373,187
+SKU_0335,Organic Soap 6-Pack,BRAND_002,Personal Care,Soap,38.88,20.66,2872.7,,False,SUPPLIER_079,,24,93,47
+SKU_0336,Classic Deodorant 500g,BRAND_001,Personal Care,Deodorant,4.79,2.98,1275.1,,False,SUPPLIER_044,,12,211,106
+SKU_0337,Natural Skincare 6-Pack,BRAND_007,Personal Care,Skincare,21.69,13.68,1392.3,,False,SUPPLIER_020,,48,54,27
+SKU_0338,Lite Toothpaste 1L,BRAND_013,Personal Care,Toothpaste,22.31,14.9,1755.4,,False,SUPPLIER_043,,48,180,90
+SKU_0339,Extra Fresh Skincare 500g,BRAND_019,Personal Care,Skincare,11.94,7.21,1361.1,,False,SUPPLIER_070,,6,60,30
+SKU_0340,Classic Toothpaste 150g,BRAND_005,Personal Care,Toothpaste,28.4,11.66,874.2,,False,SUPPLIER_003,,36,184,92
+SKU_0341,Extra Fresh Shampoo 12-Pack,BRAND_008,Personal Care,Shampoo,49.23,21.68,1417.2,,False,SUPPLIER_031,,12,286,143
+SKU_0342,Premium Deodorant 1L,BRAND_002,Personal Care,Deodorant,41.85,20.87,520.4,,False,SUPPLIER_027,,1,191,96
+SKU_0343,Crispy Deodorant 250g,BRAND_006,Personal Care,Deodorant,17.09,11.28,1455.8,,False,SUPPLIER_064,,12,233,117
+SKU_0344,Premium Cleaning 2L,BRAND_017,Household,Cleaning,3.53,1.92,1774.2,,False,SUPPLIER_025,,1,80,40
+SKU_0345,Ultra Detergent 12-Pack,BRAND_005,Household,Detergent,36.46,16.14,1097.4,,False,SUPPLIER_082,,48,29,15
+SKU_0346,Classic Candles 500g,BRAND_016,Household,Candles,45.33,27.08,211.4,,False,SUPPLIER_068,,36,237,119
+SKU_0347,Smooth Trash Bags 6-Pack,BRAND_014,Household,Trash Bags,24.89,12.12,2299.0,,False,SUPPLIER_026,,48,126,63
+SKU_0348,Lite Detergent 250g,BRAND_010,Household,Detergent,15.95,7.83,1457.2,,False,SUPPLIER_021,,48,64,32
+SKU_0349,Premium Candles 500ml,BRAND_006,Household,Candles,27.97,14.6,2963.5,,False,SUPPLIER_019,,12,196,98
+SKU_0350,Classic Paper Products 2L,BRAND_009,Household,Paper Products,44.35,29.69,1230.3,,False,SUPPLIER_052,,12,137,69
+SKU_0351,Light Paper Products 1kg,BRAND_001,Household,Paper Products,37.08,15.78,806.0,,False,SUPPLIER_080,,24,47,24
+SKU_0352,Original Paper Products 1L,BRAND_006,Household,Paper Products,19.63,13.49,396.0,,False,SUPPLIER_075,,1,317,159
+SKU_0353,Premium Cleaning 1kg,BRAND_003,Household,Cleaning,26.23,10.16,1303.9,,False,SUPPLIER_056,,6,101,51
+SKU_0354,Organic Detergent 500ml,BRAND_006,Household,Detergent,16.09,7.63,707.4,,False,SUPPLIER_008,,6,209,105
+SKU_0355,Light Candles 1L,BRAND_019,Household,Candles,8.93,4.15,912.7,,False,SUPPLIER_061,,12,11,6
+SKU_0356,Extra Fresh Detergent 500g,BRAND_020,Household,Detergent,37.66,15.82,154.4,,False,SUPPLIER_077,,48,187,94
+SKU_0357,Bold Paper Products 150g,BRAND_017,Household,Paper Products,44.23,26.75,2374.3,,False,SUPPLIER_007,,24,553,277
+SKU_0358,Extra Fresh Paper Products 6-Pack,BRAND_020,Household,Paper Products,30.72,10.93,564.7,,False,SUPPLIER_015,,12,91,46
+SKU_0359,Bold Trash Bags 150g,BRAND_001,Household,Trash Bags,24.29,9.32,782.4,,False,SUPPLIER_025,,1,474,237
+SKU_0360,Crispy Cleaning 150g,BRAND_003,Household,Cleaning,7.25,3.96,2066.9,,False,SUPPLIER_005,,6,71,36
+SKU_0361,Family Size Detergent 1L,BRAND_019,Household,Detergent,15.66,5.98,1832.7,,False,SUPPLIER_043,,12,89,45
+SKU_0362,Deluxe Detergent 1L,BRAND_007,Household,Detergent,48.35,17.83,1284.2,,False,SUPPLIER_004,,36,81,41
+SKU_0363,Organic Detergent 24ct,BRAND_017,Household,Detergent,15.38,8.6,898.1,,False,SUPPLIER_056,,6,101,51
+SKU_0364,Smooth Paper Products 24ct,BRAND_005,Household,Paper Products,47.12,28.39,361.5,,False,SUPPLIER_056,,24,18,9
+SKU_0365,Value Pack Detergent 12-Pack,BRAND_007,Household,Detergent,42.45,22.5,1642.8,,False,SUPPLIER_029,,12,192,96
+SKU_0366,Natural Detergent 12-Pack,BRAND_015,Household,Detergent,13.16,7.78,1652.4,,False,SUPPLIER_072,,12,362,181
+SKU_0367,Premium Detergent 1L,BRAND_012,Household,Detergent,21.48,12.43,904.7,,False,SUPPLIER_075,,36,323,162
+SKU_0368,Farm Paper Products 1L,BRAND_011,Household,Paper Products,30.83,20.35,940.1,,False,SUPPLIER_042,,6,31,16
+SKU_0369,Value Pack Cleaning 500ml,BRAND_012,Household,Cleaning,21.81,9.39,1730.7,,False,SUPPLIER_035,,1,71,36
+SKU_0370,Ultra Candles 1kg,BRAND_011,Household,Candles,34.93,19.43,1074.3,,False,SUPPLIER_024,,12,110,55
+SKU_0371,Crispy Candles 1kg,BRAND_007,Household,Candles,45.14,28.53,250.6,,False,SUPPLIER_029,,36,158,79
+SKU_0372,Premium Trash Bags 24ct,BRAND_017,Household,Trash Bags,7.66,3.58,482.4,,False,SUPPLIER_025,,48,200,100
+SKU_0373,Premium Detergent 1L,BRAND_019,Household,Detergent,30.63,17.05,585.3,,False,SUPPLIER_050,,12,130,65
+SKU_0374,Lite Paper Products 1kg,BRAND_018,Household,Paper Products,32.91,13.2,2982.6,,False,SUPPLIER_066,,48,139,70
+SKU_0375,Organic Candles 24ct,BRAND_006,Household,Candles,42.15,17.69,842.6,,False,SUPPLIER_051,,6,152,76
+SKU_0376,Farm Paper Products 2L,BRAND_013,Household,Paper Products,35.1,20.13,74.0,,False,SUPPLIER_054,,1,256,128
+SKU_0377,Deluxe Candles 500ml,BRAND_016,Household,Candles,23.58,15.96,2994.1,,False,SUPPLIER_042,,1,459,230
+SKU_0378,Premium Trash Bags 6-Pack,BRAND_001,Household,Trash Bags,14.63,7.53,586.0,,False,SUPPLIER_021,,48,20,10
+SKU_0379,Farm Trash Bags 150g,BRAND_019,Household,Trash Bags,8.6,4.04,804.6,,False,SUPPLIER_033,,48,130,65
+SKU_0380,Classic Candles 1L,BRAND_006,Household,Candles,30.52,20.23,2561.4,,False,SUPPLIER_079,,12,274,137
+SKU_0381,Farm Trash Bags 12-Pack,BRAND_002,Household,Trash Bags,37.69,15.71,1079.7,,False,SUPPLIER_034,,36,522,261
+SKU_0382,Organic Trash Bags 24ct,BRAND_001,Household,Trash Bags,49.94,23.76,2183.7,,False,SUPPLIER_046,,6,124,62
+SKU_0383,Value Pack Cleaning 24ct,BRAND_012,Household,Cleaning,18.42,7.38,2423.9,,False,SUPPLIER_006,,24,333,167
+SKU_0384,Value Pack Cleaning 500g,BRAND_009,Household,Cleaning,45.43,28.04,1399.1,,False,SUPPLIER_082,,36,72,36
+SKU_0385,Farm Cleaning 500g,BRAND_010,Household,Cleaning,22.74,10.53,112.9,,False,SUPPLIER_056,,24,538,269
+SKU_0386,Pure Beef 1kg,BRAND_011,Meat & Seafood,Beef,16.59,8.34,546.6,580,True,SUPPLIER_082,,36,74,37
+SKU_0387,Extra Fresh Seafood 2L,BRAND_006,Meat & Seafood,Seafood,15.54,9.84,2794.6,279,True,SUPPLIER_054,,1,252,126
+SKU_0388,Crispy Chicken 1kg,BRAND_008,Meat & Seafood,Chicken,12.82,5.14,481.1,497,True,SUPPLIER_048,,6,402,201
+SKU_0389,Organic Pork 12-Pack,BRAND_020,Meat & Seafood,Pork,36.26,13.53,706.7,349,True,SUPPLIER_055,,1,439,220
+SKU_0390,Pure Beef 12-Pack,BRAND_010,Meat & Seafood,Beef,48.49,29.96,2038.0,181,True,SUPPLIER_019,,24,416,208
+SKU_0391,Premium Deli Meats 250g,BRAND_011,Meat & Seafood,Deli Meats,8.9,3.26,472.6,371,True,SUPPLIER_074,,36,61,31
+SKU_0392,Natural Chicken 150g,BRAND_016,Meat & Seafood,Chicken,16.48,9.02,1175.8,566,True,SUPPLIER_016,,12,433,217
+SKU_0393,Pure Deli Meats 150g,BRAND_008,Meat & Seafood,Deli Meats,45.78,31.23,1909.0,570,True,SUPPLIER_083,,48,44,22
+SKU_0394,Smooth Beef 150g,BRAND_002,Meat & Seafood,Beef,32.69,21.62,2993.5,438,True,SUPPLIER_009,,12,232,116
+SKU_0395,Natural Deli Meats 12-Pack,BRAND_019,Meat & Seafood,Deli Meats,32.28,16.18,716.7,615,True,SUPPLIER_041,,1,124,62
+SKU_0396,Original Beef 12-Pack,BRAND_014,Meat & Seafood,Beef,36.78,15.65,687.5,157,True,SUPPLIER_003,,36,406,203
+SKU_0397,Classic Pork 6-Pack,BRAND_002,Meat & Seafood,Pork,45.72,26.07,785.7,524,True,SUPPLIER_014,,24,180,90
+SKU_0398,Bold Seafood 1kg,BRAND_008,Meat & Seafood,Seafood,37.01,24.77,2761.7,576,True,SUPPLIER_049,,1,168,84
+SKU_0399,Pure Seafood 24ct,BRAND_014,Meat & Seafood,Seafood,39.81,21.7,1456.8,118,True,SUPPLIER_024,,12,685,343
+SKU_0400,Bold Beef 500g,BRAND_016,Meat & Seafood,Beef,36.97,17.27,2199.7,575,True,SUPPLIER_049,,48,61,31
+SKU_0401,Extra Fresh Pork 6-Pack,BRAND_019,Meat & Seafood,Pork,21.05,13.96,449.3,207,True,SUPPLIER_028,,36,95,48
+SKU_0402,Premium Chicken 12-Pack,BRAND_007,Meat & Seafood,Chicken,47.43,20.28,2861.8,431,True,SUPPLIER_011,,6,388,194
+SKU_0403,Lite Pork 1kg,BRAND_004,Meat & Seafood,Pork,30.53,13.97,586.3,105,True,SUPPLIER_008,,12,171,86
+SKU_0404,Bold Pork 24ct,BRAND_005,Meat & Seafood,Pork,4.4,2.85,1062.2,567,True,SUPPLIER_015,,12,314,157
+SKU_0405,Original Seafood 150g,BRAND_018,Meat & Seafood,Seafood,23.71,8.73,1025.0,252,True,SUPPLIER_045,,1,358,179
+SKU_0406,Deluxe Seafood 250g,BRAND_007,Meat & Seafood,Seafood,7.75,4.44,686.1,217,True,SUPPLIER_071,,48,830,415
+SKU_0407,Farm Deli Meats 12-Pack,BRAND_001,Meat & Seafood,Deli Meats,15.01,8.04,617.2,617,True,SUPPLIER_024,,36,60,30
+SKU_0408,Crispy Beef 2L,BRAND_015,Meat & Seafood,Beef,2.94,1.19,849.8,464,True,SUPPLIER_064,,1,286,143
+SKU_0409,Family Size Pork 2L,BRAND_007,Meat & Seafood,Pork,44.04,19.13,523.3,95,True,SUPPLIER_062,,24,252,126
+SKU_0410,Deluxe Deli Meats 1L,BRAND_002,Meat & Seafood,Deli Meats,35.52,22.72,869.2,15,True,SUPPLIER_038,,1,368,184
+SKU_0411,Lite Deli Meats 500g,BRAND_008,Meat & Seafood,Deli Meats,31.87,17.36,2776.3,375,True,SUPPLIER_038,,6,208,104
+SKU_0412,Value Pack Beef 6-Pack,BRAND_008,Meat & Seafood,Beef,49.6,22.15,1004.1,542,True,SUPPLIER_028,,12,277,139
+SKU_0413,Ultra Deli Meats 500g,BRAND_014,Meat & Seafood,Deli Meats,38.51,20.07,2208.9,578,True,SUPPLIER_050,,48,22,11
+SKU_0414,Bold Pork 2L,BRAND_002,Meat & Seafood,Pork,29.46,14.7,2285.1,448,True,SUPPLIER_076,,12,278,139
+SKU_0415,Pure Chicken 150g,BRAND_010,Meat & Seafood,Chicken,34.96,23.63,1883.6,612,True,SUPPLIER_044,,1,914,457
+SKU_0416,Smooth Seafood 500ml,BRAND_015,Meat & Seafood,Seafood,49.68,25.0,1311.3,528,True,SUPPLIER_024,,48,308,154
+SKU_0417,Lite Pork 150g,BRAND_014,Meat & Seafood,Pork,10.8,4.91,2486.1,82,True,SUPPLIER_060,,6,9,5
+SKU_0418,Classic Deli Meats 2L,BRAND_008,Meat & Seafood,Deli Meats,45.23,27.34,1085.8,545,True,SUPPLIER_019,,12,325,163
+SKU_0419,Light Chicken 6-Pack,BRAND_012,Meat & Seafood,Chicken,12.17,4.75,437.2,245,True,SUPPLIER_063,,6,186,93
+SKU_0420,Classic Pork 2L,BRAND_016,Meat & Seafood,Pork,12.73,7.59,97.4,298,True,SUPPLIER_040,,12,62,31
+SKU_0421,Bold Pork 6-Pack,BRAND_003,Meat & Seafood,Pork,21.94,10.96,2356.0,514,True,SUPPLIER_058,,6,540,270
+SKU_0422,Extra Fresh Beef 150g,BRAND_008,Meat & Seafood,Beef,49.86,21.64,2920.7,5,True,SUPPLIER_056,,24,831,416
+SKU_0423,Family Size Deli Meats 6-Pack,BRAND_005,Meat & Seafood,Deli Meats,29.7,19.83,802.1,718,True,SUPPLIER_075,,1,148,74
+SKU_0424,Smooth Salads 12-Pack,BRAND_011,Produce,Salads,40.29,21.95,678.4,207,True,SUPPLIER_052,,1,56,28
+SKU_0425,Extra Fresh Vegetables 150g,BRAND_009,Produce,Vegetables,31.9,11.47,1558.4,492,True,SUPPLIER_004,,36,611,306
+SKU_0426,Extra Fresh Mushrooms 500g,BRAND_010,Produce,Mushrooms,36.97,16.47,743.3,669,True,SUPPLIER_078,,6,357,179
+SKU_0427,Family Size Vegetables 24ct,BRAND_019,Produce,Vegetables,7.15,4.49,1772.2,416,True,SUPPLIER_041,,1,43,22
+SKU_0428,Natural Herbs 150g,BRAND_019,Produce,Herbs,35.48,22.71,956.8,478,True,SUPPLIER_015,,24,42,21
+SKU_0429,Value Pack Salads 250g,BRAND_005,Produce,Salads,30.48,17.04,2367.2,336,True,SUPPLIER_010,,1,199,100
+SKU_0430,Farm Mushrooms 1L,BRAND_014,Produce,Mushrooms,13.67,5.25,2420.8,122,True,SUPPLIER_084,,1,109,55
+SKU_0431,Light Fruits 2L,BRAND_006,Produce,Fruits,49.64,32.19,2159.6,79,True,SUPPLIER_043,,1,76,38
+SKU_0432,Extra Fresh Fruits 150g,BRAND_006,Produce,Fruits,47.97,28.22,1645.5,48,True,SUPPLIER_071,,48,402,201
+SKU_0433,Farm Herbs 500ml,BRAND_011,Produce,Herbs,23.87,14.9,1991.4,149,True,SUPPLIER_046,,24,48,24
+SKU_0434,Ultra Herbs 500ml,BRAND_020,Produce,Herbs,3.1,1.54,707.2,452,True,SUPPLIER_017,,1,37,19
+SKU_0435,Lite Fruits 2L,BRAND_020,Produce,Fruits,8.63,5.6,2831.6,335,True,SUPPLIER_009,,48,182,91
+SKU_0436,Value Pack Vegetables 500ml,BRAND_002,Produce,Vegetables,6.48,3.65,1688.2,445,True,SUPPLIER_080,,48,324,162
+SKU_0437,Deluxe Mushrooms 500g,BRAND_020,Produce,Mushrooms,10.18,5.52,2986.8,496,True,SUPPLIER_071,,12,187,94
+SKU_0438,Original Mushrooms 1kg,BRAND_003,Produce,Mushrooms,5.21,2.77,413.7,15,True,SUPPLIER_081,,36,44,22
+SKU_0439,Classic Fruits 1L,BRAND_016,Produce,Fruits,23.07,12.27,859.3,293,True,SUPPLIER_002,,6,404,202
+SKU_0440,Original Vegetables 250g,BRAND_008,Produce,Vegetables,31.6,15.93,2591.8,495,True,SUPPLIER_051,,6,175,88
+SKU_0441,Value Pack Herbs 24ct,BRAND_016,Produce,Herbs,13.48,8.52,2989.8,29,True,SUPPLIER_011,,48,264,132
+SKU_0442,Classic Mushrooms 500ml,BRAND_018,Produce,Mushrooms,42.07,25.59,2377.3,313,True,SUPPLIER_069,,48,197,99
+SKU_0443,Light Fruits 12-Pack,BRAND_001,Produce,Fruits,10.79,7.09,772.5,607,True,SUPPLIER_063,,12,145,73
+SKU_0444,Natural Fruits 250g,BRAND_006,Produce,Fruits,22.59,11.39,513.9,607,True,SUPPLIER_011,,24,494,247
+SKU_0445,Extra Fresh Herbs 150g,BRAND_008,Produce,Herbs,37.89,19.99,1317.8,695,True,SUPPLIER_085,,36,345,173
+SKU_0446,Lite Herbs 1L,BRAND_003,Produce,Herbs,38.24,18.94,2563.2,357,True,SUPPLIER_067,,6,597,299
+SKU_0447,Ultra Vegetables 24ct,BRAND_008,Produce,Vegetables,24.43,15.74,2877.0,551,True,SUPPLIER_021,,12,177,89
+SKU_0448,Light Herbs 2L,BRAND_016,Produce,Herbs,30.11,20.66,2281.6,320,True,SUPPLIER_055,,6,521,261
+SKU_0449,Crispy Vegetables 1L,BRAND_019,Produce,Vegetables,29.17,15.31,368.4,504,True,SUPPLIER_035,,12,271,136
+SKU_0450,Value Pack Salads 500g,BRAND_004,Produce,Salads,19.52,11.6,2908.3,174,True,SUPPLIER_010,,12,125,63
+SKU_0451,Original Herbs 1L,BRAND_017,Produce,Herbs,45.52,16.74,1241.7,327,True,SUPPLIER_067,,36,611,306
+SKU_0452,Value Pack Mushrooms 500ml,BRAND_015,Produce,Mushrooms,38.98,16.24,975.9,115,True,SUPPLIER_054,,48,325,163
+SKU_0453,Classic Fruits 500ml,BRAND_002,Produce,Fruits,39.79,21.17,305.5,165,True,SUPPLIER_023,,48,116,58
+SKU_0454,Deluxe Salads 1kg,BRAND_010,Produce,Salads,0.97,0.36,247.5,464,True,SUPPLIER_070,,24,90,45
+SKU_0455,Family Size Herbs 250g,BRAND_002,Produce,Herbs,37.35,22.2,1620.3,708,True,SUPPLIER_039,,1,78,39
+SKU_0456,Deluxe Salads 500g,BRAND_009,Produce,Salads,13.54,6.0,1738.4,233,True,SUPPLIER_085,,12,403,202
+SKU_0457,Value Pack Herbs 150g,BRAND_018,Produce,Herbs,5.59,3.77,1490.1,664,True,SUPPLIER_076,,48,412,206
+SKU_0458,Lite Salads 500g,BRAND_010,Produce,Salads,8.09,3.43,333.8,161,True,SUPPLIER_050,,36,266,133
+SKU_0459,Extra Fresh Herbs 1kg,BRAND_016,Produce,Herbs,14.65,8.43,1380.1,534,True,SUPPLIER_079,,36,729,365
+SKU_0460,Lite Salads 12-Pack,BRAND_008,Produce,Salads,43.53,23.76,2782.7,706,True,SUPPLIER_023,,48,215,108
+SKU_0461,Smooth Herbs 1kg,BRAND_004,Produce,Herbs,18.28,10.95,1249.9,35,True,SUPPLIER_013,,24,322,161
+SKU_0462,Pure Pasta 1L,BRAND_007,Canned & Pantry,Pasta,11.0,4.03,2523.0,,False,SUPPLIER_070,,36,120,60
+SKU_0463,Light Soups 500ml,BRAND_015,Canned & Pantry,Soups,11.65,6.46,2308.7,,False,SUPPLIER_075,,1,112,56
+SKU_0464,Natural Sauces 250g,BRAND_006,Canned & Pantry,Sauces,47.48,24.79,2248.0,,False,SUPPLIER_019,,36,119,60
+SKU_0465,Organic Pasta 2L,BRAND_009,Canned & Pantry,Pasta,38.76,20.96,2818.7,,False,SUPPLIER_070,,36,176,88
+SKU_0466,Smooth Canned Beans 1kg,BRAND_011,Canned & Pantry,Canned Beans,14.22,8.5,1395.3,,False,SUPPLIER_026,,1,103,52
+SKU_0467,Crispy Sauces 24ct,BRAND_012,Canned & Pantry,Sauces,6.04,2.99,2598.0,,False,SUPPLIER_076,,1,282,141
+SKU_0468,Natural Sauces 250g,BRAND_016,Canned & Pantry,Sauces,41.16,23.08,221.1,,False,SUPPLIER_058,,1,33,17
+SKU_0469,Value Pack Rice & Grains 500g,BRAND_017,Canned & Pantry,Rice & Grains,43.6,15.44,336.8,,False,SUPPLIER_039,,12,685,343
+SKU_0470,Light Sauces 12-Pack,BRAND_018,Canned & Pantry,Sauces,42.48,16.33,1350.5,,False,SUPPLIER_076,,1,246,123
+SKU_0471,Smooth Pasta 500g,BRAND_006,Canned & Pantry,Pasta,42.79,24.14,1863.3,,False,SUPPLIER_019,,1,127,64
+SKU_0472,Extra Fresh Canned Beans 12-Pack,BRAND_004,Canned & Pantry,Canned Beans,4.69,1.82,2356.0,,False,SUPPLIER_059,,12,452,226
+SKU_0473,Light Sauces 24ct,BRAND_006,Canned & Pantry,Sauces,3.52,1.37,168.8,,False,SUPPLIER_052,,6,342,171
+SKU_0474,Deluxe Pasta 12-Pack,BRAND_007,Canned & Pantry,Pasta,23.11,10.7,2193.3,,False,SUPPLIER_032,,1,67,34
+SKU_0475,Natural Rice & Grains 6-Pack,BRAND_018,Canned & Pantry,Rice & Grains,1.76,1.06,2790.6,,False,SUPPLIER_055,,36,683,342
+SKU_0476,Original Soups 500ml,BRAND_010,Canned & Pantry,Soups,21.87,11.03,501.6,,False,SUPPLIER_026,,6,618,309
+SKU_0477,Premium Rice & Grains 500ml,BRAND_010,Canned & Pantry,Rice & Grains,37.93,22.17,2455.7,,False,SUPPLIER_061,,12,130,65
+SKU_0478,Smooth Sauces 250g,BRAND_012,Canned & Pantry,Sauces,25.39,14.63,2493.3,,False,SUPPLIER_070,,48,37,19
+SKU_0479,Pure Sauces 12-Pack,BRAND_003,Canned & Pantry,Sauces,31.48,12.01,1132.0,,False,SUPPLIER_047,,24,254,127
+SKU_0480,Premium Sauces 6-Pack,BRAND_012,Canned & Pantry,Sauces,23.29,10.09,1419.8,,False,SUPPLIER_073,,48,88,44
+SKU_0481,Light Rice & Grains 500ml,BRAND_014,Canned & Pantry,Rice & Grains,15.91,10.84,153.8,,False,SUPPLIER_084,,6,201,101
+SKU_0482,Lite Canned Beans 500g,BRAND_016,Canned & Pantry,Canned Beans,37.18,17.78,1546.7,,False,SUPPLIER_017,,12,140,70
+SKU_0483,Bold Canned Beans 24ct,BRAND_006,Canned & Pantry,Canned Beans,13.79,5.03,1709.1,,False,SUPPLIER_020,,6,367,184
+SKU_0484,Pure Pasta 12-Pack,BRAND_017,Canned & Pantry,Pasta,11.26,6.57,1955.3,,False,SUPPLIER_074,,12,243,122
+SKU_0485,Extra Fresh Sauces 12-Pack,BRAND_006,Canned & Pantry,Sauces,0.52,0.27,593.8,,False,SUPPLIER_055,,12,343,172
+SKU_0486,Family Size Canned Beans 6-Pack,BRAND_003,Canned & Pantry,Canned Beans,31.21,20.56,592.8,,False,SUPPLIER_068,,1,804,402
+SKU_0487,Pure Canned Beans 500g,BRAND_001,Canned & Pantry,Canned Beans,40.57,17.7,705.8,,False,SUPPLIER_058,,24,334,167
+SKU_0488,Smooth Sauces 2L,BRAND_020,Canned & Pantry,Sauces,36.81,13.66,1392.1,,False,SUPPLIER_009,,6,435,218
+SKU_0489,Farm Sauces 500g,BRAND_020,Canned & Pantry,Sauces,42.21,24.86,61.5,,False,SUPPLIER_049,,6,16,8
+SKU_0490,Value Pack Canned Beans 1kg,BRAND_002,Canned & Pantry,Canned Beans,33.62,15.18,2529.6,,False,SUPPLIER_041,,36,572,286
+SKU_0491,Pure Canned Beans 2L,BRAND_012,Canned & Pantry,Canned Beans,11.55,4.91,1865.4,,False,SUPPLIER_011,,6,135,68
+SKU_0492,Farm Rice & Grains 500g,BRAND_017,Canned & Pantry,Rice & Grains,14.98,7.27,536.2,,False,SUPPLIER_059,,24,487,244
+SKU_0493,Farm Soups 500ml,BRAND_006,Canned & Pantry,Soups,35.15,15.58,2724.2,,False,SUPPLIER_030,,48,254,127
+SKU_0494,Crispy Soups 500ml,BRAND_012,Canned & Pantry,Soups,38.97,18.36,1105.0,,False,SUPPLIER_040,,48,377,189
+SKU_0495,Family Size Canned Beans 250g,BRAND_014,Canned & Pantry,Canned Beans,11.53,5.66,1983.7,,False,SUPPLIER_076,,24,284,142
+SKU_0496,Crispy Canned Beans 6-Pack,BRAND_002,Canned & Pantry,Canned Beans,49.9,24.01,530.7,,False,SUPPLIER_023,,12,326,163
+SKU_0497,Smooth Pasta 2L,BRAND_019,Canned & Pantry,Pasta,18.47,6.48,790.2,,False,SUPPLIER_081,,36,217,109
+SKU_0498,Ultra Soups 12-Pack,BRAND_004,Canned & Pantry,Soups,2.37,1.28,1378.1,,False,SUPPLIER_054,,36,250,125
+SKU_0499,Premium Pasta 500g,BRAND_018,Canned & Pantry,Pasta,21.8,10.58,155.7,,False,SUPPLIER_035,,12,18,9
+SKU_0500,Family Size Pasta 12-Pack,BRAND_016,Canned & Pantry,Pasta,42.8,19.75,150.1,,False,SUPPLIER_052,,12,189,95
+SKU_0501,Bold Pasta 12-Pack,BRAND_009,Canned & Pantry,Pasta,32.65,16.11,133.5,,False,SUPPLIER_069,,1,47,24
+SKU_0502,Classic Sauces 12-Pack,BRAND_012,Canned & Pantry,Sauces,44.27,27.2,2929.7,,False,SUPPLIER_002,,24,95,48
+SKU_0503,Premium Pasta 500ml,BRAND_001,Canned & Pantry,Pasta,15.74,5.52,2931.5,,False,SUPPLIER_036,,1,309,155
+SKU_0504,Natural Rice & Grains 150g,BRAND_003,Canned & Pantry,Rice & Grains,43.03,26.38,2843.1,,False,SUPPLIER_020,,6,221,111
+SKU_0505,Lite Rice & Grains 12-Pack,BRAND_002,Canned & Pantry,Rice & Grains,17.61,12.1,405.0,,False,SUPPLIER_042,,1,301,151
+SKU_0506,Light Pasta 24ct,BRAND_013,Canned & Pantry,Pasta,47.09,19.6,1201.7,,False,SUPPLIER_059,,36,54,27
+SKU_0507,Smooth Pasta 24ct,BRAND_006,Canned & Pantry,Pasta,41.35,14.79,211.3,,False,SUPPLIER_017,,12,405,203
+SKU_0508,Classic Baby Care 500ml,BRAND_016,Baby & Infant,Baby Care,41.18,14.42,1725.7,,False,SUPPLIER_015,,1,171,86
+SKU_0509,Lite Wipes 1L,BRAND_003,Baby & Infant,Wipes,27.04,15.39,1432.4,,False,SUPPLIER_075,,1,99,50
+SKU_0510,Classic Formula 500g,BRAND_016,Baby & Infant,Formula,40.0,22.88,1420.6,,False,SUPPLIER_029,,6,670,335
+SKU_0511,Natural Baby Care 12-Pack,BRAND_020,Baby & Infant,Baby Care,38.46,19.16,1546.7,,False,SUPPLIER_017,,36,231,116
+SKU_0512,Light Wipes 500ml,BRAND_010,Baby & Infant,Wipes,1.65,0.82,652.2,,False,SUPPLIER_085,,1,715,358
+SKU_0513,Organic Baby Care 1kg,BRAND_006,Baby & Infant,Baby Care,19.83,10.1,129.6,,False,SUPPLIER_074,,24,81,41
+SKU_0514,Organic Diapers 500g,BRAND_020,Baby & Infant,Diapers,9.67,4.39,779.1,,False,SUPPLIER_048,,24,233,117
+SKU_0515,Bold Diapers 1L,BRAND_019,Baby & Infant,Diapers,49.22,32.64,764.7,,False,SUPPLIER_078,,12,136,68
+SKU_0516,Farm Formula 500ml,BRAND_014,Baby & Infant,Formula,27.68,18.22,2613.9,,False,SUPPLIER_002,,1,101,51
+SKU_0517,Lite Wipes 250g,BRAND_001,Baby & Infant,Wipes,40.95,26.4,2936.1,,False,SUPPLIER_085,,6,68,34
+SKU_0518,Farm Baby Food 6-Pack,BRAND_018,Baby & Infant,Baby Food,7.48,3.92,1771.2,,False,SUPPLIER_055,,12,23,12
+SKU_0519,Extra Fresh Formula 24ct,BRAND_006,Baby & Infant,Formula,25.28,9.74,1628.2,,False,SUPPLIER_058,,24,19,10
+SKU_0520,Ultra Baby Food 150g,BRAND_010,Baby & Infant,Baby Food,21.23,11.15,1248.7,,False,SUPPLIER_024,,1,244,122
+SKU_0521,Lite Diapers 500ml,BRAND_013,Baby & Infant,Diapers,4.06,1.81,1279.3,,False,SUPPLIER_050,,6,313,157
+SKU_0522,Smooth Baby Care 1L,BRAND_001,Baby & Infant,Baby Care,37.19,17.76,2442.2,,False,SUPPLIER_071,,1,141,71
+SKU_0523,Lite Diapers 12-Pack,BRAND_019,Baby & Infant,Diapers,14.48,6.15,1669.0,,False,SUPPLIER_010,,24,59,30
+SKU_0524,Premium Diapers 6-Pack,BRAND_003,Baby & Infant,Diapers,42.65,17.35,2451.7,,False,SUPPLIER_006,,48,253,127
+SKU_0525,Farm Baby Food 1L,BRAND_015,Baby & Infant,Baby Food,11.34,5.87,726.8,,False,SUPPLIER_053,,6,705,353
+SKU_0526,Bold Wipes 2L,BRAND_007,Baby & Infant,Wipes,44.29,26.48,912.7,,False,SUPPLIER_020,,48,202,101
+SKU_0527,Value Pack Formula 250g,BRAND_002,Baby & Infant,Formula,26.74,11.94,1905.6,,False,SUPPLIER_032,,1,157,79
+SKU_0528,Ultra Baby Care 24ct,BRAND_015,Baby & Infant,Baby Care,5.63,3.02,1978.4,,False,SUPPLIER_043,,1,368,184
+SKU_0529,Organic Cat Food 2L,BRAND_008,Pet Supplies,Cat Food,23.34,15.12,2688.3,,False,SUPPLIER_065,,12,28,14
+SKU_0530,Organic Treats 1L,BRAND_007,Pet Supplies,Treats,22.87,11.52,670.6,,False,SUPPLIER_062,,48,140,70
+SKU_0531,Value Pack Litter 150g,BRAND_008,Pet Supplies,Litter,38.24,22.1,860.5,,False,SUPPLIER_059,,6,126,63
+SKU_0532,Deluxe Treats 1kg,BRAND_018,Pet Supplies,Treats,22.32,13.81,2275.5,,False,SUPPLIER_037,,48,50,25
+SKU_0533,Pure Cat Food 1kg,BRAND_001,Pet Supplies,Cat Food,1.11,0.6,2294.4,,False,SUPPLIER_083,,12,111,56
+SKU_0534,Family Size Accessories 500g,BRAND_017,Pet Supplies,Accessories,8.11,3.01,1766.8,,False,SUPPLIER_042,,24,65,33
+SKU_0535,Lite Cat Food 150g,BRAND_017,Pet Supplies,Cat Food,47.3,29.06,643.3,,False,SUPPLIER_049,,12,97,49
+SKU_0536,Classic Accessories 500g,BRAND_011,Pet Supplies,Accessories,40.01,19.06,1298.2,,False,SUPPLIER_080,,24,343,172
+SKU_0537,Deluxe Accessories 150g,BRAND_011,Pet Supplies,Accessories,22.13,12.27,1603.1,,False,SUPPLIER_063,,6,73,37
+SKU_0538,Value Pack Cat Food 500g,BRAND_012,Pet Supplies,Cat Food,29.64,20.62,906.0,,False,SUPPLIER_081,,1,240,120
+SKU_0539,Classic Cat Food 500ml,BRAND_017,Pet Supplies,Cat Food,33.09,13.78,1796.7,,False,SUPPLIER_016,,48,79,40
+SKU_0540,Crispy Cat Food 250g,BRAND_004,Pet Supplies,Cat Food,43.73,16.55,1905.0,,False,SUPPLIER_032,,12,501,251
+SKU_0541,Value Pack Litter 12-Pack,BRAND_019,Pet Supplies,Litter,43.15,15.56,2193.3,,False,SUPPLIER_027,,12,96,48
+SKU_0542,Pure Accessories 12-Pack,BRAND_004,Pet Supplies,Accessories,26.08,9.77,2148.9,,False,SUPPLIER_045,,1,18,9
+SKU_0543,Ultra Treats 1L,BRAND_013,Pet Supplies,Treats,44.0,29.43,985.6,,False,SUPPLIER_082,,12,765,383
+SKU_0544,Natural Cat Food 1kg,BRAND_004,Pet Supplies,Cat Food,11.36,7.32,129.3,,False,SUPPLIER_071,,6,566,283
+SKU_0545,Lite Litter 24ct,BRAND_018,Pet Supplies,Litter,47.32,17.24,654.7,,False,SUPPLIER_010,,48,68,34
+SKU_0546,Bold Litter 1L,BRAND_002,Pet Supplies,Litter,21.34,12.92,2781.1,,False,SUPPLIER_068,,1,361,181
+SKU_0547,Light Litter 6-Pack,BRAND_014,Pet Supplies,Litter,30.29,20.95,1658.9,,False,SUPPLIER_030,,12,41,21
+SKU_0548,Crispy Treats 1kg,BRAND_020,Pet Supplies,Treats,9.52,3.89,578.8,,False,SUPPLIER_029,,24,244,122
+SKU_0549,Premium Dog Food 500g,BRAND_004,Pet Supplies,Dog Food,23.02,15.82,373.5,,False,SUPPLIER_049,,48,228,114
+SKU_0550,Smooth Accessories 24ct,BRAND_017,Pet Supplies,Accessories,21.33,10.2,2046.1,,False,SUPPLIER_065,,1,56,28
+SKU_0551,Pure Dog Food 150g,BRAND_015,Pet Supplies,Dog Food,44.13,29.16,57.6,,False,SUPPLIER_055,,6,96,48
+SKU_0552,Classic Treats 1kg,BRAND_006,Pet Supplies,Treats,8.86,6.2,2575.4,,False,SUPPLIER_006,,36,104,52
+SKU_0553,Classic Supplements 24ct,BRAND_001,Health & Wellness,Supplements,37.55,25.62,1535.0,,False,SUPPLIER_076,,1,40,20
+SKU_0554,Original Vitamins 24ct,BRAND_008,Health & Wellness,Vitamins,10.48,6.36,1796.0,,False,SUPPLIER_033,,12,29,15
+SKU_0555,Farm OTC Meds 1L,BRAND_007,Health & Wellness,OTC Meds,25.92,15.1,1786.1,,False,SUPPLIER_041,,12,118,59
+SKU_0556,Extra Fresh Supplements 1L,BRAND_007,Health & Wellness,Supplements,21.62,14.32,1834.5,,False,SUPPLIER_039,,1,77,39
+SKU_0557,Value Pack Vitamins 1kg,BRAND_008,Health & Wellness,Vitamins,19.95,11.05,859.8,,False,SUPPLIER_047,,36,389,195
+SKU_0558,Natural Vitamins 1kg,BRAND_007,Health & Wellness,Vitamins,10.99,7.28,835.2,,False,SUPPLIER_083,,1,125,63
+SKU_0559,Farm Vitamins 24ct,BRAND_014,Health & Wellness,Vitamins,11.01,6.87,2590.7,,False,SUPPLIER_075,,24,213,107
+SKU_0560,Lite Protein 250g,BRAND_005,Health & Wellness,Protein,20.57,13.31,1662.0,,False,SUPPLIER_077,,12,114,57
+SKU_0561,Ultra Vitamins 500ml,BRAND_014,Health & Wellness,Vitamins,8.04,4.17,1327.6,,False,SUPPLIER_028,,24,27,14
+SKU_0562,Natural Vitamins 1L,BRAND_011,Health & Wellness,Vitamins,48.16,20.47,565.5,,False,SUPPLIER_081,,12,171,86
+SKU_0563,Classic OTC Meds 2L,BRAND_014,Health & Wellness,OTC Meds,12.37,8.14,2897.4,,False,SUPPLIER_064,,36,53,27
+SKU_0564,Smooth Supplements 1kg,BRAND_005,Health & Wellness,Supplements,43.32,26.72,2739.2,,False,SUPPLIER_037,,6,20,10
+SKU_0565,Pure OTC Meds 500ml,BRAND_011,Health & Wellness,OTC Meds,11.84,7.92,1304.3,,False,SUPPLIER_001,,48,341,171
+SKU_0566,Bold Supplements 24ct,BRAND_008,Health & Wellness,Supplements,37.36,13.17,2603.8,,False,SUPPLIER_034,,48,518,259
+SKU_0567,Extra Fresh OTC Meds 24ct,BRAND_004,Health & Wellness,OTC Meds,21.27,10.21,2275.3,,False,SUPPLIER_054,,6,148,74
+SKU_0568,Original OTC Meds 150g,BRAND_014,Health & Wellness,OTC Meds,14.23,5.66,1139.2,,False,SUPPLIER_060,,48,233,117
+SKU_0569,Premium Supplements 2L,BRAND_016,Health & Wellness,Supplements,28.31,9.99,586.4,,False,SUPPLIER_031,,1,197,99
+SKU_0570,Extra Fresh Supplements 150g,BRAND_007,Health & Wellness,Supplements,39.62,17.74,2429.7,,False,SUPPLIER_073,,48,705,353
+SKU_0571,Family Size Protein 12-Pack,BRAND_003,Health & Wellness,Protein,48.6,23.82,2367.9,,False,SUPPLIER_064,,1,734,367
+SKU_0572,Extra Fresh Protein 12-Pack,BRAND_007,Health & Wellness,Protein,46.5,31.15,1168.7,,False,SUPPLIER_003,,12,32,16
+SKU_0573,Lite Supplements 250g,BRAND_002,Health & Wellness,Supplements,41.28,18.88,962.2,,False,SUPPLIER_009,,48,17,9
+SKU_0574,Ultra OTC Meds 500g,BRAND_008,Health & Wellness,OTC Meds,44.49,29.2,2027.4,,False,SUPPLIER_014,,6,104,52
+SKU_0575,Smooth Vitamins 1kg,BRAND_010,Health & Wellness,Vitamins,1.22,0.73,284.4,,False,SUPPLIER_029,,1,568,284
+SKU_0576,Original Vitamins 6-Pack,BRAND_001,Health & Wellness,Vitamins,4.3,3.0,474.0,,False,SUPPLIER_033,,12,81,41
+SKU_0577,Deluxe Supplements 1kg,BRAND_001,Health & Wellness,Supplements,38.97,19.94,1376.3,,False,SUPPLIER_071,,12,49,25
+SKU_0578,Deluxe OTC Meds 1kg,BRAND_020,Health & Wellness,OTC Meds,40.69,17.03,2209.3,,False,SUPPLIER_011,,24,115,58

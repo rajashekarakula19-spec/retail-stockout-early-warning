@@ -1,0 +1,41 @@
+data_dir: "../output globeant/csv"
+output_dir: "."
+data_source: "postgres"
+database_url: "postgresql:///retail_stockout"
+
+files:
+  sales: "sales_transactions.csv"
+  inventory: "inventory_snapshots.csv"
+  replenishment: "replenishment_logs.csv"
+  stockouts: "stockout_events.csv"
+  products: "products.csv"
+  stores: "stores.csv"
+  suppliers: "suppliers.csv"
+
+target:
+  horizon_days: 7
+  horizons_days: [3, 7, 14]
+
+split:
+  # Train on 2024 and keep 2025 as future/unseen data.
+  test_start_date: "2025-01-01"
+
+sample:
+  # Keep all stores represented while limiting SKU depth per store for fast local iteration.
+  max_store_sku_pairs:
+  max_skus_per_store: 2
+  random_state: 42
+
+model:
+  high_risk_threshold: 0.35
+  dynamic_thresholds:
+    base: 0.50
+    min: 0.25
+    max: 0.70
+  xgboost:
+    n_estimators: 250
+    max_depth: 5
+    learning_rate: 0.06
+    subsample: 0.85
+    colsample_bytree: 0.85
+    eval_metric: "logloss"

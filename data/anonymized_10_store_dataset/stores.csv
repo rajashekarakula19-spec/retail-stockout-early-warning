@@ -1,0 +1,11 @@
+store_id,store_name,region,city,state,store_format,foot_traffic_tier,num_aisles,open_date,sq_footage
+STORE_001,Demo Store 01,Region 01,City 01,ST01,Convenience,Premium,13,2005-01-27,35594
+STORE_002,Demo Store 02,Region 02,City 02,ST02,Supermarket,Premium,9,2007-02-26,25567
+STORE_003,Demo Store 03,Region 03,City 03,ST03,Discount,Premium,8,2015-09-10,36822
+STORE_004,Demo Store 04,Region 04,City 04,ST04,Supermarket,High,24,2014-05-25,32632
+STORE_005,Demo Store 05,Region 05,City 05,ST05,Supermarket,Low,19,2009-01-16,24387
+STORE_006,Demo Store 06,Region 06,City 06,ST06,Convenience,Premium,8,2014-09-24,30261
+STORE_007,Demo Store 07,Region 07,City 07,ST07,Convenience,Premium,23,2021-03-27,40638
+STORE_008,Demo Store 08,Region 08,City 08,ST08,Hypermarket,Low,13,2015-12-12,10184
+STORE_009,Demo Store 09,Region 09,City 09,ST09,Supermarket,High,24,2010-07-14,28756
+STORE_010,Demo Store 10,Region 10,City 10,ST10,Wholesale,Low,9,2009-03-09,35474
