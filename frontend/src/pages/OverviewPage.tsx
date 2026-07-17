@@ -1,54 +1,110 @@
 import { useEffect, useState } from "react";
-import { getFetchNextWeekStatus, getHighRiskItems, getRevenueLossCauses, getRiskTrends } from "../lib/api/stockout-api";
-import type { FetchNextWeekStatus, HighRiskItem, RevenueLossSummary, RiskTrendPoint } from "../lib/api/types";
+import { Bell, CalendarDays, Database, ShieldCheck } from "lucide-react";
+import { getResults2025 } from "../lib/api/stockout-api";
+import type { Results2025Summary } from "../lib/api/types";
 import { HeroSection } from "../components/overview/HeroSection";
-import { HowItWorks } from "../components/overview/HowItWorks";
-import { ProductPreview } from "../components/overview/ProductPreview";
 import { Card, CardContent } from "../components/ui/Card";
-import { currency } from "../lib/utils";
+import { currency, percent } from "../lib/utils";
 
 export function OverviewPage() {
-  const [items, setItems] = useState<HighRiskItem[]>([]);
-  const [trends, setTrends] = useState<RiskTrendPoint[]>([]);
-  const [loss, setLoss] = useState<RevenueLossSummary | null>(null);
-  const [weekStatus, setWeekStatus] = useState<FetchNextWeekStatus | null>(null);
+  const [results, setResults] = useState<Results2025Summary | null>(null);
 
   useEffect(() => {
-    void getHighRiskItems({}).then(setItems);
-    void getRiskTrends(365).then(setTrends);
-    void getRevenueLossCauses().then(setLoss);
-    void getFetchNextWeekStatus().then(setWeekStatus);
+    void getResults2025(10).then(setResults);
   }, []);
-
-  const totalLostSales = loss?.causes.reduce((sum, cause) => sum + cause.lostRevenue, 0) ?? 0;
-  const topCause = loss?.causes[0]?.cause ?? "Loading";
-  const nextWeek = weekStatus?.nextWeekStart && weekStatus?.nextWeekEnd ? `${weekStatus.nextWeekStart} to ${weekStatus.nextWeekEnd}` : "2025 weekly DB fetch";
 
   return (
     <div>
       <HeroSection />
-      <div className="mt-6 grid gap-4 md:grid-cols-3">
+      <div className="mt-6 grid gap-4 md:grid-cols-4">
         <Card>
           <CardContent className="p-5">
-            <p className="text-sm text-muted-foreground">2024 stockout revenue loss</p>
-            <p className="mt-2 text-3xl font-black text-brand">{currency(totalLostSales)}</p>
+            <p className="text-sm text-muted-foreground">Project stores</p>
+            <p className="mt-2 text-3xl font-black text-brand">10</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-5">
-            <p className="text-sm text-muted-foreground">Top revenue loss cause</p>
-            <p className="mt-2 text-3xl font-black text-brand">{topCause}</p>
+            <p className="text-sm text-muted-foreground">Daily prediction rows</p>
+            <p className="mt-2 text-3xl font-black text-brand">{results ? results.matrix.rowsChecked.toLocaleString() : "Loading"}</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-5">
-            <p className="text-sm text-muted-foreground">Next data fetch</p>
-            <p className="mt-2 text-3xl font-black text-brand">{nextWeek}</p>
+            <p className="text-sm text-muted-foreground">2025 stockout events</p>
+            <p className="mt-2 text-3xl font-black text-brand">{results ? results.stockoutEvents.toLocaleString() : "Loading"}</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-5">
+            <p className="text-sm text-muted-foreground">Revenue coverage</p>
+            <p className="mt-2 text-3xl font-black text-brand">{results ? percent(results.revenueCoverageRate) : "Loading"}</p>
           </CardContent>
         </Card>
       </div>
-      <HowItWorks />
-      {items.length > 0 && <ProductPreview items={items} trends={trends} />}
+
+      <section className="mt-8 grid gap-5 lg:grid-cols-[0.95fr_1.05fr]">
+        <Card>
+          <CardContent className="p-6">
+            <p className="text-sm font-bold uppercase tracking-wide text-accent-warm">Project focus</p>
+            <h2 className="mt-2 text-2xl font-black tracking-tight text-foreground">Daily stockout early-warning system</h2>
+            <div className="mt-5 grid gap-4">
+              <div className="flex gap-3">
+                <Database className="mt-1 h-5 w-5 shrink-0 text-brand" />
+                <div>
+                  <p className="font-black text-foreground">PostgreSQL-backed data pipeline</p>
+                  <p className="text-sm leading-6 text-muted-foreground">Raw sales, inventory, replenishment, and stockout events are converted into daily store-SKU modeling rows.</p>
+                </div>
+              </div>
+              <div className="flex gap-3">
+                <CalendarDays className="mt-1 h-5 w-5 shrink-0 text-brand" />
+                <div>
+                  <p className="font-black text-foreground">2024 training, 2025 validation</p>
+                  <p className="text-sm leading-6 text-muted-foreground">The model learns from 2024 history and scores every active product daily through 2025.</p>
+                </div>
+              </div>
+              <div className="flex gap-3">
+                <Bell className="mt-1 h-5 w-5 shrink-0 text-brand" />
+                <div>
+                  <p className="font-black text-foreground">Prior-alert evaluation</p>
+                  <p className="text-sm leading-6 text-muted-foreground">Each actual stockout is checked for an alert in the 1-7 days before the stockout date.</p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-6">
+            <p className="text-sm font-bold uppercase tracking-wide text-accent-warm">2025 event-level result</p>
+            <h2 className="mt-2 text-2xl font-black tracking-tight text-foreground">Business coverage snapshot</h2>
+            <div className="mt-5 grid gap-3 sm:grid-cols-2">
+              <div className="rounded-lg border border-border bg-background p-4">
+                <p className="text-xs font-bold uppercase text-muted-foreground">Stockout loss at risk</p>
+                <p className="mt-1 text-2xl font-black text-foreground">{results ? currency(results.estimatedRevenueAtRisk) : "Loading"}</p>
+              </div>
+              <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-4">
+                <p className="text-xs font-bold uppercase text-emerald-700">Revenue covered</p>
+                <p className="mt-1 text-2xl font-black text-emerald-900">{results ? percent(results.revenueCoverageRate) : "Loading"}</p>
+              </div>
+              <div className="rounded-lg border border-border bg-background p-4">
+                <p className="text-xs font-bold uppercase text-muted-foreground">Average warning</p>
+                <p className="mt-1 text-2xl font-black text-foreground">{results ? `${results.averageWarningDays.toFixed(1)} days` : "Loading"}</p>
+              </div>
+              <div className="rounded-lg border border-border bg-background p-4">
+                <p className="text-xs font-bold uppercase text-muted-foreground">Daily predictions</p>
+                <p className="mt-1 text-2xl font-black text-foreground">{results ? results.matrix.rowsChecked.toLocaleString() : "Loading"}</p>
+              </div>
+            </div>
+            <div className="mt-4 flex items-start gap-3 rounded-lg bg-brand/8 p-4">
+              <ShieldCheck className="mt-1 h-5 w-5 shrink-0 text-brand" />
+              <p className="text-sm leading-6 text-muted-foreground">
+                This page now introduces the project; detailed charts and product tables live in Risk Dashboard, Predictions, and Results.
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      </section>
     </div>
   );
 }

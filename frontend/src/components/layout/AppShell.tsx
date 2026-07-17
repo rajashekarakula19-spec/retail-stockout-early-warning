@@ -23,6 +23,7 @@ export function AppShell() {
               <Boxes className="h-5 w-5" />
             </span>
             <span className="hidden font-black tracking-tight text-brand sm:inline">ShelfSignal</span>
+            <span className="hidden text-sm font-semibold text-muted-foreground xl:inline">Retail Stockout Early-Warning System</span>
           </NavLink>
           <nav className="flex flex-1 items-center justify-center gap-1">
             {navItems.map((item) => (

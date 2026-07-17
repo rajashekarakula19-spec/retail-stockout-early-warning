@@ -1,31 +1,20 @@
 import { useEffect, useState } from "react";
-import { AlertTriangle, Database, DollarSign, LineChart, Store } from "lucide-react";
+import { DollarSign, PackageX, Store, Tags } from "lucide-react";
 import { Bar, BarChart, CartesianGrid, Cell, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { fetchNextWeekFromDb, getExecutiveSummary, getFetchNextWeekStatus, getHighRiskItems, getKpis, getRevenueLossCauses, getRiskTrends, getStockoutDurationDistribution, getTopCategoriesByRevenue } from "../lib/api/stockout-api";
-import type { CategoryRevenue, FetchNextWeekResult, FetchNextWeekStatus, HighRiskItem, KpiSummary, RevenueLossSummary, RiskTrendPoint, StockoutDurationBucket } from "../lib/api/types";
-import { FiltersBar, type RiskFilters } from "../components/risk/FiltersBar";
-import { HighRiskTable } from "../components/risk/HighRiskTable";
+import { getExecutiveSummary, getRevenueLossCauses, getRiskTrends, getStockoutDurationDistribution, getTopCategoriesByRevenue, getYearlyStockoutSummary } from "../lib/api/stockout-api";
+import type { CategoryRevenue, RevenueLossSummary, RiskTrendPoint, StockoutDurationBucket, YearlyStockoutSummary } from "../lib/api/types";
 import { KpiCard } from "../components/risk/KpiCard";
-import { ProductDetailDrawer } from "../components/risk/ProductDetailDrawer";
 import { RiskTrendChart } from "../components/risk/RiskTrendChart";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/Card";
-import { Button } from "../components/ui/Button";
 import { currency } from "../lib/utils";
 
-const defaultFilters: RiskFilters = { region: "all", category: "all", riskLevel: "all", search: "" };
 const lossColors = ["#2563eb", "#f97316", "#dc2626", "#16a34a", "#9333ea", "#0891b2"];
 
 export function DashboardPage() {
   const [summary, setSummary] = useState("");
-  const [kpis, setKpis] = useState<KpiSummary | null>(null);
+  const [selectedYear, setSelectedYear] = useState<2024 | 2025>(2025);
+  const [yearSummary, setYearSummary] = useState<YearlyStockoutSummary | null>(null);
   const [trends, setTrends] = useState<RiskTrendPoint[]>([]);
-  const [items, setItems] = useState<HighRiskItem[]>([]);
-  const [filters, setFilters] = useState<RiskFilters>(defaultFilters);
-  const [selected, setSelected] = useState<HighRiskItem | null>(null);
-  const [fetchingWeek, setFetchingWeek] = useState(false);
-  const [weekStatus, setWeekStatus] = useState<FetchNextWeekStatus | null>(null);
-  const [lastFetchedWeek, setLastFetchedWeek] = useState("");
-  const [fetchResult, setFetchResult] = useState<FetchNextWeekResult | null>(null);
   const [revenueLoss, setRevenueLoss] = useState<RevenueLossSummary | null>(null);
   const [topCategories, setTopCategories] = useState<CategoryRevenue[]>([]);
   const [durationDistribution, setDurationDistribution] = useState<StockoutDurationBucket[]>([]);
@@ -42,150 +31,78 @@ export function DashboardPage() {
 
   const refreshDashboard = () => {
     void getExecutiveSummary().then(setSummary);
-    void getKpis().then(setKpis);
-    void getRiskTrends(90).then(setTrends);
-    void getHighRiskItems(filters).then(setItems);
-    void getFetchNextWeekStatus().then(setWeekStatus);
-    void getRevenueLossCauses().then(setRevenueLoss);
-    void getTopCategoriesByRevenue().then(setTopCategories);
-    void getStockoutDurationDistribution().then(setDurationDistribution);
+    void getYearlyStockoutSummary(selectedYear).then(setYearSummary);
+    void getRiskTrends(365, selectedYear).then(setTrends);
+    void getRevenueLossCauses(selectedYear).then(setRevenueLoss);
+    void getTopCategoriesByRevenue(selectedYear).then(setTopCategories);
+    void getStockoutDurationDistribution(selectedYear).then(setDurationDistribution);
   };
 
   useEffect(() => {
     refreshDashboard();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    void getHighRiskItems(filters).then(setItems);
-  }, [filters]);
+  }, [selectedYear]);
 
   return (
     <div className="space-y-6">
       <section className="rounded-xl border border-border bg-card p-6 shadow-elegant">
-        <p className="text-sm font-bold uppercase tracking-wide text-accent-warm">Executive summary</p>
-        <h1 className="mt-2 text-3xl font-black tracking-tight text-foreground">Risk Dashboard</h1>
-        <p className="mt-3 max-w-4xl text-muted-foreground">{summary}</p>
-      </section>
-
-      <section className="grid gap-4 rounded-xl border border-border bg-card p-5 shadow-elegant lg:grid-cols-[1fr_auto] lg:items-center">
-        <div>
-          <div className="flex items-center gap-2">
-            <Database className="h-5 w-5 text-brand" />
-          <h2 className="text-lg font-black text-foreground">Fetch next week from DB</h2>
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <p className="text-sm font-bold uppercase tracking-wide text-accent-warm">Business data dashboard</p>
+            <h1 className="mt-2 text-3xl font-black tracking-tight text-foreground">Risk Dashboard</h1>
+            <p className="mt-3 max-w-4xl text-muted-foreground">
+              {summary} Switch years to compare stockout loss, events, causes, durations, and sales categories for the same 10-store scope.
+            </p>
           </div>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Pull the next unseen 2025 week from PostgreSQL, score affected store-SKUs, and refresh the stockout alerts.
-          </p>
-          <div className="mt-3 flex flex-wrap gap-2 text-sm">
-            {weekStatus?.lastFetchedEndDate && (
-              <span className="rounded-lg bg-muted px-3 py-1 font-semibold text-muted-foreground">Last fetched through {weekStatus.lastFetchedEndDate}</span>
-            )}
-            {weekStatus?.nextWeekStart && weekStatus?.nextWeekEnd && (
-              <span className="rounded-lg bg-brand/10 px-3 py-1 font-bold text-brand">Next: {weekStatus.nextWeekStart} to {weekStatus.nextWeekEnd}</span>
-            )}
-            {lastFetchedWeek && <span className="rounded-lg bg-accent-warm/15 px-3 py-1 font-bold text-accent-warm">{lastFetchedWeek}</span>}
+          <div className="inline-flex rounded-xl border border-border bg-background p-1">
+            {[2024, 2025].map((year) => (
+              <button
+                key={year}
+                type="button"
+                onClick={() => setSelectedYear(year as 2024 | 2025)}
+                className={`rounded-lg px-4 py-2 text-sm font-black transition ${
+                  selectedYear === year ? "bg-brand text-brand-foreground shadow-sm" : "text-muted-foreground hover:bg-muted hover:text-brand"
+                }`}
+              >
+                {year}
+              </button>
+            ))}
           </div>
         </div>
-        <Button
-          disabled={fetchingWeek || weekStatus?.complete}
-          onClick={async () => {
-            setFetchingWeek(true);
-            setLastFetchedWeek("Fetching next DB week...");
-            const result = await fetchNextWeekFromDb();
-            setFetchResult(result);
-            setLastFetchedWeek(
-              result.weekStart && result.weekEnd
-                ? `Fetched ${result.weekStart} to ${result.weekEnd}. Scored ${result.pairsScored} of ${result.pairsFound} store-SKUs.`
-                : result.message,
-            );
-            setFetchingWeek(false);
-            refreshDashboard();
-          }}
-        >
-          <Database className="h-4 w-4" />
-          {fetchingWeek ? "Fetching..." : weekStatus?.complete ? "All weeks fetched" : "Fetch Next Week"}
-        </Button>
       </section>
 
-      {fetchResult?.difference && (
-        <section className="grid gap-4 rounded-xl border border-border bg-card p-5 shadow-elegant lg:grid-cols-4">
+      {yearSummary && (
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <KpiCard label={`${selectedYear} stockout revenue loss`} value={currency(yearSummary.lostRevenue)} delta={`${yearSummary.stockoutEvents.toLocaleString()} stockout events`} icon={DollarSign} />
+          <KpiCard label="Lost units" value={yearSummary.lostUnits.toLocaleString()} delta={`${yearSummary.avgDurationDays.toFixed(1)} avg duration days`} icon={PackageX} />
+          <KpiCard label="Stores affected" value={yearSummary.storesWithStockouts.toLocaleString()} delta={`${yearSummary.storeCount} stores in project scope`} icon={Store} />
+          <KpiCard label="SKUs affected" value={yearSummary.skusWithStockouts.toLocaleString()} delta={`Top cause: ${yearSummary.topCause}`} icon={Tags} />
+        </div>
+      )}
+
+      {yearSummary && (
+        <section className="grid gap-4 rounded-xl border border-border bg-card p-5 shadow-elegant md:grid-cols-3">
           <div>
-            <p className="text-xs font-bold uppercase text-muted-foreground">Probability change</p>
-            <p className="mt-1 text-2xl font-black text-brand">
-              {(fetchResult.difference.avgProbabilityBefore * 100).toFixed(1)}% → {(fetchResult.difference.avgProbabilityAfter * 100).toFixed(1)}%
-            </p>
+            <p className="text-xs font-bold uppercase text-muted-foreground">{selectedYear} sales revenue</p>
+            <p className="mt-1 text-2xl font-black text-foreground">{currency(yearSummary.salesRevenue)}</p>
+            <p className="text-sm text-muted-foreground">{yearSummary.transactions.toLocaleString()} transactions</p>
           </div>
           <div>
-            <p className="text-xs font-bold uppercase text-muted-foreground">Available qty change</p>
-            <p className="mt-1 text-2xl font-black text-brand">
-              {fetchResult.difference.avgAvailableBefore.toFixed(0)} → {fetchResult.difference.avgAvailableAfter.toFixed(0)}
-            </p>
+            <p className="text-xs font-bold uppercase text-muted-foreground">Units sold</p>
+            <p className="mt-1 text-2xl font-black text-foreground">{yearSummary.unitsSold.toLocaleString()}</p>
+            <p className="text-sm text-muted-foreground">Across 10 selected stores</p>
           </div>
           <div>
-            <p className="text-xs font-bold uppercase text-muted-foreground">Actual stockouts</p>
-            <p className="mt-1 text-2xl font-black text-brand">{fetchResult.difference.actualStockouts}</p>
-          </div>
-          <div>
-            <p className="text-xs font-bold uppercase text-muted-foreground">Fetched products</p>
-            <p className="mt-1 text-2xl font-black text-brand">{fetchResult.pairsScored}</p>
+            <p className="text-xs font-bold uppercase text-muted-foreground">Top stockout cause</p>
+            <p className="mt-1 text-2xl font-black text-foreground">{yearSummary.topCause}</p>
+            <p className="text-sm text-muted-foreground">{yearSummary.topCauseEvents.toLocaleString()} events · {currency(yearSummary.topCauseLostRevenue)}</p>
           </div>
         </section>
       )}
 
-      {fetchResult?.difference?.topChanges.length ? (
-        <Card>
-          <CardHeader>
-            <CardTitle>Difference after DB fetch</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="overflow-x-auto">
-              <table className="w-full min-w-[900px] text-left text-sm">
-                <thead className="text-xs uppercase text-muted-foreground">
-                  <tr>
-                    <th className="px-3 py-2">Product</th>
-                    <th className="px-3 py-2">Store</th>
-                    <th className="px-3 py-2">Probability</th>
-                    <th className="px-3 py-2">Available qty</th>
-                    <th className="px-3 py-2">Demand</th>
-                    <th className="px-3 py-2">Reason</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {fetchResult.difference.topChanges.map((change) => (
-                    <tr key={`${change.storeName}-${change.sku}`} className="border-t border-border">
-                      <td className="px-3 py-3">
-                        <div className="font-bold text-foreground">{change.productName}</div>
-                        <div className="text-xs text-muted-foreground">{change.sku} · {change.category}</div>
-                      </td>
-                      <td className="px-3 py-3 text-muted-foreground">{change.storeName}</td>
-                      <td className="px-3 py-3 font-black text-brand">
-                        {(change.beforeProbability * 100).toFixed(1)}% → {(change.afterProbability * 100).toFixed(1)}%
-                      </td>
-                      <td className="px-3 py-3">{change.beforeAvailable.toFixed(0)} → {change.afterAvailable.toFixed(0)}</td>
-                      <td className="px-3 py-3">{change.sellingRate.toFixed(1)} units/day</td>
-                      <td className="px-3 py-3 text-muted-foreground">{change.reason}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </CardContent>
-        </Card>
-      ) : null}
-
-      {kpis && (
-        <div className="grid gap-4 md:grid-cols-4">
-          <KpiCard label="Stores with high-risk alerts" value={kpis.storesAtRisk.toLocaleString()} delta="10-store demo scope" icon={Store} />
-          <KpiCard label="SKUs with high-risk alerts" value={kpis.skusAtRisk.toLocaleString()} delta="10-store demo scope" icon={AlertTriangle} />
-          <KpiCard label="2024 stockout revenue loss" value={currency(kpis.projectedLostSales)} delta="historical loss for same 10 stores" icon={DollarSign} />
-          <KpiCard label="PR-AUC" value={kpis.forecastAccuracy.toFixed(3)} delta="XGBoost model" icon={LineChart} />
-        </div>
-      )}
-
       <Card>
         <CardHeader>
-          <CardTitle>2024 monthly risk trend by alert level</CardTitle>
+          <CardTitle>{selectedYear} monthly stockout trend by severity</CardTitle>
         </CardHeader>
         <CardContent>
           <RiskTrendChart data={trends} />
@@ -194,7 +111,7 @@ export function DashboardPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>2024 Top 10 Categories by Sales Revenue</CardTitle>
+          <CardTitle>{selectedYear} Top 10 Categories by Sales Revenue</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="h-[420px]">
@@ -251,7 +168,7 @@ export function DashboardPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>2024 Stockout Duration Distribution</CardTitle>
+          <CardTitle>{selectedYear} Stockout Duration Distribution</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="h-[340px]">
@@ -305,7 +222,7 @@ export function DashboardPage() {
         <div className="grid gap-5 lg:grid-cols-[0.8fr_1.2fr]">
           <Card>
             <CardHeader>
-              <CardTitle>2024 stockout revenue loss causes</CardTitle>
+              <CardTitle>{selectedYear} stockout revenue loss causes</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid gap-4">
@@ -358,7 +275,7 @@ export function DashboardPage() {
           </Card>
           <Card>
             <CardHeader>
-              <CardTitle>2024 products involved in revenue loss</CardTitle>
+              <CardTitle>{selectedYear} products involved in stockout loss</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="overflow-x-auto">
@@ -368,7 +285,7 @@ export function DashboardPage() {
                       <th className="px-3 py-2">Product</th>
                       <th className="px-3 py-2">Store</th>
                       <th className="px-3 py-2">Cause</th>
-                      <th className="px-3 py-2">Lost sales</th>
+                      <th className="px-3 py-2">Revenue impact</th>
                       <th className="px-3 py-2">Events</th>
                     </tr>
                   </thead>
@@ -392,10 +309,6 @@ export function DashboardPage() {
           </Card>
         </div>
       )}
-
-      <FiltersBar filters={filters} onChange={setFilters} />
-      <HighRiskTable items={items} onSelect={setSelected} />
-      <ProductDetailDrawer item={selected} onClose={() => setSelected(null)} />
     </div>
   );
 }

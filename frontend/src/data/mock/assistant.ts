@@ -17,6 +17,6 @@ export const assistantReplies = [
   {
     keywords: ["data", "stores", "coverage"],
     reply:
-      "The current local modeling sample now covers all 478 stores with two representative SKUs per store, giving full store coverage while keeping the local pipeline responsive.",
+      "The current project scope uses 10 selected stores and scores every active store-SKU daily through 2025, producing 291,833 prediction rows for event-level stockout coverage.",
   },
 ];

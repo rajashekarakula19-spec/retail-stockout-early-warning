@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
-import { CalendarDays, ChevronDown, ChevronRight, PackageCheck, RefreshCw, Search, Sparkles, Store } from "lucide-react";
-import { getBestDemoWeek, getStorePredictions } from "../lib/api/stockout-api";
+import { CalendarDays, ChevronDown, ChevronRight, PackageCheck, RefreshCw, Search, Store } from "lucide-react";
+import { getStorePredictions } from "../lib/api/stockout-api";
 import type { RiskLevel, StorePredictionGroup, StorePredictionProduct } from "../lib/api/types";
 import { RiskBadge } from "../components/risk/RiskBadge";
 import { Button } from "../components/ui/Button";
@@ -53,7 +53,6 @@ export function PredictionsPage() {
   const [expandedStoreId, setExpandedStoreId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [predictionStartDate, setPredictionStartDate] = useState(defaultPredictionStartDate);
-  const [bestWeekSummary, setBestWeekSummary] = useState<string>("Best demo week: Dec 1-7, 2025");
   const [storeSearch, setStoreSearch] = useState("");
   const predictionEndDate = addDaysIso(predictionStartDate, 6);
   const outcomeWindow = `${predictionStartDate} to ${predictionEndDate}`;
@@ -127,20 +126,14 @@ export function PredictionsPage() {
     void loadStores();
   }, [predictionStartDate]);
 
-  const useBestDemoWeek = async () => {
-    const week = await getBestDemoWeek(10);
-    setBestWeekSummary(`Best demo week: ${week.weekStart} to ${week.weekEnd} · ${week.stockoutEvents} actual stockout products`);
-    setPredictionStartDate(week.weekStart);
-  };
-
   return (
     <div className="space-y-6">
       <section className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <p className="text-sm font-bold uppercase tracking-wide text-accent-warm">10-store time-travel prediction demo</p>
+          <p className="text-sm font-bold uppercase tracking-wide text-accent-warm">2025 scored prediction inspector</p>
           <h1 className="mt-2 text-4xl font-black tracking-tight text-foreground">Store Stockout Predictions</h1>
           <p className="mt-3 max-w-3xl text-muted-foreground">
-            Using scored rows from {predictionStartDate} to {predictionEndDate} to predict whether each store-SKU stocks out in its next 7 days.
+            Inspect any 7-day slice from the full 2025 daily prediction table and compare alerts with actual stockout outcomes.
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
@@ -155,10 +148,6 @@ export function PredictionsPage() {
               onChange={(event) => setPredictionStartDate(event.target.value)}
             />
           </label>
-          <Button variant="secondary" onClick={() => void useBestDemoWeek()} disabled={loading}>
-            <Sparkles className="h-4 w-4" />
-            Best demo week
-          </Button>
           <Button variant="ghost" onClick={() => void loadStores()} disabled={loading}>
             <RefreshCw className="h-4 w-4" />
             Refresh
@@ -174,7 +163,7 @@ export function PredictionsPage() {
             <p className="mt-1 text-sm text-muted-foreground">
               Based on {predictionMatrix.total} scored store-SKUs available during {outcomeWindow}; predicted stockout vs actual stockout.
             </p>
-            <p className="mt-1 text-xs font-semibold text-muted-foreground">{bestWeekSummary}</p>
+            <p className="mt-1 text-xs font-semibold text-muted-foreground">Full-year scoring is already generated; this view filters into one inspection window.</p>
           </div>
           <div className="grid grid-cols-4 gap-3 text-center text-sm">
             <div>
@@ -261,7 +250,7 @@ export function PredictionsPage() {
       <div className="overflow-hidden rounded-xl border border-border bg-card shadow-elegant">
         <div className="grid gap-3 border-b border-border bg-muted/70 px-4 py-3 text-sm font-bold text-muted-foreground lg:grid-cols-[1fr_auto] lg:items-center">
           <span>
-            Showing {filteredStores.length || 0} of {stores.length || 10} demo stores from PostgreSQL · prediction window {predictionStartDate} to {predictionEndDate}
+            Showing {filteredStores.length || 0} of {stores.length || 10} stores from PostgreSQL · inspection window {predictionStartDate} to {predictionEndDate}
           </span>
           <label className="flex min-w-[280px] items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground">
             <Search className="h-4 w-4 text-brand" />

@@ -1,4 +1,4 @@
-# Retail Stockout Early-Warning System
+# ShelfSignal: Retail Stockout Early-Warning System
 
 ShelfSignal is a stockout early-warning and decision-support project for retail stores. It predicts whether a store-SKU is likely to stock out in the next 7 days, explains the risk drivers, and converts predictions into recommended actions such as reorder, expedite replenishment, or move inventory from backroom to shelf.
 
@@ -7,6 +7,8 @@ ShelfSignal is a stockout early-warning and decision-support project for retail 
 - PostgreSQL-backed retail analytics pipeline
 - One modeling row per `store + SKU + date`
 - XGBoost stockout-risk model with Logistic Regression baseline
+- 2024 training and full-year 2025 daily scoring
+- Event-level validation: checks whether each actual 2025 stockout had a prior alert 1-7 days before the event
 - Recall-oriented threshold tuning for stockout prevention
 - Product-specific threshold adjustments
 - Time-series demand forecast signals in the prediction dashboard
@@ -17,10 +19,10 @@ ShelfSignal is a stockout early-warning and decision-support project for retail 
 
 ## Dashboard Pages
 
-- **Overview**: high-level project and data summary
-- **Risk Dashboard**: risk trends, revenue-loss causes, stockout duration distribution, top categories, high-risk items
-- **Predictions**: store drill-down with product risk, forecast demand, probability, prediction result, root cause, and action
-- **Results**: 2025 10-store evaluation, threshold tuning, revenue protected, missed stockouts, and root-cause charts
+- **Overview**: project scope, daily prediction volume, and event-level business coverage snapshot
+- **Risk Dashboard**: switchable 2024/2025 business analytics for stockout loss, events, lost units, causes, durations, products, and category revenue
+- **Predictions**: date-window store drill-down with product risk, forecast demand, probability, prediction result, root cause, and action
+- **Results**: 2025 event-level evaluation, threshold tuning, revenue covered by prior alerts, missed stockouts, and root-cause charts
 
 ## Data
 
@@ -80,6 +82,22 @@ Features include:
 - product, store, and category signals
 
 The operating threshold is recall-oriented because missing a real stockout is costly. The project first tunes an overall threshold, then applies product-specific adjustments for low days of supply, long lead time, fast sellers, perishable categories, high stockout history, backroom buffers, replenishment, and false-alert history.
+
+Current 10-store daily scoring scope:
+
+- Modeling table: **584,571 rows** across 2024-2025
+- 2025 scored prediction rows: **291,833**
+- Active 10-store store-SKU pairs: **800**
+
+Current event-level 2025 result:
+
+- Actual stockout events: **3,888**
+- Total 2025 stockout loss: **$6,264,446.53**
+- Events covered by prior alerts: **3,876**
+- Missed events: **12**
+- Revenue covered by prior alerts: **$6,245,380.68**
+- Missed revenue: **$19,065.85**
+- Average warning time: **6.8 days**
 
 ## Local Setup
 
@@ -167,7 +185,7 @@ The Results page reports:
 - successful predictions
 - false alerts
 - missed stockouts
-- revenue protected
+- revenue covered by prior alerts
 - missed stockout revenue
 - covered/missed causes
 - covered/missed durations

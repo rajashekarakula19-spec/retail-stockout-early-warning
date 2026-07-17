@@ -32,6 +32,10 @@ function compactNumber(value: number) {
   return Math.round(value).toLocaleString();
 }
 
+function hasPriorScore(row: MissedStockoutDetail) {
+  return row.predictionOutcome !== "No prior scored row";
+}
+
 function MissedStockoutTable({ rows }: { rows: MissedStockoutDetail[] }) {
   return (
     <Card>
@@ -41,7 +45,7 @@ function MissedStockoutTable({ rows }: { rows: MissedStockoutDetail[] }) {
       <CardContent>
         {rows.length === 0 ? (
           <div className="flex h-[180px] items-center justify-center rounded-lg border border-dashed border-border bg-background text-sm font-semibold text-muted-foreground">
-            No missed stockouts in this result set.
+            No missed stockout events in this result set.
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -62,49 +66,65 @@ function MissedStockoutTable({ rows }: { rows: MissedStockoutDetail[] }) {
                 </tr>
               </thead>
               <tbody>
-                {rows.map((row) => (
-                  <tr key={`${row.storeId}-${row.sku}-${row.predictionDate}`} className="align-top">
+                {rows.map((row) => {
+                  const scored = hasPriorScore(row);
+                  return (
+                  <tr key={`${row.storeId}-${row.sku}-${row.actualStockoutDate ?? row.predictionDate ?? "no-score"}`} className="align-top">
                     <td className="border-b border-border px-3 py-4">
                       <p className="font-black text-foreground">{row.productName}</p>
                       <p className="text-xs font-semibold text-muted-foreground">{row.sku} · {row.category}</p>
                       <p className="mt-1 text-xs text-muted-foreground">{row.storeName} · {row.storeId}</p>
                     </td>
-                    <td className="border-b border-border px-3 py-4 font-black text-foreground">{compactNumber(row.quantityAvailable)}</td>
-                    <td className="border-b border-border px-3 py-4 font-black text-foreground">{compactNumber(row.shelfQuantity)}</td>
-                    <td className="border-b border-border px-3 py-4 text-muted-foreground">{compactNumber(row.backroomQuantity)}</td>
+                    <td className="border-b border-border px-3 py-4 font-black text-foreground">{scored ? compactNumber(row.quantityAvailable) : "N/A"}</td>
+                    <td className="border-b border-border px-3 py-4 font-black text-foreground">{scored ? compactNumber(row.shelfQuantity) : "N/A"}</td>
+                    <td className="border-b border-border px-3 py-4 text-muted-foreground">{scored ? compactNumber(row.backroomQuantity) : "N/A"}</td>
                     <td className="border-b border-border px-3 py-4">
-                      <p className="font-black text-foreground">{row.sellingRate.toFixed(1)}</p>
-                      <p className="text-xs text-muted-foreground">units/day</p>
+                      <p className="font-black text-foreground">{scored ? row.sellingRate.toFixed(1) : "N/A"}</p>
+                      {scored && <p className="text-xs text-muted-foreground">units/day</p>}
                     </td>
                     <td className="border-b border-border px-3 py-4">
-                      <p className="font-black text-foreground">{compactNumber(row.forecast7dDemand)} units</p>
-                      <p className="text-xs text-muted-foreground">7d demand · gap {compactNumber(row.forecastInventoryGap)}</p>
-                      <p className="text-xs text-muted-foreground">{row.forecastDaysOfSupply.toFixed(1)} forecast days</p>
+                      <p className="font-black text-foreground">{scored ? `${compactNumber(row.forecast7dDemand)} units` : "N/A"}</p>
+                      {scored ? (
+                        <>
+                          <p className="text-xs text-muted-foreground">7d demand · gap {compactNumber(row.forecastInventoryGap)}</p>
+                          <p className="text-xs text-muted-foreground">{row.forecastDaysOfSupply.toFixed(1)} forecast days</p>
+                        </>
+                      ) : (
+                        <p className="text-xs text-muted-foreground">No prior score in warning window</p>
+                      )}
                     </td>
                     <td className="border-b border-border px-3 py-4">
-                      <p className="font-black text-foreground">{row.possibleStockoutTime}</p>
-                      <p className="text-xs text-muted-foreground">{row.daysOfSupply.toFixed(1)} days supply</p>
+                      <p className="font-black text-foreground">{scored ? row.possibleStockoutTime : "N/A"}</p>
+                      {scored && <p className="text-xs text-muted-foreground">{row.daysOfSupply.toFixed(1)} days supply</p>}
                     </td>
                     <td className="border-b border-border px-3 py-4">
-                      <p className="font-black text-foreground">{percent(row.timeSeriesAdjustedProbability)}</p>
-                      <span className="mt-1 inline-flex rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-black capitalize text-amber-800">
-                        {row.riskLevel}
-                      </span>
-                      <p className="mt-1 text-xs text-muted-foreground">XGB {percent(row.stockoutProbability)} · threshold {percent(row.alertThreshold)}</p>
+                      <p className="font-black text-foreground">{scored ? percent(row.timeSeriesAdjustedProbability) : "N/A"}</p>
+                      {scored ? (
+                        <>
+                          <span className="mt-1 inline-flex rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-black capitalize text-amber-800">
+                            {row.riskLevel}
+                          </span>
+                          <p className="mt-1 text-xs text-muted-foreground">XGB {percent(row.stockoutProbability)} · threshold {percent(row.alertThreshold)}</p>
+                        </>
+                      ) : (
+                        <p className="text-xs text-muted-foreground">No model score available</p>
+                      )}
                     </td>
                     <td className="border-b border-border px-3 py-4">
                       <p className="font-black text-amber-800">{row.predictionOutcome}</p>
-                      <p className="text-xs text-muted-foreground">Predicted no · Actual yes</p>
+                      <p className="text-xs text-muted-foreground">No prior alert · Actual stockout</p>
                       <p className="mt-1 text-xs text-muted-foreground">Actual {row.actualStockoutDate ?? "unknown"} · {row.root_cause}</p>
+                      {row.warningDays != null && <p className="text-xs text-muted-foreground">Warning: {row.warningDays} days</p>}
                       <p className="text-xs font-semibold text-rose-700">{currency(row.estimated_lost_revenue)} missed</p>
                     </td>
                     <td className="border-b border-border px-3 py-4">
-                      <p className="font-black text-foreground">{compactNumber(row.recentReplenishmentQty)} received</p>
-                      <p className="text-xs text-muted-foreground">{row.daysSinceLastReplenishment.toFixed(0)} days ago · lead {row.avgSupplierLeadTime.toFixed(1)}d</p>
+                      <p className="font-black text-foreground">{scored ? `${compactNumber(row.recentReplenishmentQty)} received` : "N/A"}</p>
+                      {scored && <p className="text-xs text-muted-foreground">{row.daysSinceLastReplenishment.toFixed(0)} days ago · lead {row.avgSupplierLeadTime.toFixed(1)}d</p>}
                     </td>
                     <td className="border-b border-border px-3 py-4 text-muted-foreground">{row.recommendedAction}</td>
                   </tr>
-                ))}
+                  );
+                })}
               </tbody>
             </table>
           </div>
@@ -135,7 +155,7 @@ function BreakdownChart({ title, data, keyName }: { title: string; data: ResultB
       <CardContent>
         {chartData.length === 0 ? (
           <div className="flex h-[320px] items-center justify-center rounded-lg border border-dashed border-border bg-background text-sm font-semibold text-muted-foreground">
-            No missed labels in this evaluated result set.
+            No missed stockout events in this result set.
           </div>
         ) : (
         <div className="h-[320px]">
@@ -180,7 +200,7 @@ function PieBreakdownChart({ title, data, keyName }: { title: string; data: Resu
       <CardContent>
         {chartData.length === 0 ? (
           <div className="flex h-[320px] items-center justify-center rounded-lg border border-dashed border-border bg-background text-sm font-semibold text-muted-foreground">
-            No covered labels in this evaluated result set.
+            No covered stockout events in this result set.
           </div>
         ) : (
         <>
@@ -195,7 +215,7 @@ function PieBreakdownChart({ title, data, keyName }: { title: string; data: Resu
               <Tooltip
                 formatter={(value, _name, item) => {
                   const payload = item.payload as ResultBreakdownItem & { label: string };
-                  return [Number(value).toLocaleString(), `${payload.label} · ${currency(payload.lostRevenue)} protected`];
+                  return [Number(value).toLocaleString(), `${payload.label} · ${currency(payload.lostRevenue)} covered`];
                 }}
                 contentStyle={{
                   background: "hsl(var(--card))",
@@ -258,7 +278,7 @@ function ThresholdTuningCard({ tuning }: { tuning: ThresholdTuningSummary }) {
                 <th className="border-b border-border px-3 py-3">Successful</th>
                 <th className="border-b border-border px-3 py-3">False alerts</th>
                 <th className="border-b border-border px-3 py-3">Missed</th>
-                <th className="border-b border-border px-3 py-3">Revenue protected</th>
+                <th className="border-b border-border px-3 py-3">Revenue covered</th>
               </tr>
             </thead>
             <tbody>
@@ -285,7 +305,7 @@ function ThresholdTuningCard({ tuning }: { tuning: ThresholdTuningSummary }) {
           </table>
         </div>
         <p className="mt-3 text-xs font-semibold text-muted-foreground">
-          Tested {tuning.rowsChecked.toLocaleString()} evaluated prediction rows and {tuning.actualStockouts.toLocaleString()} evaluated stockout labels.
+          Tested {tuning.rowsChecked.toLocaleString()} prediction rows and {tuning.actualStockouts.toLocaleString()} stockout-positive prediction labels.
         </p>
       </CardContent>
     </Card>
@@ -311,17 +331,17 @@ export function ResultsPage() {
     <div className="space-y-6">
       <section className="rounded-xl border border-border bg-card p-6 shadow-elegant">
         <p className="text-sm font-bold uppercase tracking-wide text-accent-warm">Results</p>
-        <h1 className="mt-2 text-3xl font-black tracking-tight text-foreground">2025 10-Store Model Evaluation</h1>
+        <h1 className="mt-2 text-3xl font-black tracking-tight text-foreground">2025 10-Store Event-Level Results</h1>
         <p className="mt-3 max-w-4xl text-muted-foreground">
-          Full-year 2025 performance for the same 10 selected stores, based on evaluated prediction rows: stockout labels covered, stockout labels missed, protected revenue, and missed root-cause/duration patterns.
+          Full-year 2025 business coverage for the same 10 selected stores. Each actual stockout event is counted once, then checked for a prior alert in the 1-7 days before the stockout date.
         </p>
       </section>
 
       <section className="grid gap-4 md:grid-cols-4">
-        <MetricCard label="Revenue protected" value={currency(results.estimatedRevenueProtected)} detail={`${percent(results.revenueCoverageRate)} of evaluated stockout revenue`} tone="green" />
-        <MetricCard label="Missed stockout revenue" value={currency(results.estimatedRevenueMissed)} detail="Evaluated stockout labels missed by the model" tone="rose" />
-        <MetricCard label="Covered stockout labels" value={results.coveredEvents.toLocaleString()} detail={`${percent(results.coverageRate)} of evaluated stockout labels`} />
-        <MetricCard label="Evaluated stockout labels" value={results.stockoutEvents.toLocaleString()} detail="2025 rows where actual stockout label = yes" />
+        <MetricCard label="Total 2025 stockout loss" value={currency(results.estimatedRevenueAtRisk)} detail={`${results.stockoutEvents.toLocaleString()} actual stockout events`} />
+        <MetricCard label="Revenue covered by prior alerts" value={currency(results.estimatedRevenueProtected)} detail={`${percent(results.revenueCoverageRate)} of 2025 stockout revenue`} tone="green" />
+        <MetricCard label="Missed stockout revenue" value={currency(results.estimatedRevenueMissed)} detail={`${results.missedEvents.toLocaleString()} events without a prior alert`} tone="rose" />
+        <MetricCard label="Average warning time" value={`${results.averageWarningDays.toFixed(1)} days`} detail={`${results.coveredEvents.toLocaleString()} events had prior alerts`} />
       </section>
 
       <Card>
@@ -366,10 +386,16 @@ export function ResultsPage() {
             </div>
           </div>
           <p className="mt-3 text-xs font-semibold text-muted-foreground">
-            {matrix.rowsChecked.toLocaleString()} evaluated prediction rows · {matrix.predictedStockouts.toLocaleString()} predicted alerts · {matrix.actualStockouts.toLocaleString()} actual stockout labels
+            Row-level model matrix: {matrix.rowsChecked.toLocaleString()} daily prediction rows · {matrix.predictedStockouts.toLocaleString()} predicted alerts · {matrix.actualStockouts.toLocaleString()} stockout-positive labels
           </p>
         </CardContent>
       </Card>
+
+      <section className="grid gap-4 md:grid-cols-3">
+        <MetricCard label="Covered stockout events" value={results.coveredEvents.toLocaleString()} detail={`${percent(results.coverageRate)} event-level coverage`} tone="green" />
+        <MetricCard label="Missed stockout events" value={results.missedEvents.toLocaleString()} detail={`${results.noPriorScoredEvents.toLocaleString()} had no prior scored row`} tone="rose" />
+        <MetricCard label="Total event revenue at risk" value={currency(results.estimatedRevenueAtRisk)} detail="Actual 2025 stockout events for 10 stores" />
+      </section>
 
       {thresholdTuning ? <ThresholdTuningCard tuning={thresholdTuning} /> : null}
 
@@ -386,8 +412,8 @@ export function ResultsPage() {
         <div className="flex items-start gap-3">
           <CheckCircle2 className="mt-1 h-5 w-5 text-emerald-600" />
           <div>
-            <p className="font-black text-foreground">Revenue protected is estimated</p>
-            <p className="text-sm text-muted-foreground">It means a prior alert existed before the actual stockout, so the lost revenue was preventable with action.</p>
+            <p className="font-black text-foreground">Revenue covered is estimated</p>
+            <p className="text-sm text-muted-foreground">It means a prior alert existed before the actual stockout, so the loss was actionable if the business responded.</p>
           </div>
         </div>
         <div className="flex items-start gap-3">

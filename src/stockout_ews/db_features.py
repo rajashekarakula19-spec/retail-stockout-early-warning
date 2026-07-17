@@ -16,12 +16,20 @@ from stockout_ews.features import (
 
 def _sample_pairs_from_db(config: dict) -> pd.DataFrame:
     sample = config.get("sample", {})
+    store_limit = sample.get("store_limit")
     max_skus = sample.get("max_skus_per_store")
     max_pairs = sample.get("max_store_sku_pairs")
     query = """
-        WITH pairs AS (
+        WITH selected_stores AS (
+            SELECT store_id
+            FROM retail_raw.stores
+            ORDER BY store_id
+            LIMIT COALESCE(%(store_limit)s::integer, 2147483647)
+        ),
+        pairs AS (
             SELECT DISTINCT store_id, sku_id
             FROM retail_raw.sales_transactions
+            JOIN selected_stores USING (store_id)
         ),
         ranked AS (
             SELECT
@@ -32,11 +40,11 @@ def _sample_pairs_from_db(config: dict) -> pd.DataFrame:
         )
         SELECT store_id, sku_id
         FROM ranked
-        WHERE (%(max_skus)s IS NULL OR sku_rank <= %(max_skus)s)
+        WHERE (%(max_skus)s::integer IS NULL OR sku_rank <= %(max_skus)s::integer)
         ORDER BY store_id, sku_id
-        LIMIT COALESCE(%(max_pairs)s, 2147483647)
+        LIMIT COALESCE(%(max_pairs)s::integer, 2147483647)
     """
-    return read_sql(query, config, {"max_skus": max_skus, "max_pairs": max_pairs})
+    return read_sql(query, config, {"store_limit": store_limit, "max_skus": max_skus, "max_pairs": max_pairs})
 
 
 def _values_clause(pairs: pd.DataFrame) -> str:

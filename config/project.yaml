@@ -21,9 +21,10 @@ split:
   test_start_date: "2025-01-01"
 
 sample:
-  # Keep all stores represented while limiting SKU depth per store for fast local iteration.
+  # Production-like demo scope: score every active SKU daily for the same 10 stores.
+  store_limit: 10
   max_store_sku_pairs:
-  max_skus_per_store: 2
+  max_skus_per_store:
   random_state: 42
 
 model:

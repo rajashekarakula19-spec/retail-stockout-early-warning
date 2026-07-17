@@ -9,13 +9,13 @@ export function HeroSection() {
         <div>
           <div className="inline-flex items-center gap-2 rounded-full bg-brand-foreground/14 px-3 py-1 text-sm font-bold text-brand-foreground">
             <Store className="h-4 w-4" />
-            10-store stockout early-warning demo
+            ShelfSignal
           </div>
           <h1 className="mt-5 max-w-3xl text-4xl font-black tracking-tight text-brand-foreground md:text-6xl">
-            Train on 2024. Predict weekly 2025 stockouts.
+            Retail Stockout Early-Warning System
           </h1>
           <p className="mt-5 max-w-2xl text-lg leading-8 text-brand-foreground/84">
-            This demo focuses on 10 selected stores, pulls the next unseen week from PostgreSQL, and shows how inventory, demand, replenishment, and stockout history change risk alerts.
+            ShelfSignal trains on 2024 history, scores daily 2025 stockout risk for 10 selected stores, and checks whether alerts appeared before actual stockout events.
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
             <Link to="/dashboard">
@@ -32,7 +32,7 @@ export function HeroSection() {
           </div>
         </div>
         <div className="rounded-xl border border-brand-foreground/18 bg-brand-foreground/12 p-5 text-brand-foreground backdrop-blur">
-          <p className="text-sm font-bold uppercase tracking-wide text-brand-foreground/74">Demo scope</p>
+          <p className="text-sm font-bold uppercase tracking-wide text-brand-foreground/74">Project scope</p>
           <div className="mt-5 grid grid-cols-2 gap-3">
             <div className="rounded-xl bg-brand-foreground/12 p-4">
               <p className="text-3xl font-black">10</p>
@@ -43,8 +43,8 @@ export function HeroSection() {
               <p className="text-sm text-brand-foreground/74">analysis/training year</p>
             </div>
             <div className="col-span-2 rounded-xl bg-brand-foreground/12 p-4">
-              <p className="text-3xl font-black">2025 weekly DB fetch</p>
-              <p className="text-sm text-brand-foreground/74">simulate new operational data arriving from PostgreSQL</p>
+              <p className="text-3xl font-black">291,833 daily predictions</p>
+              <p className="text-sm text-brand-foreground/74">full-year 2025 store-SKU scoring from PostgreSQL</p>
             </div>
           </div>
         </div>

@@ -25,6 +25,9 @@ CREATE INDEX IF NOT EXISTS idx_ml_modeling_store_sku_date
 CREATE INDEX IF NOT EXISTS idx_ml_scored_probability
     ON retail_ml.scored_test_rows (stockout_probability DESC);
 
+CREATE INDEX IF NOT EXISTS idx_ml_scored_store_sku_date
+    ON retail_ml.scored_test_rows (store_id, sku_id, date);
+
 CREATE INDEX IF NOT EXISTS idx_ml_recommendations_probability
     ON retail_ml.stockout_action_recommendations (stockout_probability DESC, estimated_lost_sales DESC);
 

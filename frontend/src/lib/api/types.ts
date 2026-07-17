@@ -23,6 +23,23 @@ export interface KpiSummary {
   alertsToday: number;
 }
 
+export interface YearlyStockoutSummary {
+  year: number;
+  storeCount: number;
+  stockoutEvents: number;
+  storesWithStockouts: number;
+  skusWithStockouts: number;
+  lostRevenue: number;
+  lostUnits: number;
+  avgDurationDays: number;
+  salesRevenue: number;
+  unitsSold: number;
+  transactions: number;
+  topCause: string;
+  topCauseEvents: number;
+  topCauseLostRevenue: number;
+}
+
 export interface RiskTrendPoint {
   date: string;
   critical: number;
@@ -179,6 +196,7 @@ export interface MissedStockoutDetail {
   alertThreshold: number;
   riskLevel: RiskLevel;
   predictionOutcome: string;
+  warningDays?: number | null;
   recentReplenishmentQty: number;
   daysSinceLastReplenishment: number;
   avgSupplierLeadTime: number;
@@ -234,6 +252,8 @@ export interface Results2025Summary {
   stockoutEvents: number;
   coveredEvents: number;
   missedEvents: number;
+  noPriorScoredEvents: number;
+  averageWarningDays: number;
   estimatedRevenueAtRisk: number;
   estimatedRevenueProtected: number;
   estimatedRevenueMissed: number;

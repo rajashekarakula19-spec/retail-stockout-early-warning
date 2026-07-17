@@ -25,6 +25,7 @@ import type {
   StorePredictionGroup,
   ThresholdTuningSummary,
   WeeklyUploadResult,
+  YearlyStockoutSummary,
 } from "./types";
 
 const delay = (ms = 220) => new Promise((resolve) => window.setTimeout(resolve, ms));
@@ -105,8 +106,30 @@ export async function getKpis(): Promise<KpiSummary> {
   });
 }
 
-export async function getRevenueLossCauses(): Promise<RevenueLossSummary> {
-  return getJson<RevenueLossSummary>("/api/revenue-loss-causes", async () => {
+export async function getYearlyStockoutSummary(year = 2025): Promise<YearlyStockoutSummary> {
+  return getJson<YearlyStockoutSummary>(`/api/yearly-stockout-summary?year=${year}`, async () => {
+    await delay();
+    return {
+      year,
+      storeCount: 10,
+      stockoutEvents: 0,
+      storesWithStockouts: 0,
+      skusWithStockouts: 0,
+      lostRevenue: 0,
+      lostUnits: 0,
+      avgDurationDays: 0,
+      salesRevenue: 0,
+      unitsSold: 0,
+      transactions: 0,
+      topCause: "Unavailable",
+      topCauseEvents: 0,
+      topCauseLostRevenue: 0,
+    };
+  });
+}
+
+export async function getRevenueLossCauses(year = 2024): Promise<RevenueLossSummary> {
+  return getJson<RevenueLossSummary>(`/api/revenue-loss-causes?year=${year}`, async () => {
     await delay();
     return {
       causes: [],
@@ -115,22 +138,22 @@ export async function getRevenueLossCauses(): Promise<RevenueLossSummary> {
   });
 }
 
-export async function getTopCategoriesByRevenue(): Promise<CategoryRevenue[]> {
-  return getJson<CategoryRevenue[]>("/api/top-categories-by-revenue", async () => {
+export async function getTopCategoriesByRevenue(year = 2024): Promise<CategoryRevenue[]> {
+  return getJson<CategoryRevenue[]>(`/api/top-categories-by-revenue?year=${year}`, async () => {
     await delay();
     return [];
   });
 }
 
-export async function getStockoutDurationDistribution(): Promise<StockoutDurationBucket[]> {
-  return getJson<StockoutDurationBucket[]>("/api/stockout-duration-distribution", async () => {
+export async function getStockoutDurationDistribution(year = 2024): Promise<StockoutDurationBucket[]> {
+  return getJson<StockoutDurationBucket[]>(`/api/stockout-duration-distribution?year=${year}`, async () => {
     await delay();
     return [];
   });
 }
 
-export async function getRiskTrends(rangeDays = 90): Promise<RiskTrendPoint[]> {
-  return getJson<RiskTrendPoint[]>(`/api/risk-trends?rangeDays=${rangeDays}`, async () => {
+export async function getRiskTrends(rangeDays = 90, year = 2024): Promise<RiskTrendPoint[]> {
+  return getJson<RiskTrendPoint[]>(`/api/risk-trends?rangeDays=${rangeDays}&year=${year}`, async () => {
     await delay();
     return riskTrends.slice(rangeDays <= 45 ? -6 : 0);
   });
@@ -221,6 +244,8 @@ export async function getResults2025(storeLimit = 10): Promise<Results2025Summar
       stockoutEvents: 0,
       coveredEvents: 0,
       missedEvents: 0,
+      noPriorScoredEvents: 0,
+      averageWarningDays: 0,
       estimatedRevenueAtRisk: 0,
       estimatedRevenueProtected: 0,
       estimatedRevenueMissed: 0,

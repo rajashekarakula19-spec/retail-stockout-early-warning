@@ -314,14 +314,91 @@ def executive_summary() -> dict:
     )
     return {
         "summary": (
-            f"10-store PostgreSQL demo monitoring {counts['stores']} stores and {counts['skus']} SKUs. "
+            f"ShelfSignal monitors {counts['stores']} selected stores and {counts['skus']} active SKUs from PostgreSQL. "
             f"XGBoost recall is {float(metrics['recall']):.1%}, prioritizing early detection of costly stockouts."
         )
     }
 
 
+def year_window(year: int) -> tuple[str, str]:
+    return f"{year}-01-01", f"{year + 1}-01-01"
+
+
+@app.get("/api/yearly-stockout-summary")
+def yearly_stockout_summary(year: int = Query(2025, ge=2024, le=2025)) -> dict:
+    start, end = year_window(year)
+    row = fetch_one(
+        """
+        WITH demo_stores AS (
+            SELECT store_id FROM retail_raw.stores ORDER BY store_id LIMIT %(store_limit)s
+        ),
+        stockouts AS (
+            SELECT
+                count(*) AS stockout_events,
+                count(DISTINCT so.store_id) AS stores_with_stockouts,
+                count(DISTINCT so.sku_id) AS skus_with_stockouts,
+                coalesce(sum(so.estimated_lost_revenue), 0) AS lost_revenue,
+                coalesce(sum(so.estimated_lost_units), 0) AS lost_units,
+                coalesce(avg(so.duration_days), 0) AS avg_duration_days
+            FROM retail_raw.stockout_events so
+            JOIN demo_stores ds USING (store_id)
+            WHERE so.stockout_date >= %(start)s::date
+              AND so.stockout_date < %(end)s::date
+        ),
+        sales AS (
+            SELECT
+                coalesce(sum(s.revenue), 0) AS sales_revenue,
+                coalesce(sum(s.units_sold), 0) AS units_sold,
+                count(*) AS transactions
+            FROM retail_raw.sales_transactions s
+            JOIN demo_stores ds USING (store_id)
+            WHERE s.sale_date >= %(start)s::date
+              AND s.sale_date < %(end)s::date
+        )
+        SELECT *
+        FROM stockouts CROSS JOIN sales
+        """,
+        {"store_limit": DEMO_STORE_LIMIT, "start": start, "end": end},
+    )
+    top_cause = fetch_one(
+        """
+        WITH demo_stores AS (
+            SELECT store_id FROM retail_raw.stores ORDER BY store_id LIMIT %(store_limit)s
+        )
+        SELECT coalesce(root_cause, 'Unknown') AS root_cause,
+               count(*) AS events,
+               coalesce(sum(estimated_lost_revenue), 0) AS lost_revenue
+        FROM retail_raw.stockout_events so
+        JOIN demo_stores ds USING (store_id)
+        WHERE so.stockout_date >= %(start)s::date
+          AND so.stockout_date < %(end)s::date
+        GROUP BY 1
+        ORDER BY lost_revenue DESC
+        LIMIT 1
+        """,
+        {"store_limit": DEMO_STORE_LIMIT, "start": start, "end": end},
+    )
+    return {
+        "year": year,
+        "storeCount": DEMO_STORE_LIMIT,
+        "stockoutEvents": int(row["stockout_events"] or 0),
+        "storesWithStockouts": int(row["stores_with_stockouts"] or 0),
+        "skusWithStockouts": int(row["skus_with_stockouts"] or 0),
+        "lostRevenue": float(row["lost_revenue"] or 0),
+        "lostUnits": float(row["lost_units"] or 0),
+        "avgDurationDays": float(row["avg_duration_days"] or 0),
+        "salesRevenue": float(row["sales_revenue"] or 0),
+        "unitsSold": float(row["units_sold"] or 0),
+        "transactions": int(row["transactions"] or 0),
+        "topCause": top_cause["root_cause"] if top_cause else "None",
+        "topCauseEvents": int(top_cause["events"] or 0) if top_cause else 0,
+        "topCauseLostRevenue": float(top_cause["lost_revenue"] or 0) if top_cause else 0,
+    }
+
+
 @app.get("/api/revenue-loss-causes")
-def revenue_loss_causes() -> dict:
+def revenue_loss_causes(year: int = Query(2024, ge=2024, le=2025)) -> dict:
+    start, end = year_window(year)
     causes = fetch_all(
         """
         WITH demo_stores AS (
@@ -334,13 +411,13 @@ def revenue_loss_causes() -> dict:
             coalesce(sum(estimated_lost_units), 0) AS lost_units
         FROM retail_raw.stockout_events so
         JOIN demo_stores ds USING (store_id)
-        WHERE stockout_date >= DATE '2024-01-01'
-          AND stockout_date < DATE '2025-01-01'
+        WHERE stockout_date >= %(start)s::date
+          AND stockout_date < %(end)s::date
         GROUP BY 1
         ORDER BY lost_revenue DESC
         LIMIT 6
         """,
-        {"store_limit": DEMO_STORE_LIMIT},
+        {"store_limit": DEMO_STORE_LIMIT, "start": start, "end": end},
     )
     products = fetch_all(
         """
@@ -361,14 +438,14 @@ def revenue_loss_causes() -> dict:
         JOIN demo_stores ds USING (store_id)
         LEFT JOIN retail_raw.products p ON p.sku_id = so.sku_id
         LEFT JOIN retail_raw.stores st ON st.store_id = so.store_id
-        WHERE so.stockout_date >= DATE '2024-01-01'
-          AND so.stockout_date < DATE '2025-01-01'
+        WHERE so.stockout_date >= %(start)s::date
+          AND so.stockout_date < %(end)s::date
         GROUP BY 1,2,3,4,5,6
         ORDER BY lost_revenue DESC
         LIMIT 12
         """
         ,
-        {"store_limit": DEMO_STORE_LIMIT},
+        {"store_limit": DEMO_STORE_LIMIT, "start": start, "end": end},
     )
     return {
         "causes": [
@@ -398,7 +475,8 @@ def revenue_loss_causes() -> dict:
 
 
 @app.get("/api/top-categories-by-revenue")
-def top_categories_by_revenue() -> list[dict]:
+def top_categories_by_revenue(year: int = Query(2024, ge=2024, le=2025)) -> list[dict]:
+    start, end = year_window(year)
     rows = fetch_all(
         """
         WITH demo_stores AS (
@@ -412,13 +490,13 @@ def top_categories_by_revenue() -> list[dict]:
         FROM retail_raw.sales_transactions s
         JOIN demo_stores ds USING (store_id)
         LEFT JOIN retail_raw.products p ON p.sku_id = s.sku_id
-        WHERE s.sale_date >= DATE '2024-01-01'
-          AND s.sale_date < DATE '2025-01-01'
+        WHERE s.sale_date >= %(start)s::date
+          AND s.sale_date < %(end)s::date
         GROUP BY 1
         ORDER BY revenue DESC
         LIMIT 10
         """,
-        {"store_limit": DEMO_STORE_LIMIT},
+        {"store_limit": DEMO_STORE_LIMIT, "start": start, "end": end},
     )
     return [
         {
@@ -432,7 +510,8 @@ def top_categories_by_revenue() -> list[dict]:
 
 
 @app.get("/api/stockout-duration-distribution")
-def stockout_duration_distribution() -> list[dict]:
+def stockout_duration_distribution(year: int = Query(2024, ge=2024, le=2025)) -> list[dict]:
+    start, end = year_window(year)
     rows = fetch_all(
         """
         WITH demo_stores AS (
@@ -463,8 +542,8 @@ def stockout_duration_distribution() -> list[dict]:
                 coalesce(sum(estimated_lost_units), 0) AS lost_units
             FROM retail_raw.stockout_events so
             JOIN demo_stores ds USING (store_id)
-            WHERE stockout_date >= DATE '2024-01-01'
-              AND stockout_date < DATE '2025-01-01'
+            WHERE stockout_date >= %(start)s::date
+              AND stockout_date < %(end)s::date
             GROUP BY 1, 2, 3
         ),
         bucket_totals AS (
@@ -483,7 +562,7 @@ def stockout_duration_distribution() -> list[dict]:
         FROM bucket_totals
         ORDER BY bucket_order
         """,
-        {"store_limit": DEMO_STORE_LIMIT},
+        {"store_limit": DEMO_STORE_LIMIT, "start": start, "end": end},
     )
     return [
         {
@@ -538,7 +617,8 @@ def kpis() -> dict:
 
 
 @app.get("/api/risk-trends")
-def risk_trends(rangeDays: int = Query(90, ge=7, le=365)) -> list[dict]:
+def risk_trends(rangeDays: int = Query(90, ge=7, le=365), year: int = Query(2024, ge=2024, le=2025)) -> list[dict]:
+    start, end = year_window(year)
     rows = fetch_all(
         """
         WITH demo_stores AS (
@@ -556,15 +636,15 @@ def risk_trends(rangeDays: int = Query(90, ge=7, le=365)) -> list[dict]:
                 count(*) AS store_sku_count
             FROM retail_raw.stockout_events so
             JOIN demo_stores ds USING (store_id)
-            WHERE stockout_date >= DATE '2024-01-01'
-              AND stockout_date < DATE '2025-01-01'
+            WHERE stockout_date >= %(start)s::date
+              AND stockout_date < %(end)s::date
             GROUP BY 1, 2
         )
         SELECT to_char(month_start, 'Mon') AS month_label, risk_level, store_sku_count
         FROM monthly
         ORDER BY month_start
         """,
-        {"store_limit": DEMO_STORE_LIMIT},
+        {"store_limit": DEMO_STORE_LIMIT, "start": start, "end": end},
     )
     month_order = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
     by_date: dict[str, dict] = {month: {"date": month, "critical": 0, "high": 0, "medium": 0, "low": 0} for month in month_order}
@@ -970,7 +1050,7 @@ def store_predictions(
 
 @app.get("/api/prediction-matrix-2025")
 def prediction_matrix_2025(storeLimit: int = Query(DEMO_STORE_LIMIT, ge=1, le=50)) -> dict:
-    rows = fetch_all(
+    row = fetch_one(
         """
         WITH demo_stores AS (
             SELECT store_id
@@ -979,68 +1059,27 @@ def prediction_matrix_2025(storeLimit: int = Query(DEMO_STORE_LIMIT, ge=1, le=50
             LIMIT %(store_limit)s
         )
         SELECT
-            r.store_id,
-            coalesce(r.store_name, s.store_name) AS store_name,
-            s.city,
-            s.region,
-            r.sku_id,
-            coalesce(r.product_name, p.product_name) AS product_name,
-            coalesce(r.category, p.category) AS category,
-            r.date,
-            r.stockout_probability,
-            (to_jsonb(r)->>'stockout_probability_3d')::numeric AS probability_3d,
-            (to_jsonb(r)->>'stockout_probability_14d')::numeric AS probability_14d,
-            r.units_on_hand,
-            r.units_in_backroom,
-            r.avg_daily_demand_7d,
-            r.computed_days_of_supply,
-            r.recent_replenishment_qty,
-            r.days_since_last_replenishment,
-            r.avg_supplier_lead_time,
-            r.historical_stockout_frequency,
-            r.unit_price,
-            r.stockout_next_7d
+            count(*) AS rows_checked,
+            count(*) FILTER (WHERE r.stockout_probability >= coalesce(r.alert_threshold, 0.5)) AS predicted_stockouts,
+            count(*) FILTER (WHERE coalesce(r.stockout_next_7d, 0) = 1) AS actual_stockouts,
+            count(*) FILTER (WHERE r.stockout_probability >= coalesce(r.alert_threshold, 0.5) AND coalesce(r.stockout_next_7d, 0) = 1) AS successful_predictions,
+            count(*) FILTER (WHERE r.stockout_probability >= coalesce(r.alert_threshold, 0.5) AND coalesce(r.stockout_next_7d, 0) = 0) AS false_alerts,
+            count(*) FILTER (WHERE r.stockout_probability < coalesce(r.alert_threshold, 0.5) AND coalesce(r.stockout_next_7d, 0) = 1) AS missed_stockouts,
+            count(*) FILTER (WHERE r.stockout_probability < coalesce(r.alert_threshold, 0.5) AND coalesce(r.stockout_next_7d, 0) = 0) AS correct_no_alert
         FROM retail_ml.scored_test_rows r
         JOIN demo_stores ds ON ds.store_id = r.store_id
-        LEFT JOIN retail_raw.stores s ON s.store_id = r.store_id
-        LEFT JOIN retail_raw.products p ON p.sku_id = r.sku_id
         WHERE r.date >= DATE '2025-01-01'
           AND r.date < DATE '2026-01-01'
         """,
         {"store_limit": storeLimit},
     )
-    successful = false_alerts = missed = correct_no_alert = predicted = actual = 0
-    for row in rows:
-        demand = to_float(row.get("avg_daily_demand_7d"))
-        available = to_float(row.get("units_on_hand")) + to_float(row.get("units_in_backroom"))
-        forecast_7d = demand * 7
-        forecast_gap = available - forecast_7d
-        probability = to_float(row.get("stockout_probability"))
-        adjusted_probability = probability
-        if forecast_gap > 20:
-            adjusted_probability = max(0.02, probability - 0.08)
-        if forecast_gap < 0:
-            adjusted_probability = min(0.99, probability + 0.12)
-        policy_row = {
-            **row,
-            "forecast_7d_demand": forecast_7d,
-            "forecast_inventory_gap": forecast_gap,
-            "time_series_adjusted_probability": adjusted_probability,
-        }
-        threshold, calibrated_probability, _ = calibrated_alert_policy(policy_row)
-        predicted_stockout = calibrated_probability >= threshold
-        actual_stockout = int(row.get("stockout_next_7d") or 0) == 1
-        predicted += int(predicted_stockout)
-        actual += int(actual_stockout)
-        if predicted_stockout and actual_stockout:
-            successful += 1
-        elif predicted_stockout and not actual_stockout:
-            false_alerts += 1
-        elif not predicted_stockout and actual_stockout:
-            missed += 1
-        else:
-            correct_no_alert += 1
-    total = len(rows)
+    total = int(row["rows_checked"] or 0)
+    predicted = int(row["predicted_stockouts"] or 0)
+    actual = int(row["actual_stockouts"] or 0)
+    successful = int(row["successful_predictions"] or 0)
+    false_alerts = int(row["false_alerts"] or 0)
+    missed = int(row["missed_stockouts"] or 0)
+    correct_no_alert = int(row["correct_no_alert"] or 0)
     precision = successful / (successful + false_alerts) if successful + false_alerts else 0
     recall = successful / (successful + missed) if successful + missed else 0
     accuracy = (successful + correct_no_alert) / total if total else 0
@@ -1063,138 +1102,152 @@ def prediction_matrix_2025(storeLimit: int = Query(DEMO_STORE_LIMIT, ge=1, le=50
 @app.get("/api/results-2025")
 def results_2025(storeLimit: int = Query(DEMO_STORE_LIMIT, ge=1, le=50)) -> dict:
     matrix = prediction_matrix_2025(storeLimit)
-    scored_rows = fetch_all(
+    event_rows = fetch_all(
         """
         WITH demo_stores AS (
             SELECT store_id
             FROM retail_raw.stores
             ORDER BY store_id
             LIMIT %(store_limit)s
+        ),
+        events AS (
+            SELECT
+                so.stockout_id,
+                so.store_id,
+                st.store_name,
+                st.city,
+                st.region,
+                so.sku_id,
+                p.product_name,
+                p.category,
+                so.stockout_date,
+                so.duration_days,
+                coalesce(so.root_cause, 'Unknown') AS root_cause,
+                coalesce(so.estimated_lost_revenue, 0) AS estimated_lost_revenue,
+                coalesce(so.estimated_lost_units, 0) AS estimated_lost_units
+            FROM retail_raw.stockout_events so
+            JOIN demo_stores ds ON ds.store_id = so.store_id
+            LEFT JOIN retail_raw.stores st ON st.store_id = so.store_id
+            LEFT JOIN retail_raw.products p ON p.sku_id = so.sku_id
+            WHERE so.stockout_date >= DATE '2025-01-01'
+              AND so.stockout_date < DATE '2026-01-01'
         )
         SELECT
-            r.store_id,
-            coalesce(r.store_name, s.store_name) AS store_name,
-            s.city,
-            s.region,
-            r.sku_id,
-            coalesce(r.product_name, p.product_name) AS product_name,
-            coalesce(r.category, p.category) AS category,
-            r.date,
-            r.stockout_probability,
-            (to_jsonb(r)->>'stockout_probability_3d')::numeric AS probability_3d,
-            (to_jsonb(r)->>'stockout_probability_14d')::numeric AS probability_14d,
-            r.units_on_hand,
-            r.units_in_backroom,
-            r.avg_daily_demand_7d,
-            r.computed_days_of_supply,
-            r.recent_replenishment_qty,
-            r.days_since_last_replenishment,
-            r.avg_supplier_lead_time,
-            r.historical_stockout_frequency,
-            r.unit_price,
-            r.stockout_next_7d
-        FROM retail_ml.scored_test_rows r
-        JOIN demo_stores ds ON ds.store_id = r.store_id
-        LEFT JOIN retail_raw.stores s ON s.store_id = r.store_id
-        LEFT JOIN retail_raw.products p ON p.sku_id = r.sku_id
-        WHERE r.date >= DATE '2025-01-01'
-          AND r.date < DATE '2026-01-01'
-        """,
-        {"store_limit": storeLimit},
-    )
-    events = fetch_all(
-        """
-        WITH demo_stores AS (
-            SELECT store_id
-            FROM retail_raw.stores
-            ORDER BY store_id
-            LIMIT %(store_limit)s
-        )
-        SELECT
-            so.stockout_id,
-            so.store_id,
-            so.sku_id,
-            so.stockout_date,
-            so.duration_days,
-            coalesce(so.root_cause, 'Unknown') AS root_cause,
-            coalesce(so.estimated_lost_revenue, 0) AS estimated_lost_revenue,
-            coalesce(so.estimated_lost_units, 0) AS estimated_lost_units
-        FROM retail_raw.stockout_events so
-        JOIN demo_stores ds ON ds.store_id = so.store_id
-        WHERE so.stockout_date >= DATE '2025-01-01'
-          AND so.stockout_date < DATE '2026-01-01'
+            e.*,
+            first_alert.date AS first_alert_date,
+            first_alert.stockout_probability AS first_alert_probability,
+            first_alert.alert_threshold AS first_alert_threshold,
+            latest_score.date AS score_date,
+            latest_score.stockout_probability,
+            latest_score.stockout_probability_3d AS probability_3d,
+            latest_score.stockout_probability_14d AS probability_14d,
+            latest_score.alert_threshold,
+            latest_score.risk_level,
+            latest_score.units_on_hand,
+            latest_score.units_in_backroom,
+            latest_score.avg_daily_demand_7d,
+            latest_score.computed_days_of_supply,
+            latest_score.recent_replenishment_qty,
+            latest_score.days_since_last_replenishment,
+            latest_score.avg_supplier_lead_time,
+            latest_score.unit_price,
+            coalesce(prior_counts.prior_scored_rows, 0) AS prior_scored_rows
+        FROM events e
+        LEFT JOIN LATERAL (
+            SELECT r.date, r.stockout_probability, coalesce(r.alert_threshold, 0.5) AS alert_threshold
+            FROM retail_ml.scored_test_rows r
+            WHERE r.store_id = e.store_id
+              AND r.sku_id = e.sku_id
+              AND r.date >= e.stockout_date - interval '7 days'
+              AND r.date < e.stockout_date
+              AND r.stockout_probability >= coalesce(r.alert_threshold, 0.5)
+            ORDER BY r.date ASC
+            LIMIT 1
+        ) first_alert ON true
+        LEFT JOIN LATERAL (
+            SELECT
+                r.date,
+                r.stockout_probability,
+                r.stockout_probability_3d,
+                r.stockout_probability_14d,
+                coalesce(r.alert_threshold, 0.5) AS alert_threshold,
+                coalesce(r.risk_level, 'low') AS risk_level,
+                r.units_on_hand,
+                r.units_in_backroom,
+                r.avg_daily_demand_7d,
+                r.computed_days_of_supply,
+                r.recent_replenishment_qty,
+                r.days_since_last_replenishment,
+                r.avg_supplier_lead_time,
+                r.unit_price
+            FROM retail_ml.scored_test_rows r
+            WHERE r.store_id = e.store_id
+              AND r.sku_id = e.sku_id
+              AND r.date >= e.stockout_date - interval '7 days'
+              AND r.date < e.stockout_date
+            ORDER BY r.date DESC
+            LIMIT 1
+        ) latest_score ON true
+        LEFT JOIN LATERAL (
+            SELECT count(*) AS prior_scored_rows
+            FROM retail_ml.scored_test_rows r
+            WHERE r.store_id = e.store_id
+              AND r.sku_id = e.sku_id
+              AND r.date >= e.stockout_date - interval '7 days'
+              AND r.date < e.stockout_date
+        ) prior_counts ON true
+        ORDER BY e.stockout_date, e.store_id, e.sku_id
         """,
         {"store_limit": storeLimit},
     )
 
-    events_by_pair: dict[tuple[str, str], list[dict]] = {}
-    for event in events:
-        events_by_pair.setdefault((event["store_id"], event["sku_id"]), []).append(event)
-
-    covered_events = []
-    missed_events = []
-    for row in scored_rows:
-        demand = to_float(row.get("avg_daily_demand_7d"))
-        available = to_float(row.get("units_on_hand")) + to_float(row.get("units_in_backroom"))
+    def outcome_row(event: dict, prediction_outcome: str) -> dict:
+        demand = to_float(event.get("avg_daily_demand_7d"))
+        available = to_float(event.get("units_on_hand")) + to_float(event.get("units_in_backroom"))
         forecast_7d = demand * 7
         forecast_gap = available - forecast_7d
-        probability = to_float(row.get("stockout_probability"))
-        adjusted_probability = probability
-        if forecast_gap > 20:
-            adjusted_probability = max(0.02, probability - 0.08)
-        if forecast_gap < 0:
-            adjusted_probability = min(0.99, probability + 0.12)
-        policy_row = {
-            **row,
-            "forecast_7d_demand": forecast_7d,
-            "forecast_inventory_gap": forecast_gap,
-            "time_series_adjusted_probability": adjusted_probability,
-        }
-        threshold, calibrated_probability, _ = calibrated_alert_policy(policy_row)
-        predicted_stockout = calibrated_probability >= threshold
-        actual_stockout = int(row.get("stockout_next_7d") or 0) == 1
-        if not actual_stockout:
-            continue
-        matching_events = [
-            event
-            for event in events_by_pair.get((row["store_id"], row["sku_id"]), [])
-            if row["date"] <= event["stockout_date"] <= row["date"] + timedelta(days=7)
-        ]
-        event = min(matching_events, key=lambda item: item["stockout_date"]) if matching_events else None
-        outcome_row = {
-            "storeId": row["store_id"],
-            "storeName": row.get("store_name") or row["store_id"],
-            "city": row.get("city") or "",
-            "region": row.get("region") or "",
-            "sku": row["sku_id"],
-            "productName": row.get("product_name") or row["sku_id"],
-            "category": row.get("category") or "Unknown",
-            "predictionDate": row["date"].isoformat() if row.get("date") else None,
+        probability = to_float(event.get("stockout_probability"))
+        threshold = to_float(event.get("alert_threshold"), 0.5)
+        days_supply = to_float(event.get("computed_days_of_supply"), 999)
+        warning_days = (event["stockout_date"] - event["first_alert_date"]).days if event.get("first_alert_date") else None
+        return {
+            "storeId": event["store_id"],
+            "storeName": event.get("store_name") or event["store_id"],
+            "city": event.get("city") or "",
+            "region": event.get("region") or "",
+            "sku": event["sku_id"],
+            "productName": event.get("product_name") or event["sku_id"],
+            "category": event.get("category") or "Unknown",
+            "predictionDate": event["score_date"].isoformat() if event.get("score_date") else None,
             "quantityAvailable": available,
-            "shelfQuantity": to_float(row.get("units_on_hand")),
-            "backroomQuantity": to_float(row.get("units_in_backroom")),
+            "shelfQuantity": to_float(event.get("units_on_hand")),
+            "backroomQuantity": to_float(event.get("units_in_backroom")),
             "sellingRate": demand,
             "forecast7dDemand": forecast_7d,
             "forecastInventoryGap": forecast_gap,
             "forecastDaysOfSupply": available / max(forecast_7d / 7, 0.01),
-            "possibleStockoutTime": stockout_timing(to_float(row.get("computed_days_of_supply"), 999), to_float(row.get("probability_3d"), probability), probability, to_float(row.get("probability_14d"), probability)),
-            "daysOfSupply": to_float(row.get("computed_days_of_supply"), 999),
+            "possibleStockoutTime": stockout_timing(days_supply, to_float(event.get("probability_3d"), probability), probability, to_float(event.get("probability_14d"), probability)),
+            "daysOfSupply": days_supply,
             "stockoutProbability": probability,
-            "timeSeriesAdjustedProbability": calibrated_probability,
+            "timeSeriesAdjustedProbability": probability,
             "alertThreshold": threshold,
-            "riskLevel": risk_from_probability(calibrated_probability, {"alert_threshold": threshold}),
-            "predictionOutcome": "Successful prediction" if predicted_stockout else "Missed stockout",
-            "recentReplenishmentQty": to_float(row.get("recent_replenishment_qty")),
-            "daysSinceLastReplenishment": to_float(row.get("days_since_last_replenishment")),
-            "avgSupplierLeadTime": to_float(row.get("avg_supplier_lead_time")),
-            "recommendedAction": recommendation_action(probability, to_float(row.get("computed_days_of_supply"), 999), to_float(row.get("units_in_backroom"))),
-            "actualStockoutDate": event["stockout_date"].isoformat() if event and event.get("stockout_date") else None,
-            "root_cause": event["root_cause"] if event else "Unknown",
-            "duration_days": int(event["duration_days"] or 0) if event else 0,
-            "estimated_lost_revenue": float(event["estimated_lost_revenue"]) if event else to_float(row.get("unit_price")) * demand * 7,
-            "estimated_lost_units": float(event["estimated_lost_units"]) if event else demand * 7,
+            "riskLevel": event.get("risk_level") or risk_from_probability(probability, {"alert_threshold": threshold}),
+            "predictionOutcome": prediction_outcome,
+            "warningDays": warning_days,
+            "recentReplenishmentQty": to_float(event.get("recent_replenishment_qty")),
+            "daysSinceLastReplenishment": to_float(event.get("days_since_last_replenishment"), 999),
+            "avgSupplierLeadTime": to_float(event.get("avg_supplier_lead_time")),
+            "recommendedAction": recommendation_action(probability, days_supply, to_float(event.get("units_in_backroom"))) if event.get("score_date") else "No prior prediction row was available in the 7-day warning window",
+            "actualStockoutDate": event["stockout_date"].isoformat() if event.get("stockout_date") else None,
+            "root_cause": event["root_cause"],
+            "duration_days": int(event["duration_days"] or 0),
+            "estimated_lost_revenue": float(event["estimated_lost_revenue"]),
+            "estimated_lost_units": float(event["estimated_lost_units"]),
         }
-        (covered_events if predicted_stockout else missed_events).append(outcome_row)
+
+    covered_events = [outcome_row(row, "Successful prediction") for row in event_rows if row.get("first_alert_date")]
+    missed_events = [outcome_row(row, "Missed stockout") for row in event_rows if not row.get("first_alert_date") and int(row.get("prior_scored_rows") or 0) > 0]
+    no_prior_scored_events = [outcome_row(row, "No prior scored row") for row in event_rows if not row.get("first_alert_date") and int(row.get("prior_scored_rows") or 0) == 0]
 
     def aggregate_by_cause(rows: list[dict]) -> list[dict]:
         grouped: dict[str, dict] = {}
@@ -1231,24 +1284,28 @@ def results_2025(storeLimit: int = Query(DEMO_STORE_LIMIT, ge=1, le=50)) -> dict
             bucket["lostUnits"] += float(row["estimated_lost_units"])
         return sorted(grouped.values(), key=lambda item: duration_order[item["bucket"]])
 
-    total_revenue = sum(float(row["estimated_lost_revenue"]) for row in covered_events + missed_events)
+    all_missed_events = missed_events + no_prior_scored_events
+    total_revenue = sum(float(row["estimated_lost_revenue"]) for row in covered_events + all_missed_events)
     covered_revenue = sum(float(row["estimated_lost_revenue"]) for row in covered_events)
-    missed_revenue = sum(float(row["estimated_lost_revenue"]) for row in missed_events)
+    missed_revenue = sum(float(row["estimated_lost_revenue"]) for row in all_missed_events)
+    warning_days = [int(row["warningDays"]) for row in covered_events if row.get("warningDays") is not None]
     return {
         "matrix": matrix,
-        "stockoutEvents": len(covered_events) + len(missed_events),
+        "stockoutEvents": len(covered_events) + len(all_missed_events),
         "coveredEvents": len(covered_events),
-        "missedEvents": len(missed_events),
+        "missedEvents": len(all_missed_events),
+        "noPriorScoredEvents": len(no_prior_scored_events),
+        "averageWarningDays": sum(warning_days) / len(warning_days) if warning_days else 0,
         "estimatedRevenueAtRisk": total_revenue,
         "estimatedRevenueProtected": covered_revenue,
         "estimatedRevenueMissed": missed_revenue,
-        "coverageRate": len(covered_events) / (len(covered_events) + len(missed_events)) if covered_events or missed_events else 0,
+        "coverageRate": len(covered_events) / (len(covered_events) + len(all_missed_events)) if covered_events or all_missed_events else 0,
         "revenueCoverageRate": covered_revenue / total_revenue if total_revenue else 0,
         "coveredCauses": aggregate_by_cause(covered_events),
-        "missedCauses": aggregate_by_cause(missed_events),
+        "missedCauses": aggregate_by_cause(all_missed_events),
         "coveredDurations": aggregate_by_duration(covered_events),
-        "missedDurations": aggregate_by_duration(missed_events),
-        "missedStockouts": sorted(missed_events, key=lambda item: item["estimated_lost_revenue"], reverse=True),
+        "missedDurations": aggregate_by_duration(all_missed_events),
+        "missedStockouts": sorted(all_missed_events, key=lambda item: item["estimated_lost_revenue"], reverse=True),
     }
 
 
