@@ -26,6 +26,7 @@
 | 🚀 Live dashboard | [Open ShelfSignal](https://rajashekarakula19-spec.github.io/retail-stockout-early-warning/) |
 | 📦 GitHub repository | [retail-stockout-early-warning](https://github.com/rajashekarakula19-spec/retail-stockout-early-warning) |
 | 🧪 Demo dataset | [`data/anonymized_10_store_dataset/`](data/anonymized_10_store_dataset/) |
+| 📝 Work summary | [`docs/work_summary.md`](docs/work_summary.md) |
 
 > The GitHub Pages dashboard becomes live after the repo is pushed and **Settings > Pages > Source** is set to **GitHub Actions**.
 
