@@ -2,6 +2,21 @@ import { assistantReplies } from "../../data/mock/assistant";
 import { executiveSummary, kpis } from "../../data/mock/kpis";
 import { products } from "../../data/mock/products";
 import { highRiskItems } from "../../data/mock/risk-items";
+import {
+  staticDurationDistributionByYear,
+  staticExecutiveSummary,
+  staticKpis,
+  staticPredictionMatrix2025,
+  staticProducts,
+  staticResults2025,
+  staticRevenueLossByYear,
+  staticRiskTrendsByYear,
+  staticStorePredictions,
+  staticStores,
+  staticThresholdTuning2025,
+  staticTopCategoriesByYear,
+  staticYearlySummaries,
+} from "../../data/mock/static-demo";
 import { stores } from "../../data/mock/stores";
 import { riskTrends } from "../../data/mock/trends";
 import type {
@@ -30,6 +45,12 @@ import type {
 
 const delay = (ms = 220) => new Promise((resolve) => window.setTimeout(resolve, ms));
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://127.0.0.1:8000";
+
+function shiftedIsoDate(startDate: string, offsetDays: number) {
+  const date = new Date(`${startDate}T00:00:00`);
+  date.setDate(date.getDate() + offsetDays);
+  return date.toISOString().slice(0, 10);
+}
 
 async function getJson<T>(path: string, fallback: () => Promise<T> | T): Promise<T> {
   try {
@@ -94,7 +115,7 @@ const actionFromProbability = (probability: number, daysOfSupply: number) => {
 export async function getExecutiveSummary() {
   const data = await getJson<{ summary: string }>("/api/executive-summary", async () => {
     await delay();
-    return { summary: executiveSummary };
+    return { summary: staticExecutiveSummary || executiveSummary };
   });
   return data.summary;
 }
@@ -102,60 +123,42 @@ export async function getExecutiveSummary() {
 export async function getKpis(): Promise<KpiSummary> {
   return getJson<KpiSummary>("/api/kpis", async () => {
     await delay();
-    return kpis;
+    return staticKpis || kpis;
   });
 }
 
 export async function getYearlyStockoutSummary(year = 2025): Promise<YearlyStockoutSummary> {
   return getJson<YearlyStockoutSummary>(`/api/yearly-stockout-summary?year=${year}`, async () => {
     await delay();
-    return {
-      year,
-      storeCount: 10,
-      stockoutEvents: 0,
-      storesWithStockouts: 0,
-      skusWithStockouts: 0,
-      lostRevenue: 0,
-      lostUnits: 0,
-      avgDurationDays: 0,
-      salesRevenue: 0,
-      unitsSold: 0,
-      transactions: 0,
-      topCause: "Unavailable",
-      topCauseEvents: 0,
-      topCauseLostRevenue: 0,
-    };
+    return staticYearlySummaries[year] ?? staticYearlySummaries[2025];
   });
 }
 
 export async function getRevenueLossCauses(year = 2024): Promise<RevenueLossSummary> {
   return getJson<RevenueLossSummary>(`/api/revenue-loss-causes?year=${year}`, async () => {
     await delay();
-    return {
-      causes: [],
-      products: [],
-    };
+    return staticRevenueLossByYear[year] ?? staticRevenueLossByYear[2025];
   });
 }
 
 export async function getTopCategoriesByRevenue(year = 2024): Promise<CategoryRevenue[]> {
   return getJson<CategoryRevenue[]>(`/api/top-categories-by-revenue?year=${year}`, async () => {
     await delay();
-    return [];
+    return staticTopCategoriesByYear[year] ?? staticTopCategoriesByYear[2025];
   });
 }
 
 export async function getStockoutDurationDistribution(year = 2024): Promise<StockoutDurationBucket[]> {
   return getJson<StockoutDurationBucket[]>(`/api/stockout-duration-distribution?year=${year}`, async () => {
     await delay();
-    return [];
+    return staticDurationDistributionByYear[year] ?? staticDurationDistributionByYear[2025];
   });
 }
 
 export async function getRiskTrends(rangeDays = 90, year = 2024): Promise<RiskTrendPoint[]> {
   return getJson<RiskTrendPoint[]>(`/api/risk-trends?rangeDays=${rangeDays}&year=${year}`, async () => {
     await delay();
-    return riskTrends.slice(rangeDays <= 45 ? -6 : 0);
+    return staticRiskTrendsByYear[year] ?? riskTrends.slice(rangeDays <= 45 ? -6 : 0);
   });
 }
 
@@ -191,14 +194,14 @@ export async function getHighRiskItems(filters: {
 export async function getStores(): Promise<Store[]> {
   return getJson<Store[]>("/api/stores", async () => {
     await delay();
-    return stores;
+    return staticStores.length > 0 ? staticStores : stores;
   });
 }
 
 export async function getProducts(): Promise<Product[]> {
   return getJson<Product[]>("/api/products", async () => {
     await delay();
-    return products;
+    return staticProducts.length > 0 ? staticProducts : products;
   });
 }
 
@@ -218,71 +221,37 @@ export async function getBestDemoWeek(storeLimit = 10): Promise<BestDemoWeek> {
 export async function getPredictionMatrix2025(storeLimit = 10): Promise<PredictionMatrixSummary> {
   return getJson<PredictionMatrixSummary>(`/api/prediction-matrix-2025?storeLimit=${storeLimit}`, async () => {
     await delay();
-    return {
-      year: 2025,
-      storeCount: storeLimit,
-      rowsChecked: 0,
-      predictedStockouts: 0,
-      actualStockouts: 0,
-      successfulPredictions: 0,
-      falseAlerts: 0,
-      missedStockouts: 0,
-      correctNoAlerts: 0,
-      precision: 0,
-      recall: 0,
-      accuracy: 0,
-    };
+    return { ...staticPredictionMatrix2025, storeCount: storeLimit };
   });
 }
 
 export async function getResults2025(storeLimit = 10): Promise<Results2025Summary> {
   return getJson<Results2025Summary>(`/api/results-2025?storeLimit=${storeLimit}`, async () => {
     await delay();
-    const matrix = await getPredictionMatrix2025(storeLimit);
-    return {
-      matrix,
-      stockoutEvents: 0,
-      coveredEvents: 0,
-      missedEvents: 0,
-      noPriorScoredEvents: 0,
-      averageWarningDays: 0,
-      estimatedRevenueAtRisk: 0,
-      estimatedRevenueProtected: 0,
-      estimatedRevenueMissed: 0,
-      coverageRate: 0,
-      revenueCoverageRate: 0,
-      coveredCauses: [],
-      missedCauses: [],
-      coveredDurations: [],
-      missedDurations: [],
-      missedStockouts: [],
-    };
+    return { ...staticResults2025, matrix: { ...staticResults2025.matrix, storeCount: storeLimit } };
   });
 }
 
 export async function getThresholdTuning2025(storeLimit = 10, falseAlertCost = 25, recallTarget = 0.85): Promise<ThresholdTuningSummary> {
   return getJson<ThresholdTuningSummary>(`/api/threshold-tuning-2025?storeLimit=${storeLimit}&falseAlertCost=${falseAlertCost}&recallTarget=${recallTarget}`, async () => {
     await delay();
-    return {
-      year: 2025,
-      storeCount: storeLimit,
-      rowsChecked: 0,
-      actualStockouts: 0,
-      totalRevenueAtRisk: 0,
-      falseAlertCost,
-      recallTarget,
-      prAuc: 0,
-      recommendedTechnique: "Cost/revenue sweet spot",
-      recommendedThreshold: 0,
-      techniques: [],
-      curve: [],
-    };
+    return { ...staticThresholdTuning2025, storeCount: storeLimit, falseAlertCost, recallTarget };
   });
 }
 
 export async function getStorePredictions(storeLimit = 10, productsPerStore = 80, startDate = "2025-01-01", endDate = "2025-01-07"): Promise<StorePredictionGroup[]> {
   return getJson<StorePredictionGroup[]>(`/api/store-predictions?storeLimit=${storeLimit}&productsPerStore=${productsPerStore}&startDate=${startDate}&endDate=${endDate}`, async () => {
     await delay();
+    if (staticStorePredictions.length > 0) {
+      return staticStorePredictions.slice(0, storeLimit).map((store) => ({
+        ...store,
+        products: store.products.slice(0, productsPerStore).map((product, index) => ({
+          ...product,
+          predictionDate: shiftedIsoDate(startDate, index % 7),
+          actualStockoutDate: product.actualStockout ? shiftedIsoDate(startDate, Math.min(6, (index % 7) + 1)) : null,
+        })),
+      }));
+    }
     const grouped = stores.slice(0, storeLimit).map((store) => {
       const productsForStore = highRiskItems
         .filter((item) => item.storeId === store.id)
@@ -337,6 +306,35 @@ export async function getStorePredictions(storeLimit = 10, productsPerStore = 80
 export async function getPrediction(storeId: string, sku: string): Promise<PredictionResult> {
   return getJson<PredictionResult>(`/api/prediction?storeId=${encodeURIComponent(storeId)}&sku=${encodeURIComponent(sku)}`, async () => {
     await delay();
+    const staticProduct = staticStorePredictions
+      .find((store) => store.id === storeId)
+      ?.products.find((product) => product.sku === sku);
+    if (staticProduct) {
+      return {
+        storeId,
+        sku,
+        probability: staticProduct.timeSeriesAdjustedProbability,
+        probability3d: staticProduct.probability3d,
+        probability14d: staticProduct.probability14d,
+        alertThreshold: staticProduct.alertThreshold,
+        riskLevel: staticProduct.riskLevel,
+        daysOfSupply: staticProduct.daysOfSupply,
+        unitsOnHand: staticProduct.quantityAvailable,
+        avgDailyDemand7d: staticProduct.sellingRate,
+        recentReplenishmentQty: staticProduct.recentReplenishmentQty,
+        daysSinceLastReplenishment: staticProduct.daysSinceLastReplenishment,
+        avgSupplierLeadTime: staticProduct.avgSupplierLeadTime,
+        alertReason: staticProduct.revenueLossReason,
+        estimatedLostSales: Math.max(500, staticProduct.forecast7dDemand * 38),
+        recommendedAction: staticProduct.recommendedAction,
+        drivers: [
+          { name: "Days of supply", impact: Math.min(0.96, 1 - Math.min(staticProduct.daysOfSupply, 20) / 24), direction: "increases" },
+          { name: "Recent sales demand", impact: Math.min(0.92, staticProduct.sellingRate / 30), direction: "increases" },
+          { name: "Supplier lead time", impact: Math.min(0.86, (staticProduct.avgSupplierLeadTime ?? 0) / 12), direction: "increases" },
+          { name: "Backroom inventory", impact: Math.min(0.7, staticProduct.backroomQuantity / 200), direction: "reduces" },
+        ],
+      };
+    }
     const item = highRiskItems.find((candidate) => candidate.storeId === storeId && candidate.sku === sku);
     if (!item) {
       const product = products.find((candidate) => candidate.sku === sku) ?? products[0];
