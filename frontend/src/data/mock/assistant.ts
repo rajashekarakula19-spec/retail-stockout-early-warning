@@ -19,4 +19,9 @@ export const assistantReplies = [
     reply:
       "The current project scope uses 10 selected stores and scores every active store-SKU daily through 2025, producing 291,833 prediction rows for event-level stockout coverage.",
   },
+  {
+    keywords: ["rag", "ollama", "assistant", "explain"],
+    reply:
+      "The assistant uses a lightweight RAG flow: it retrieves relevant project documentation and PostgreSQL summary context, then sends that context to Ollama when the local Ollama server is running.",
+  },
 ];

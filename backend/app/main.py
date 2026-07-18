@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import csv
 import hashlib
+import re
 from datetime import date, timedelta
 from io import StringIO
 from math import isnan
@@ -203,18 +204,70 @@ def driver_set(row: dict) -> list[dict]:
     ]
 
 
-def assistant_fallback(text: str) -> str:
-    if "data" in text or "stores" in text:
-        return "This UI pulls from PostgreSQL through FastAPI. Raw tables live in retail_raw and model outputs live in retail_ml."
-    if "model" in text or "recall" in text:
-        return "The model outputs come from retail_ml.scored_test_rows and retail_ml.evaluation_metrics. The current setup prioritizes recall to reduce missed stockouts."
-    if "action" in text or "reorder" in text:
-        return "Recommended actions are read from retail_ml.stockout_action_recommendations and prioritize shelf movement, expedited replenishment, or monitoring."
-    return "I can explain PostgreSQL data coverage, stockout risk, model metrics, prediction drivers, and recommended actions."
+RAG_DOC_PATHS = [
+    PROJECT_ROOT / "README.md",
+    PROJECT_ROOT / "docs" / "work_summary.md",
+    PROJECT_ROOT / "docs" / "project_book_short.md",
+    PROJECT_ROOT / "docs" / "project_explanation.md",
+]
 
 
-def assistant_context() -> str:
-    counts = fetch_one(
+def tokenize(text: str) -> set[str]:
+    stop_words = {
+        "a", "an", "and", "are", "as", "at", "be", "by", "for", "from", "how", "i", "in", "is", "it",
+        "of", "on", "or", "that", "the", "this", "to", "what", "when", "where", "which", "why", "with",
+    }
+    return {token for token in re.findall(r"[a-z0-9_]+", text.lower()) if len(token) > 2 and token not in stop_words}
+
+
+def chunk_markdown(path: Path, max_chars: int = 900) -> list[dict]:
+    if not path.exists():
+        return []
+    chunks: list[dict] = []
+    current_title = path.name
+    current_lines: list[str] = []
+
+    def flush() -> None:
+        nonlocal current_lines
+        text = "\n".join(line.strip() for line in current_lines).strip()
+        if text:
+            chunks.append({"source": str(path.relative_to(PROJECT_ROOT)), "title": current_title, "text": text[:max_chars]})
+        current_lines = []
+
+    for line in path.read_text(encoding="utf-8").splitlines():
+        if line.startswith("#") and current_lines:
+            flush()
+        if line.startswith("#"):
+            current_title = line.lstrip("#").strip() or path.name
+        else:
+            current_lines.append(line)
+    flush()
+    return chunks
+
+
+def project_doc_chunks() -> list[dict]:
+    chunks: list[dict] = []
+    for path in RAG_DOC_PATHS:
+        chunks.extend(chunk_markdown(path))
+    return chunks
+
+
+def safe_fetch_one(query: str, params: dict | None = None) -> dict:
+    try:
+        return fetch_one(query, params) or {}
+    except Exception:
+        return {}
+
+
+def safe_fetch_all(query: str, params: dict | None = None) -> list[dict]:
+    try:
+        return fetch_all(query, params)
+    except Exception:
+        return []
+
+
+def database_rag_chunks() -> list[dict]:
+    counts = safe_fetch_one(
         """
         SELECT
             (SELECT count(*) FROM retail_raw.stores) AS stores,
@@ -224,8 +277,27 @@ def assistant_context() -> str:
             (SELECT count(*) FROM retail_ml.scored_test_rows) AS scored_rows
         """
     )
-    metrics = fetch_one("SELECT recall, precision, f1, pr_auc FROM retail_ml.evaluation_metrics WHERE model = 'xgboost' LIMIT 1")
-    top_items = fetch_all(
+    metrics = safe_fetch_one("SELECT recall, precision, f1, pr_auc FROM retail_ml.evaluation_metrics WHERE model = 'xgboost' LIMIT 1")
+    results = safe_fetch_one(
+        """
+        SELECT
+            count(*) AS scored_rows,
+            count(*) FILTER (WHERE stockout_probability >= coalesce(alert_threshold, 0.5)) AS alerts,
+            count(*) FILTER (WHERE coalesce(stockout_next_7d, 0) = 1) AS actual_stockout_labels
+        FROM retail_ml.scored_test_rows
+        """
+    )
+    top_causes = safe_fetch_all(
+        """
+        SELECT root_cause, count(*) AS events, coalesce(sum(estimated_lost_revenue), 0) AS lost_revenue
+        FROM retail_raw.stockout_events
+        WHERE stockout_date >= '2025-01-01' AND stockout_date < '2026-01-01'
+        GROUP BY root_cause
+        ORDER BY lost_revenue DESC
+        LIMIT 5
+        """
+    )
+    top_items = safe_fetch_all(
         """
         SELECT store_name, product_name, category, stockout_probability, computed_days_of_supply,
                estimated_lost_sales, recommended_action
@@ -234,34 +306,83 @@ def assistant_context() -> str:
         LIMIT 5
         """
     )
-    shap = fetch_all(
-        """
-        SELECT feature, mean_abs_shap
-        FROM retail_ml.shap_feature_importance
-        ORDER BY mean_abs_shap DESC
-        LIMIT 8
-        """
-    )
-    return json.dumps(
+    chunks = [
         {
-            "database": counts,
-            "xgboost_metrics": metrics,
-            "top_high_risk_items": top_items,
-            "top_prediction_drivers": shap,
+            "source": "PostgreSQL",
+            "title": "Database coverage",
+            "text": json.dumps({"database_counts": counts, "scored_prediction_summary": results}, default=str),
         },
-        default=str,
-        indent=2,
+        {
+            "source": "PostgreSQL",
+            "title": "Model metrics",
+            "text": json.dumps({"xgboost_metrics": metrics}, default=str),
+        },
+        {
+            "source": "PostgreSQL",
+            "title": "2025 stockout root causes",
+            "text": json.dumps({"top_2025_stockout_causes": top_causes}, default=str),
+        },
+        {
+            "source": "PostgreSQL",
+            "title": "Top recommended actions",
+            "text": json.dumps({"top_high_risk_items": top_items}, default=str),
+        },
+    ]
+    return [chunk for chunk in chunks if chunk["text"] not in {"{}", "[]"}]
+
+
+def retrieve_rag_context(message: str, limit: int = 6) -> list[dict]:
+    query_tokens = tokenize(message)
+    chunks = database_rag_chunks() + project_doc_chunks()
+    scored: list[tuple[float, dict]] = []
+    for chunk in chunks:
+        chunk_tokens = tokenize(f"{chunk['title']} {chunk['text']}")
+        overlap = len(query_tokens & chunk_tokens)
+        title_bonus = 1.5 if query_tokens & tokenize(chunk["title"]) else 0
+        score = overlap + title_bonus
+        if score > 0:
+            scored.append((score, chunk))
+    if not scored:
+        scored = [(1, chunk) for chunk in chunks[:limit]]
+    scored.sort(key=lambda item: item[0], reverse=True)
+    return [chunk for _, chunk in scored[:limit]]
+
+
+def assistant_fallback(text: str, chunks: list[dict] | None = None) -> str:
+    sources = ", ".join(dict.fromkeys(chunk["source"] for chunk in chunks or []))
+    suffix = f"\n\nSources used: {sources}" if sources else ""
+    if "data" in text or "stores" in text:
+        return "The project uses retail sales, inventory, replenishment, stockout events, products, stores, suppliers, promotions, store layout, and demand forecast data. In production mode, FastAPI reads PostgreSQL schemas `retail_raw` and `retail_ml`." + suffix
+    if "model" in text or "recall" in text or "threshold" in text:
+        return "The model trains on 2024 daily store-SKU rows and scores daily 2025 stockout risk. XGBoost is the main model, with thresholds tuned toward recall because missing a real stockout is costly." + suffix
+    if "action" in text or "reorder" in text or "transfer" in text:
+        return "Actions are based on probability, days of supply, backroom inventory, replenishment, and lead time. Typical actions are shelf refill from backroom, expedited reorder, transfer, or close monitoring." + suffix
+    return "ShelfSignal predicts stockout risk, explains drivers, and turns alerts into business actions. Ask about data, model logic, dashboard values, thresholds, or recommended actions." + suffix
+
+
+def format_rag_context(chunks: list[dict]) -> str:
+    return "\n\n".join(
+        f"Source: {chunk['source']}\nSection: {chunk['title']}\nContent:\n{chunk['text']}"
+        for chunk in chunks
     )
 
 
-def ask_ollama(message: str, context: str) -> str | None:
+def ask_ollama(message: str, context: str, history: list[dict] | None = None) -> str | None:
     host = os.getenv("OLLAMA_HOST", "http://localhost:11434")
     model = os.getenv("OLLAMA_MODEL", "llama3.2")
-    prompt = f"""You are a retail stockout early-warning assistant.
-Use only the context below. Be concise and business-friendly.
+    recent_history = "\n".join(
+        f"{item.get('role', 'user')}: {item.get('content', '')[:400]}"
+        for item in (history or [])[-4:]
+    )
+    prompt = f"""You are the ShelfSignal retail stockout RAG assistant.
+Answer using only the retrieved context below. Be concise, practical, and business-friendly.
+If the context is not enough, say what is missing and give the best safe explanation.
 
-Context:
+Retrieved context:
 {context}
+
+Recent chat:
+{recent_history}
 
 Question:
 {message}
@@ -287,6 +408,29 @@ Answer:
 def health() -> dict:
     row = fetch_one("SELECT current_database() AS database, now() AS checked_at")
     return {"status": "ok", **(row or {})}
+
+
+@app.get("/api/rag/status")
+def rag_status() -> dict:
+    chunks = database_rag_chunks() + project_doc_chunks()
+    host = os.getenv("OLLAMA_HOST", "http://localhost:11434")
+    model = os.getenv("OLLAMA_MODEL", "llama3.2")
+    ollama_available = False
+    try:
+        req = urlrequest.Request(f"{host.rstrip('/')}/api/tags", method="GET")
+        with urlrequest.urlopen(req, timeout=3):
+            ollama_available = True
+    except (error.URLError, TimeoutError, json.JSONDecodeError):
+        ollama_available = False
+    return {
+        "ragEnabled": True,
+        "retriever": "keyword-overlap over PostgreSQL summaries and project markdown docs",
+        "chunkCount": len(chunks),
+        "sources": sorted(set(chunk["source"] for chunk in chunks)),
+        "ollamaAvailable": ollama_available,
+        "ollamaHost": host,
+        "ollamaModel": model,
+    }
 
 
 @app.get("/api/executive-summary")
@@ -2203,5 +2347,9 @@ async def weekly_upload(request: Request, dataType: str = Query(..., pattern="^(
 @app.post("/api/assistant")
 def assistant(request: AssistantRequest) -> dict:
     text = request.message.lower()
-    answer = ask_ollama(request.message, assistant_context()) or assistant_fallback(text)
-    return {"response": answer}
+    chunks = retrieve_rag_context(request.message)
+    context = format_rag_context(chunks)
+    history = [item.model_dump() for item in request.history]
+    answer = ask_ollama(request.message, context, history) or assistant_fallback(text, chunks)
+    sources = [{"source": chunk["source"], "title": chunk["title"]} for chunk in chunks]
+    return {"response": answer, "sources": sources, "ragEnabled": True}

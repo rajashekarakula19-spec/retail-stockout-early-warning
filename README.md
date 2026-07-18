@@ -233,13 +233,19 @@ Open locally:
 http://127.0.0.1:5173
 ```
 
-## 🤖 Optional Ollama Assistant
+## 🤖 Optional Ollama RAG Assistant
 
-The dashboard can use Ollama for plain-English explanation of current data and model results. If Ollama is offline, the app returns a fallback explanation.
+The dashboard can use Ollama for plain-English explanation of current data and model results. The assistant uses a lightweight RAG flow: it retrieves relevant PostgreSQL summaries and project markdown documentation, then sends that context to Ollama. If Ollama is offline, the app returns a fallback explanation.
 
 ```bash
 ollama serve
 ollama pull llama3.2
+```
+
+Check local RAG status:
+
+```text
+http://localhost:8000/api/rag/status
 ```
 
 ## 📏 Evaluation Metrics

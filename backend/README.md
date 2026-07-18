@@ -17,9 +17,24 @@ http://localhost:8000/docs
 
 The React frontend reads this API through `VITE_API_BASE_URL`.
 
-## Ollama Assistant
+## Ollama RAG Assistant
 
-The `/api/assistant` endpoint calls Ollama when it is running, using PostgreSQL project context.
+The `/api/assistant` endpoint uses a lightweight RAG flow:
+
+```text
+User question
+→ retrieve relevant PostgreSQL summaries and project markdown docs
+→ send retrieved context to Ollama
+→ return a concise business-friendly answer
+```
+
+It retrieves from:
+
+- PostgreSQL summaries for data coverage, scored rows, model metrics, root causes, and recommended actions
+- `README.md`
+- `docs/work_summary.md`
+- `docs/project_book_short.md`
+- `docs/project_explanation.md`
 
 Start Ollama:
 
@@ -36,3 +51,9 @@ OLLAMA_MODEL=llama3.2
 ```
 
 If Ollama is offline, the endpoint returns a simple built-in fallback response instead of failing.
+
+Check RAG and Ollama status:
+
+```text
+http://localhost:8000/api/rag/status
+```
