@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Send } from "lucide-react";
 import { useIsMobile } from "../../lib/hooks/useIsMobile";
 import { Button } from "../ui/Button";
 import { Panel } from "../ui/Panel";
-import { AiAssistantMessage } from "./AiAssistantMessage";
+import { AiAssistantMessage, AiAssistantTypingMessage } from "./AiAssistantMessage";
 import { useAiAssistant } from "./AiAssistantProvider";
 
 const suggestedQuestions = [
@@ -21,6 +21,17 @@ export function AiAssistantPanel() {
   const { open, closeAssistant, history, send, loading } = useAiAssistant();
   const [input, setInput] = useState("");
   const isMobile = useIsMobile();
+  const chatEndRef = useRef<HTMLDivElement | null>(null);
+
+  const visibleSuggestions = useMemo(() => {
+    const assistantReplies = history.filter((message) => message.role === "assistant").length;
+    const start = (assistantReplies - 1) % suggestedQuestions.length;
+    return Array.from({ length: 3 }, (_, index) => suggestedQuestions[(start + index) % suggestedQuestions.length]);
+  }, [history]);
+
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+  }, [history, loading, open]);
 
   const submit = async () => {
     if (!input.trim()) return;
@@ -36,25 +47,30 @@ export function AiAssistantPanel() {
           {history.map((message) => (
             <AiAssistantMessage key={message.id} message={message} />
           ))}
-        </div>
-        <div className="space-y-2">
-          <p className="text-xs font-bold uppercase text-muted-foreground">Try asking</p>
-          <div className="flex flex-wrap gap-2">
-            {suggestedQuestions.map((question) => (
-              <button
-                key={question}
-                type="button"
-                onClick={() => {
-                  setInput("");
-                  void send(question);
-                }}
-                disabled={loading}
-                className="rounded-full border border-border bg-muted px-3 py-1.5 text-left text-xs font-semibold text-muted-foreground transition hover:border-brand/30 hover:bg-brand/8 hover:text-brand disabled:cursor-not-allowed disabled:opacity-60"
-              >
-                {question}
-              </button>
-            ))}
-          </div>
+          {loading && <AiAssistantTypingMessage />}
+          {!loading && (
+            <div className="flex justify-start">
+              <div className="max-w-[86%] space-y-2 rounded-xl border border-border bg-card px-4 py-3">
+                <p className="text-xs font-bold uppercase text-muted-foreground">Try asking</p>
+                <div className="flex flex-wrap gap-2">
+                  {visibleSuggestions.map((question) => (
+                    <button
+                      key={question}
+                      type="button"
+                      onClick={() => {
+                        setInput("");
+                        void send(question);
+                      }}
+                      className="rounded-full border border-border bg-muted px-3 py-1.5 text-left text-xs font-semibold text-muted-foreground transition hover:border-brand/30 hover:bg-brand/8 hover:text-brand"
+                    >
+                      {question}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+          <div ref={chatEndRef} />
         </div>
         <div className="flex gap-2">
           <input

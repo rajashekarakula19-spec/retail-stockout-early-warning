@@ -16,3 +16,15 @@ export function AiAssistantMessage({ message }: { message: AssistantMessage }) {
     </div>
   );
 }
+
+export function AiAssistantTypingMessage() {
+  return (
+    <div className="flex justify-start">
+      <div className="flex items-center gap-1 rounded-xl bg-muted px-4 py-3" aria-label="Assistant is typing">
+        <span className="h-2 w-2 animate-bounce rounded-full bg-muted-foreground [animation-delay:-0.24s]" />
+        <span className="h-2 w-2 animate-bounce rounded-full bg-muted-foreground [animation-delay:-0.12s]" />
+        <span className="h-2 w-2 animate-bounce rounded-full bg-muted-foreground" />
+      </div>
+    </div>
+  );
+}
