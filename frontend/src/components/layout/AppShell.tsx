@@ -55,9 +55,15 @@ export function AppShell() {
         <Outlet />
       </main>
       <AiAssistantPanel />
-      <div className="pointer-events-none fixed bottom-5 right-5 hidden rounded-full bg-accent-warm/14 p-4 text-accent-warm shadow-elegant lg:block">
+      <button
+        type="button"
+        onClick={openAssistant}
+        className="fixed bottom-5 right-5 hidden rounded-full bg-accent-warm/14 p-5 text-accent-warm shadow-elegant transition hover:-translate-y-0.5 hover:bg-accent-warm/20 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-accent-warm focus:ring-offset-2 lg:block"
+        aria-label="Open stockout assistant"
+        title="Ask the stockout assistant"
+      >
         <LineChart className="h-6 w-6" />
-      </div>
+      </button>
     </div>
   );
 }

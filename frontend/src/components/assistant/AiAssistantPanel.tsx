@@ -6,6 +6,17 @@ import { Panel } from "../ui/Panel";
 import { AiAssistantMessage } from "./AiAssistantMessage";
 import { useAiAssistant } from "./AiAssistantProvider";
 
+const suggestedQuestions = [
+  "How is revenue protected calculated?",
+  "Why did this product get a critical alert?",
+  "How many days before stockout can we warn?",
+  "Which features drive stockout risk?",
+  "How were product thresholds selected?",
+  "Why do false alerts happen?",
+  "What data is used for predictions?",
+  "How can we reduce missed stockouts?",
+];
+
 export function AiAssistantPanel() {
   const { open, closeAssistant, history, send, loading } = useAiAssistant();
   const [input, setInput] = useState("");
@@ -25,6 +36,25 @@ export function AiAssistantPanel() {
           {history.map((message) => (
             <AiAssistantMessage key={message.id} message={message} />
           ))}
+        </div>
+        <div className="space-y-2">
+          <p className="text-xs font-bold uppercase text-muted-foreground">Try asking</p>
+          <div className="flex flex-wrap gap-2">
+            {suggestedQuestions.map((question) => (
+              <button
+                key={question}
+                type="button"
+                onClick={() => {
+                  setInput("");
+                  void send(question);
+                }}
+                disabled={loading}
+                className="rounded-full border border-border bg-muted px-3 py-1.5 text-left text-xs font-semibold text-muted-foreground transition hover:border-brand/30 hover:bg-brand/8 hover:text-brand disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {question}
+              </button>
+            ))}
+          </div>
         </div>
         <div className="flex gap-2">
           <input

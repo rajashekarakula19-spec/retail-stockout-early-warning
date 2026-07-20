@@ -35,9 +35,21 @@ export function AiAssistantProvider({ children }: { children: ReactNode }) {
         const userMessage: AssistantMessage = { id: crypto.randomUUID(), role: "user", content };
         setHistory((current) => [...current, userMessage]);
         setLoading(true);
-        const response = await sendAssistantMessage(content, history);
-        setHistory((current) => [...current, { id: crypto.randomUUID(), role: "assistant", content: response }]);
-        setLoading(false);
+        try {
+          const response = await sendAssistantMessage(content, [...history, userMessage]);
+          setHistory((current) => [...current, { id: crypto.randomUUID(), role: "assistant", content: response }]);
+        } catch {
+          setHistory((current) => [
+            ...current,
+            {
+              id: crypto.randomUUID(),
+              role: "assistant",
+              content: "I could not reach the assistant service right now. Try again after the backend is running.",
+            },
+          ]);
+        } finally {
+          setLoading(false);
+        }
       },
     }),
     [history, loading, open],
