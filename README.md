@@ -77,6 +77,7 @@ Alert early, explain the cause, and recommend reorder / transfer / shelf refill.
 | 📈 Risk Dashboard | Switchable 2024/2025 stockout analytics: revenue loss, events, lost units, causes, durations, products, and category revenue |
 | 🔍 Predictions | Date-window store drill-down with product risk, forecast demand, probability, prediction result, root cause, and recommended action |
 | ✅ Results | 2025 event-level evaluation: covered revenue, missed revenue, covered/missed root causes, and covered/missed durations |
+| 🤖 Assistant | Floating chatbot button with guided questions for explaining metrics, thresholds, risk drivers, and actions |
 
 ## 🏗️ System Design
 
@@ -233,9 +234,41 @@ Open locally:
 http://127.0.0.1:5173
 ```
 
-## 🤖 Optional Ollama RAG Assistant
+## 🤖 Assistant / RAG Experience
 
-The dashboard can use Ollama for plain-English explanation of current data and model results. The assistant uses a lightweight RAG flow: it retrieves relevant PostgreSQL summaries and project markdown documentation, then sends that context to Ollama. If Ollama is offline, the app returns a fallback explanation.
+ShelfSignal includes a floating assistant button in the dashboard. It opens a chat panel with loading dots, suggested questions, and plain-English explanations of the project.
+
+What the assistant can explain:
+
+- Why a product was marked high risk
+- Which features drive stockout risk
+- How revenue protected is calculated
+- Why false alerts happen
+- How thresholds were selected
+- What data is used for predictions
+- How warning days are calculated
+- What action to take: reorder, expedite, transfer, or refill shelf
+
+### Live Link vs Local RAG
+
+| Mode | What Works |
+| --- | --- |
+| 🌐 GitHub Pages live dashboard | Assistant UI works with static/fallback project answers |
+| 💻 Local backend + Ollama | Full RAG flow using PostgreSQL summaries, project docs, and Ollama-generated answers |
+
+Important: GitHub Pages is a static frontend host, so it cannot run PostgreSQL, FastAPI, or Ollama directly. The live link still shows the chatbot UI and can answer using fallback project knowledge, but the full RAG assistant needs the local backend or a deployed backend API.
+
+Local RAG flow:
+
+```text
+User question
+  -> FastAPI /api/assistant
+  -> Retrieve project docs + PostgreSQL summary context
+  -> Send context to Ollama
+  -> Return explanation to dashboard chat
+```
+
+Start Ollama locally:
 
 ```bash
 ollama serve
@@ -247,6 +280,15 @@ Check local RAG status:
 ```text
 http://localhost:8000/api/rag/status
 ```
+
+Example questions to ask:
+
+- How is revenue protected calculated?
+- Which features drive stockout risk?
+- Why did this product get a critical alert?
+- How many days before stockout can we warn?
+- How were product thresholds selected?
+- How can we reduce missed stockouts?
 
 ## 📏 Evaluation Metrics
 
@@ -287,7 +329,7 @@ Live dashboard URL:
 https://rajashekarakula19-spec.github.io/retail-stockout-early-warning/
 ```
 
-The public GitHub Pages build uses frontend fallback data if no backend URL is configured. For a fully backend-backed deployment, deploy FastAPI separately on Render, Railway, Fly.io, or AWS, then set:
+The public GitHub Pages build uses frontend fallback data and fallback assistant answers if no backend URL is configured. For a fully backend-backed dashboard with live PostgreSQL data and Ollama/RAG answers, deploy FastAPI separately on Render, Railway, Fly.io, or AWS, then set:
 
 ```text
 VITE_API_BASE_URL=<your-backend-url>
