@@ -1041,6 +1041,12 @@ def store_predictions(
                 l.*,
                 f.forecast_7d_demand,
                 f.forecast_14d_demand,
+                inv_position.sim_units_on_hand,
+                inv_position.sim_units_in_backroom,
+                inv_position.sim_quantity_available,
+                inv_position.sim_days_of_supply,
+                inv_position.sim_recent_replenishment_qty,
+                inv_position.sim_days_since_last_replenishment,
                 sc.original_root_cause,
                 sc.actual_stockout_date,
                 sc.actual_restock_date,
@@ -1065,6 +1071,80 @@ def store_predictions(
               ON f.store_id = l.store_id
              AND f.sku_id = l.sku_id
              AND f.date = l.date
+            LEFT JOIN LATERAL (
+                WITH base_inventory AS (
+                    SELECT
+                        i.snapshot_date,
+                        coalesce(i.units_on_hand, 0)::numeric AS base_units_on_hand,
+                        coalesce(i.units_in_backroom, 0)::numeric AS base_units_in_backroom
+                    FROM retail_raw.inventory_snapshots i
+                    WHERE i.store_id = l.store_id
+                      AND i.sku_id = l.sku_id
+                      AND i.snapshot_date <= l.date
+                    ORDER BY i.snapshot_date DESC, i.snapshot_time DESC NULLS LAST
+                    LIMIT 1
+                ),
+                movements AS (
+                    SELECT
+                        coalesce(sum(s.units_sold), 0)::numeric AS units_sold_since_snapshot
+                    FROM base_inventory bi
+                    LEFT JOIN retail_raw.sales_transactions s
+                      ON s.store_id = l.store_id
+                     AND s.sku_id = l.sku_id
+                     AND s.sale_date > bi.snapshot_date
+                     AND s.sale_date <= l.date
+                ),
+                replenishment AS (
+                    SELECT
+                        coalesce(sum(r.units_received), 0)::numeric AS units_received_since_snapshot,
+                        coalesce(sum(r.units_received) FILTER (WHERE r.replenishment_date >= l.date - interval '7 days'), 0)::numeric AS recent_received,
+                        max(r.replenishment_date) AS last_replenishment_date
+                    FROM base_inventory bi
+                    LEFT JOIN retail_raw.replenishment_logs r
+                      ON r.store_id = l.store_id
+                     AND r.sku_id = l.sku_id
+                     AND r.replenishment_date > bi.snapshot_date
+                     AND r.replenishment_date <= l.date
+                ),
+                active_stockout AS (
+                    SELECT count(*) AS active_events
+                    FROM retail_raw.stockout_events so
+                    WHERE so.store_id = l.store_id
+                      AND so.sku_id = l.sku_id
+                      AND so.stockout_date <= l.date
+                      AND coalesce(so.restock_date, so.stockout_date + interval '1 day') > l.date
+                ),
+                totals AS (
+                    SELECT
+                        bi.base_units_on_hand,
+                        bi.base_units_in_backroom,
+                        greatest(
+                            0,
+                            bi.base_units_on_hand
+                            + bi.base_units_in_backroom
+                            + coalesce(rep.units_received_since_snapshot, 0)
+                            - coalesce(m.units_sold_since_snapshot, 0)
+                        ) AS simulated_available,
+                        coalesce(rep.recent_received, 0) AS recent_received,
+                        rep.last_replenishment_date,
+                        coalesce(a.active_events, 0) AS active_events
+                    FROM base_inventory bi
+                    CROSS JOIN movements m
+                    CROSS JOIN replenishment rep
+                    CROSS JOIN active_stockout a
+                )
+                SELECT
+                    CASE WHEN active_events > 0 THEN 0 ELSE least(base_units_on_hand, simulated_available) END AS sim_units_on_hand,
+                    CASE WHEN active_events > 0 THEN 0 ELSE greatest(0, simulated_available - least(base_units_on_hand, simulated_available)) END AS sim_units_in_backroom,
+                    CASE WHEN active_events > 0 THEN 0 ELSE simulated_available END AS sim_quantity_available,
+                    CASE
+                        WHEN active_events > 0 THEN 0
+                        ELSE coalesce(simulated_available / nullif(l.avg_daily_demand_7d, 0), 999)
+                    END AS sim_days_of_supply,
+                    recent_received AS sim_recent_replenishment_qty,
+                    coalesce(l.date - last_replenishment_date, l.days_since_last_replenishment, 999)::numeric AS sim_days_since_last_replenishment
+                FROM totals
+            ) inv_position ON true
             LEFT JOIN stockout_causes sc
               ON sc.store_id = l.store_id
              AND sc.sku_id = l.sku_id
@@ -1097,10 +1177,11 @@ def store_predictions(
             rp.probability_14d,
             rp.resolved_alert_threshold,
             rp.resolved_risk_level,
-            rp.units_on_hand,
-            rp.units_in_backroom,
+            coalesce(rp.sim_units_on_hand, rp.units_on_hand) AS units_on_hand,
+            coalesce(rp.sim_units_in_backroom, rp.units_in_backroom) AS units_in_backroom,
+            coalesce(rp.sim_quantity_available, coalesce(rp.units_on_hand, 0) + coalesce(rp.units_in_backroom, 0)) AS quantity_available,
             rp.avg_daily_demand_7d,
-            rp.computed_days_of_supply,
+            coalesce(rp.sim_days_of_supply, rp.computed_days_of_supply) AS computed_days_of_supply,
             rp.forecast_7d_demand,
             rp.forecast_14d_demand,
             rp.original_root_cause,
@@ -1109,8 +1190,8 @@ def store_predictions(
             rp.actual_stockout_events,
             rp.false_alert_rate,
             rp.true_alert_rate,
-            rp.recent_replenishment_qty,
-            rp.days_since_last_replenishment,
+            coalesce(rp.sim_recent_replenishment_qty, rp.recent_replenishment_qty) AS recent_replenishment_qty,
+            coalesce(rp.sim_days_since_last_replenishment, rp.days_since_last_replenishment) AS days_since_last_replenishment,
             rp.avg_supplier_lead_time,
             rp.stockout_next_7d
         FROM ranked_products rp
@@ -1145,7 +1226,7 @@ def store_predictions(
         probability_3d = to_float(row.get("probability_3d"), probability)
         probability_14d = to_float(row.get("probability_14d"), probability)
         days_supply = to_float(row.get("computed_days_of_supply"), 999)
-        quantity_available = to_float(row.get("units_on_hand")) + to_float(row.get("units_in_backroom"))
+        quantity_available = to_float(row.get("quantity_available"), to_float(row.get("units_on_hand")) + to_float(row.get("units_in_backroom")))
         forecast_7d = to_float(row.get("forecast_7d_demand"))
         forecast_14d = to_float(row.get("forecast_14d_demand"))
         fallback_7d = to_float(row.get("avg_daily_demand_7d")) * 7

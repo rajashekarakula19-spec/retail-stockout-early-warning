@@ -225,6 +225,17 @@ Why:
 
 The output should be understandable to analysts and business users, not only data scientists.
 
+The Predictions page also uses a derived inventory-position timeline for display:
+
+```text
+last known inventory
+- sales since that snapshot
++ replenishment received since that snapshot
+= estimated available quantity
+```
+
+If a stockout event is active on the selected date, the displayed quantity is set to zero until restock. This makes the date selector behave more like a real store operation without overwriting raw inventory data.
+
 ### 11. Added a Simple RAG/Ollama Assistant
 
 An assistant was added to explain:
@@ -372,4 +383,3 @@ The main value is not just predicting a stockout. The value is:
 ```text
 Predict early → explain why → recommend action → protect revenue
 ```
-

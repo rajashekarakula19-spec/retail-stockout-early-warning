@@ -38,6 +38,7 @@ import type {
   StockoutDurationBucket,
   Store,
   StorePredictionGroup,
+  StorePredictionProduct,
   ThresholdTuningSummary,
   WeeklyUploadResult,
   YearlyStockoutSummary,
@@ -50,6 +51,55 @@ function shiftedIsoDate(startDate: string, offsetDays: number) {
   const date = new Date(`${startDate}T00:00:00`);
   date.setDate(date.getDate() + offsetDays);
   return date.toISOString().slice(0, 10);
+}
+
+function daysBetweenIso(startDate: string, endDate: string) {
+  return Math.round((new Date(`${endDate}T00:00:00`).getTime() - new Date(`${startDate}T00:00:00`).getTime()) / 86_400_000);
+}
+
+function simulateStaticInventory(product: StorePredictionProduct, startDate: string, index: number): StorePredictionProduct {
+  const predictionDate = shiftedIsoDate(startDate, index % 7);
+  const daysFromBase = Math.max(0, daysBetweenIso("2025-01-01", predictionDate));
+  const cycleDay = (daysFromBase + index * 3) % 28;
+  const replenishmentPulse = cycleDay <= 2 ? product.recentReplenishmentQty ?? 0 : 0;
+  const demandDrawdown = product.sellingRate * cycleDay;
+  const simulatedAvailable = Math.max(0, Math.round(product.quantityAvailable + replenishmentPulse - demandDrawdown));
+  const stockoutDay = Math.min(6, (index % 7) + 1);
+  const actualStockoutDate = product.actualStockout ? shiftedIsoDate(startDate, stockoutDay) : null;
+  const isStockoutDate = actualStockoutDate ? predictionDate >= actualStockoutDate && predictionDate <= shiftedIsoDate(actualStockoutDate, 2) : false;
+  const quantityAvailable = isStockoutDate ? 0 : simulatedAvailable;
+  const shelfQuantity = quantityAvailable === 0 ? 0 : Math.min(quantityAvailable, Math.max(0, product.shelfQuantity - Math.round(product.sellingRate * Math.min(cycleDay, 7))));
+  const backroomQuantity = Math.max(0, quantityAvailable - shelfQuantity);
+  const forecast7dDemand = Math.round(product.sellingRate * 7);
+  const forecastInventoryGap = quantityAvailable - forecast7dDemand;
+  const daysOfSupply = quantityAvailable === 0 ? 0 : quantityAvailable / Math.max(product.sellingRate, 0.1);
+  const stockoutPressure = quantityAvailable === 0 ? 0.28 : forecastInventoryGap < 0 ? 0.12 : forecastInventoryGap > 20 ? -0.08 : 0;
+  const probability = Math.max(0.01, Math.min(0.99, product.stockoutProbability + stockoutPressure));
+  const threshold = product.alertThreshold ?? 0.5;
+  const predictedStockout = probability >= threshold;
+  const actualStockout = product.actualStockout;
+
+  return {
+    ...product,
+    predictionDate,
+    actualStockoutDate,
+    quantityAvailable,
+    shelfQuantity,
+    backroomQuantity,
+    forecastInventoryGap,
+    forecastDaysOfSupply: daysOfSupply,
+    possibleStockoutTime: quantityAvailable === 0 ? "within 1 day" : daysOfSupply <= 3 ? "within 3 days" : daysOfSupply <= 7 ? "within 7 days" : `${daysOfSupply.toFixed(0)} days`,
+    daysOfSupply,
+    stockoutProbability: probability,
+    timeSeriesAdjustedProbability: probability,
+    riskLevel: riskFromProbability(probability),
+    recentReplenishmentQty: replenishmentPulse,
+    daysSinceLastReplenishment: cycleDay,
+    predictedStockout,
+    actualStockout,
+    predictionOutcome: predictedStockout && actualStockout ? "Successful prediction" : !predictedStockout && actualStockout ? "Missed stockout" : predictedStockout ? "False alert" : "Correct no alert",
+    recommendedAction: actionFromProbability(probability, daysOfSupply),
+  };
 }
 
 async function getJson<T>(path: string, fallback: () => Promise<T> | T): Promise<T> {
@@ -245,11 +295,7 @@ export async function getStorePredictions(storeLimit = 10, productsPerStore = 80
     if (staticStorePredictions.length > 0) {
       return staticStorePredictions.slice(0, storeLimit).map((store) => ({
         ...store,
-        products: store.products.slice(0, productsPerStore).map((product, index) => ({
-          ...product,
-          predictionDate: shiftedIsoDate(startDate, index % 7),
-          actualStockoutDate: product.actualStockout ? shiftedIsoDate(startDate, Math.min(6, (index % 7) + 1)) : null,
-        })),
+        products: store.products.slice(0, productsPerStore).map((product, index) => simulateStaticInventory(product, startDate, index)),
       }));
     }
     const grouped = stores.slice(0, storeLimit).map((store) => {
