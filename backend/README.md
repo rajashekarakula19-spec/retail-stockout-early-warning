@@ -32,9 +32,12 @@ It retrieves from:
 
 - PostgreSQL summaries for data coverage, scored rows, model metrics, root causes, and recommended actions
 - `README.md`
+- `docs/rag_calculation_guide.md`
 - `docs/work_summary.md`
 - `docs/project_book_short.md`
 - `docs/project_explanation.md`
+
+`docs/rag_calculation_guide.md` is prioritized for questions about formulas such as revenue protected, missed revenue, precision, recall, warning days, and thresholds.
 
 Start Ollama:
 

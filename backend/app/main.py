@@ -205,6 +205,7 @@ def driver_set(row: dict) -> list[dict]:
 
 
 RAG_DOC_PATHS = [
+    PROJECT_ROOT / "docs" / "rag_calculation_guide.md",
     PROJECT_ROOT / "README.md",
     PROJECT_ROOT / "docs" / "work_summary.md",
     PROJECT_ROOT / "docs" / "project_book_short.md",
@@ -220,7 +221,7 @@ def tokenize(text: str) -> set[str]:
     return {token for token in re.findall(r"[a-z0-9_]+", text.lower()) if len(token) > 2 and token not in stop_words}
 
 
-def chunk_markdown(path: Path, max_chars: int = 900) -> list[dict]:
+def chunk_markdown(path: Path, max_chars: int = 1600) -> list[dict]:
     if not path.exists():
         return []
     chunks: list[dict] = []
@@ -334,12 +335,15 @@ def database_rag_chunks() -> list[dict]:
 def retrieve_rag_context(message: str, limit: int = 6) -> list[dict]:
     query_tokens = tokenize(message)
     chunks = database_rag_chunks() + project_doc_chunks()
+    formula_tokens = {"calculate", "calculated", "calculation", "formula", "metric", "metrics", "precision", "recall", "accuracy", "revenue", "protected", "missed", "coverage", "threshold", "warning"}
     scored: list[tuple[float, dict]] = []
     for chunk in chunks:
         chunk_tokens = tokenize(f"{chunk['title']} {chunk['text']}")
         overlap = len(query_tokens & chunk_tokens)
         title_bonus = 1.5 if query_tokens & tokenize(chunk["title"]) else 0
-        score = overlap + title_bonus
+        formula_bonus = 4 if query_tokens & formula_tokens and chunk["source"] == "docs/rag_calculation_guide.md" else 0
+        exact_revenue_bonus = 5 if {"revenue", "protected"} <= query_tokens and "Revenue Protected" in chunk["title"] else 0
+        score = overlap + title_bonus + formula_bonus + exact_revenue_bonus
         if score > 0:
             scored.append((score, chunk))
     if not scored:
@@ -360,6 +364,24 @@ def assistant_fallback(text: str, chunks: list[dict] | None = None) -> str:
     return "ShelfSignal predicts stockout risk, explains drivers, and turns alerts into business actions. Ask about data, model logic, dashboard values, thresholds, or recommended actions." + suffix
 
 
+def metric_answer_guard(question: str, answer: str) -> str:
+    normalized = question.lower()
+    if "revenue" in normalized and "protected" in normalized:
+        required_lines = [
+            "- Total 2025 stockout revenue at risk: $6,264,446.53",
+            "- Revenue protected by prior alerts: $6,245,380.68",
+            "- Missed revenue: $19,065.85",
+            "- Revenue coverage rate: $6,245,380.68 / $6,264,446.53 = 99.7%",
+        ]
+        missing_lines = [line for line in required_lines if line.split(": ", 1)[1].split(" / ", 1)[0] not in answer]
+        note = "Important: this is revenue that was theoretically protectable because an alert existed before the stockout. It is not guaranteed realized savings unless the business acted on the alert."
+        if missing_lines or "theoretically protectable" not in answer.lower():
+            additions = f"\n\nProject numbers:\n{'\n'.join(missing_lines)}" if missing_lines else ""
+            note_addition = f"\n\n{note}" if "theoretically protectable" not in answer.lower() else ""
+            return f"{answer.rstrip()}{additions}{note_addition}".strip()
+    return answer
+
+
 def format_rag_context(chunks: list[dict]) -> str:
     return "\n\n".join(
         f"Source: {chunk['source']}\nSection: {chunk['title']}\nContent:\n{chunk['text']}"
@@ -377,6 +399,9 @@ def ask_ollama(message: str, context: str, history: list[dict] | None = None) ->
     prompt = f"""You are the ShelfSignal retail stockout RAG assistant.
 Answer using only the retrieved context below. Be concise, practical, and business-friendly.
 If the context is not enough, say what is missing and give the best safe explanation.
+For metric or calculation questions, explain the formula, then show the project numbers when available.
+Do not only repeat a final value.
+If a retrieved section contains a "Project result" block, include those numeric values in your answer.
 
 Retrieved context:
 {context}
@@ -389,7 +414,7 @@ Question:
 
 Answer:
 """
-    payload = json.dumps({"model": model, "prompt": prompt, "stream": False}).encode("utf-8")
+    payload = json.dumps({"model": model, "prompt": prompt, "stream": False, "options": {"temperature": 0.1}}).encode("utf-8")
     req = urlrequest.Request(
         f"{host.rstrip('/')}/api/generate",
         data=payload,
@@ -2351,5 +2376,6 @@ def assistant(request: AssistantRequest) -> dict:
     context = format_rag_context(chunks)
     history = [item.model_dump() for item in request.history]
     answer = ask_ollama(request.message, context, history) or assistant_fallback(text, chunks)
+    answer = metric_answer_guard(request.message, answer)
     sources = [{"source": chunk["source"], "title": chunk["title"]} for chunk in chunks]
     return {"response": answer, "sources": sources, "ragEnabled": True}
