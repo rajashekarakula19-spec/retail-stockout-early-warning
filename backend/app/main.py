@@ -983,14 +983,10 @@ def store_predictions(
         latest AS (
             SELECT
                 r.*,
-                row_number() OVER (
-                    PARTITION BY r.store_id, r.sku_id
-                    ORDER BY coalesce(r.stockout_next_7d, 0) DESC, r.stockout_probability DESC, r.date DESC
-                ) AS latest_rank
+                1 AS latest_rank
             FROM retail_ml.scored_test_rows r
             JOIN demo_stores ds ON ds.store_id = r.store_id
-            WHERE r.date >= %(start_date)s
-              AND r.date <= %(end_date)s
+            WHERE r.date = %(start_date)s
         ),
         forecast_agg AS (
             SELECT
@@ -1021,8 +1017,8 @@ def store_predictions(
             LEFT JOIN retail_raw.stockout_events so
               ON so.store_id = l.store_id
              AND so.sku_id = l.sku_id
-             AND so.stockout_date >= l.date
-             AND so.stockout_date < l.date + interval '7 days'
+             AND so.stockout_date > l.date
+             AND so.stockout_date <= l.date + interval '7 days'
             WHERE l.latest_rank = 1
             GROUP BY l.store_id, l.sku_id, l.date
         ),
@@ -1283,10 +1279,10 @@ def store_predictions(
             "actualStockout": actual_stockout,
             "predictionOutcome": "Successful prediction" if predicted_stockout and actual_stockout else "Missed stockout" if actual_stockout else "False alert" if predicted_stockout else "Correct no alert",
             "revenueLossReason": risk_reason(row),
-            "originalStockoutRootCause": row.get("original_root_cause") if actual_stockout else "No stockout recorded",
-            "actualStockoutDate": row["actual_stockout_date"].isoformat() if row.get("actual_stockout_date") else None,
-            "actualRestockDate": row["actual_restock_date"].isoformat() if row.get("actual_restock_date") else None,
-            "actualStockoutEvents": int(row.get("actual_stockout_events") or 0),
+            "originalStockoutRootCause": row.get("original_root_cause") if actual_stockout and row.get("original_root_cause") else "No stockout recorded",
+            "actualStockoutDate": row["actual_stockout_date"].isoformat() if actual_stockout and row.get("actual_stockout_date") else None,
+            "actualRestockDate": row["actual_restock_date"].isoformat() if actual_stockout and row.get("actual_restock_date") else None,
+            "actualStockoutEvents": int(row.get("actual_stockout_events") or 0) if actual_stockout else 0,
         }
         store["products"].append(product)
     risk_order = {"critical": 4, "high": 3, "medium": 2, "low": 1}

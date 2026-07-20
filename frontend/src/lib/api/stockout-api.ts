@@ -58,7 +58,7 @@ function daysBetweenIso(startDate: string, endDate: string) {
 }
 
 function simulateStaticInventory(product: StorePredictionProduct, startDate: string, index: number): StorePredictionProduct {
-  const predictionDate = shiftedIsoDate(startDate, index % 7);
+  const predictionDate = startDate;
   const daysFromBase = Math.max(0, daysBetweenIso("2025-01-01", predictionDate));
   const cycleDay = (daysFromBase + index * 3) % 28;
   const replenishmentPulse = cycleDay <= 2 ? product.recentReplenishmentQty ?? 0 : 0;
